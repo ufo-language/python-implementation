@@ -1,0 +1,3 @@
+#/bin/sh
+
+pyc src/main.py

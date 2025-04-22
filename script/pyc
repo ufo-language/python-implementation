@@ -1,0 +1,4 @@
+#/bin/sh
+
+/opt/pypy2.7/bin/pypy /opt/pypy3.11/src/rpython/bin/rpython "$@"
+find . -name "*.pyc" -exec rm {} \;
