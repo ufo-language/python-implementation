@@ -1,8 +1,9 @@
 import sys
+import traceback
 
 import repl.rep
 
-def run():
+def run(etor):
     repl_state = {'continue': True}
     try:
         while repl_state['continue']:
@@ -20,11 +21,13 @@ def run():
             if input_string.startswith(':'):
                 colon_command(input_string, repl_state)
             else:
-                repl.rep.rep(input_string)
+                repl.rep.rep(input_string, etor)
     except KeyboardInterrupt:
         print()
     except EOFError:
         print()
+    except Exception as exn:
+        print(traceback.format_exc())
 
 def colon_command(input_string, repl_state):
     match input_string[1]:

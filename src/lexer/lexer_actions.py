@@ -13,14 +13,14 @@ def reuse_char(lexer, char):
 # any character that's not an operator is a special character
 
 def special_char(lexer, char):
-    token = ('Special', [char], lexer.get_saved_pos())
+    token = ('Special', char, lexer.get_saved_pos())
     lexer._tokens.append(token)
     lexer._word = ''
 
 # lexer actions to create data types
 
 def create_binary_int(lexer, char):
-    token = ('Int', int(lexer._word, 2), lexer.get_saved_pos())
+    token = ('Integer', int(lexer._word, 2), lexer.get_saved_pos())
     lexer._tokens.append(token)
     lexer._word = ''
 
@@ -30,12 +30,12 @@ def create_float(lexer, char):
     lexer._word = ''
 
 def create_hex_int(lexer, char):
-    token = ('Int', int(lexer._word, 16), lexer.get_saved_pos())
+    token = ('Integer', int(lexer._word, 16), lexer.get_saved_pos())
     lexer._tokens.append(token)
     lexer._word = ''
 
 def create_int(lexer, char):
-    token = ('Int', int(lexer._word), lexer.get_saved_pos())
+    token = ('Integer', int(lexer._word), lexer.get_saved_pos())
     lexer._tokens.append(token)
     lexer._word = ''
 

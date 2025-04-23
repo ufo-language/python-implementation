@@ -1,20 +1,25 @@
 import lexer.ufo_syntax
-import parser.parser
+import parser.ufo_parser
 
-def rep(input_string):
-    print("rep '", input_string, "'", sep='')
+def rep(input_string, etor):
+    if len(input_string.strip()) == 0:
+        return
     expr = _read(input_string)
-    value = _eval(expr)
+    if expr is None:
+        print("rep.rep() Parse error")
+        return
+    value = _eval(expr, etor)
     _print(value)
 
 def _read(input_string):
-    tokens = lexer.ufo_syntax.tokenize(input_string)
-    print("rep._read tokens =", tokens)
-    expr = parser.parser.parse(tokens)
+    expr = parser.ufo_parser.parse_string(input_string)
     return expr
 
-def _eval(expr):
-    pass
+def _eval(expr, etor):
+    # print(f"rep._eval got expr {expr}")
+    value = expr.eval(etor)
+    # print(f"rep._eval({expr}) -> {value}")
+    return value
 
 def _print(value):
-    pass
+    print(value, '::', value.type_name())
