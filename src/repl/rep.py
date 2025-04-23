@@ -1,4 +1,4 @@
-import parser.lexer
+import lexer.ufo_syntax
 import parser.parser
 
 def rep(input_string):
@@ -8,7 +8,8 @@ def rep(input_string):
     _print(value)
 
 def _read(input_string):
-    tokens = parser.lexer.tokenize(input_string)
+    tokens = lexer.ufo_syntax.tokenize(input_string)
+    print("rep._read tokens =", tokens)
     expr = parser.parser.parse(tokens)
     return expr
 

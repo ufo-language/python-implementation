@@ -21,6 +21,8 @@ def run():
                 colon_command(input_string, repl_state)
             else:
                 repl.rep.rep(input_string)
+    except KeyboardInterrupt:
+        print()
     except EOFError:
         print()
 
