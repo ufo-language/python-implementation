@@ -31,6 +31,7 @@ def parse_entry_point(parser_name, parser_table, object_builder, tokens):
     return parse(parser_name, parse_call_record)
 
 def parse(parser_name, parse_call_record):
+    # TODO MEMOIZE PARSE RESULT
     parser = parse_call_record.parser_table.get(parser_name)
     if parser is None:
         raise Exception(f"parser.parse did not find parser '{parser_name}'")

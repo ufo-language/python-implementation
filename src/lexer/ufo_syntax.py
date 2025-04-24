@@ -24,7 +24,7 @@ class UFOSyntax (Lexer):
         self._false = 'false'
 
         # operator characters
-        opers = '+-*/:.%^<>!#=?'
+        opers = '+-*/:.%^<>!=?'
 
         # special characters
         # special = '()[]{};,'

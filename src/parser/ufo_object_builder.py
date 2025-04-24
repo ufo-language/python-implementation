@@ -1,4 +1,6 @@
 import alltypes.data.array
+import alltypes.data.binding
+import alltypes.data.hashtable
 import alltypes.data.list
 import alltypes.data.queue
 import alltypes.literal.boolean
@@ -24,6 +26,8 @@ BUILDERS = {
     'Symbol': alltypes.literal.symbol.Symbol,
     # data structures
     'Array': alltypes.data.array.Array,
+    'Binding': alltypes.data.binding.Binding,
+    'HashTable': alltypes.data.hashtable.HashTable,
     'List': alltypes.data.list.List.from_python_list,
     'Queue': alltypes.data.queue.Queue.from_python_list,
     # expressions

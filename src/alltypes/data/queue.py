@@ -1,5 +1,5 @@
 import alltypes.data.list
-from object.object import Object
+from alltypes.object import Object
 
 class Queue (Object):
 

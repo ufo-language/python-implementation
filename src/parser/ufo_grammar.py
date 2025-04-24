@@ -4,6 +4,8 @@ from parser.expr._expr import p_expr
 # data types
 from parser.data._data import p_data
 from parser.data.array import p_array
+from parser.data.binding import p_binding
+from parser.data.hashtable import p_hash_table
 from parser.data.list import p_list
 from parser.data.queue import p_queue
 # literals
@@ -24,6 +26,8 @@ PARSER_TABLE = {
     # data types
     'Data': p_data,
     'Array': p_array,
+    'Binding': p_binding,
+    'HashTable': p_hash_table,
     'List': p_list,
     'Queue': p_queue,
     # literals
@@ -42,5 +46,6 @@ PARSER_TABLE = {
     # '(': p_open_paren,
     # ')': p_close_paren
     ',': p_comma,
+    '#': p_hashmark,
     '~': p_tilde
 }
