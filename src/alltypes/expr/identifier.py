@@ -22,10 +22,9 @@ class Identifier (Object):
         return value
 
     def match(self, other, env):
-        binding = env.lookup(self)
-        if binding is not None:
-            if binding.rhs() == other:
-                return True
+        value = env.lookup(self)
+        if value == other:
+            return True
         env.bind(self, other)
         return True
 

@@ -1,9 +1,9 @@
 # expressions
-from parser.expr._any import p_any
+from parser.expr._any import p_any, p_require_any
 from parser.expr._expr import p_expr
 from parser.expr.assign import p_assign
 from parser.expr.identifier import p_identifier
-from parser.expr.if_then import p_if
+from parser.expr.if_then import p_if, p_maybe_else
 # data types
 from parser.data._data import p_data
 from parser.data.array import p_array
@@ -27,10 +27,12 @@ from parser.special.special import *
 PARSER_TABLE = {
     # expressions
     'Any': p_any,
+    'RequireAny': p_require_any,
     'Expr': p_expr,
     'Assign': p_assign,
     'Identifier': p_identifier,
     'If': p_if,
+    'MaybeElse': p_maybe_else,
     # data types
     'Data': p_data,
     'Array': p_array,

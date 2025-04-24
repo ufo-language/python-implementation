@@ -14,12 +14,19 @@ class Environment:
     def drop(self, n):
         self._bindings[-n:] = []
 
-    def locate_binding(self, ident):
+    def locate_binding_abs(self, ident):
         n = 0
         for binding in self._bindings:
             if binding[0] == ident:
                 return binding
             n += 1
+        return None
+
+    def locate_binding_rel(self, ident):
+        for n in range(len(self._bindings) - 1, -1, -1):
+            binding = self._bindings[n]
+            if binding[0] == ident:
+                return binding
         return None
 
     def locate_index_abs(self, ident):
@@ -31,7 +38,7 @@ class Environment:
         return -1
 
     def lookup(self, ident):
-        binding = self.locate_binding(ident)
+        binding = self.locate_binding_rel(ident)
         if binding is not None:
             return binding[1]
         return None

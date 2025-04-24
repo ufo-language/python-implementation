@@ -1,14 +1,14 @@
-import alltypes.literal.nil
+from alltypes.literal.nil import Nil
 from alltypes.object import Object
 
 class If (Object):
 
     __slots__ = ('_cond', '_conseq', '_alt')
 
-    def __init__(self, cond, conseq, alt):
+    def __init__(self, cond, conseq, alt=None):
         self._cond = cond
         self._conseq = conseq
-        self._alt = alt
+        self._alt = alt if alt is not None else Nil()
 
     @staticmethod
     def from_python_list(python_list):

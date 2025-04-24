@@ -18,6 +18,7 @@ def builder(type_name, *args, **kwargs):
     fun = BUILDERS.get(type_name)
     if fun is None:
         raise Exception(f"ufo_object_builder.builder type_name '{type_name}' not found")
+    # print(f"builder args={args} kwargs={kwargs}")
     return fun(*args, **kwargs)
 
 BUILDERS = {

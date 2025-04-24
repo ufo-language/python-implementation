@@ -8,7 +8,7 @@ class Integer (Object):
         self._value = value
 
     def bool_value(self):
-        return self != 0
+        return self._value != 0
 
     def __lt__(self, other):
         if not isinstance(other, Integer):
