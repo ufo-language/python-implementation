@@ -40,7 +40,7 @@ class UFOSyntax (Lexer):
         self.add('#i', lower_case, '#word',    [save_pos, keep_char])
         self.add('#i', '_',        '#word',    [save_pos, ignore_char])
         self.add('#i', '"',        '#string',  [save_pos, ignore_char])
-        self.add('#i', digit,      '#number',  [save_pos, reuse_char])
+        self.add('#i', digit,      '#int',     [save_pos, reuse_char])
         self.add('#i', '`',        '#ident',   [save_pos, ignore_char])
         self.add('#i', '|',        '#specSym', [save_pos, ignore_char])
         self.add('#i', '-',        '#dash',    [save_pos, keep_char])
@@ -51,8 +51,8 @@ class UFOSyntax (Lexer):
         self.add('#i', '\n',       '#i',       [ignore_char, eol])
         self.add('#i', None,       '#i',       [save_pos, keep_char, special_char])
 
-        self.add('#number',    '0',        '#otherBase', [ignore_char])
-        self.add('#number',    None,       '#int',       [reuse_char])
+        # self.add('#number',    '0',        '#otherBase', [ignore_char])
+        # self.add('#number',    None,       '#int',       [reuse_char])
 
         self.add('#otherBase', 'bB',       '#binary',    [ignore_char])
         self.add('#otherBase', 'xX',       '#hex',       [ignore_char])
@@ -91,6 +91,8 @@ class UFOSyntax (Lexer):
 
         self.add('#int',       digit,      '#int',       [keep_char])
         self.add('#int',       '.',        '#float',     [keep_char])
+        self.add('#int',       'bB',       '#binary',    [ignore_char])
+        self.add('#int',       'xX',       '#hex',       [ignore_char])
         self.add('#int',       None,       '#i',         [reuse_char, create_int])
 
         self.add('#oper',      opers,      '#oper',      [keep_char])
