@@ -16,6 +16,7 @@ class Assign (Object):
     def eval_rec(self, etor):
         rhs_value = etor.eval(self._rhs)
         etor.match_bind(self._lhs, rhs_value)
+        print("Assign.eval_rec env =", etor._env)
         return alltypes.literal.nil.Nil()
 
     def type_name(self):

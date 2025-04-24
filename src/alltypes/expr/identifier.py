@@ -12,8 +12,11 @@ class Identifier (Object):
     def from_python_list(python_list):
         return Assign(*python_list)
 
+    def equals(self, other):
+        return self._name == other._name
+
     def eval_rec(self, etor):
-        value = etor.lookup(self._name)
+        value = etor.lookup(self)
         if value is None:
             raise UFOException(f"Unbound identifier '{self._name}'")
         return value
@@ -22,21 +25,12 @@ class Identifier (Object):
         binding = env.lookup(self)
         if binding is not None:
             if binding.rhs() == other:
-                return
+                return True
         env.bind(self, other)
+        return True
 
     def type_name(self):
         return 'Assignment'
 
     def __repr__(self):
-        s = '${'
-        elems = sorted(list(self._set))
-        first_iter = True
-        for elem in elems:
-            if first_iter:
-                first_iter = False
-            else:
-                s += ', '
-            s += str(elem)
-        s += '}'
-        return s
+        return self._name

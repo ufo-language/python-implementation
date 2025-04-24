@@ -17,7 +17,7 @@ class Object:
     def equals(self, other):
         ''' Override equals_aux instead of this method. '''
         if type(self) != type(other):
-            return false
+            return False
         return self.equals_aux(other)
 
     def equals_aux(self, other):
@@ -34,7 +34,6 @@ class Object:
         return {'PUSH_EXPR', self}
 
     def match(self, other, env):
-        print("Object.match self =", self, "other =", other)
         if self == other:
             return env
         return None

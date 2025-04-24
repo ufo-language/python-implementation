@@ -44,3 +44,6 @@ class Environment:
         diff = len(self._bindings) - n
         if diff > 0:
             self.drop(n)
+
+    def __repr__(self):
+        return str(self._bindings)
