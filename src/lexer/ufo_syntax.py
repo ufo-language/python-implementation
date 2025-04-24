@@ -13,13 +13,15 @@ class UFOSyntax (Lexer):
         super().__init__()
 
         self._reserved_words = {
-            "async", "by", "catch", "cobegin", "const", "do", "each",
-            "else", "end", "false", "for", "foreach", "forever", "from",
-            "fun", "fn", "if", "in", "let", "letrec", "loop", "memoized",
-            "macro", "match", "new", "nondet", "nothing", "struct", "then",
-            "times", "to", "true", "try", "typedef", "until", "while",
-            "with"
+            'async', 'by', 'catch', 'cobegin', 'const', 'do', 'each',
+            'else', 'end', 'false', 'for', 'foreach', 'forever', 'from',
+            'fun', 'fn', 'if', 'in', 'let', 'letrec', 'loop', 'memoized',
+            'macro', 'match', 'new', 'nondet', 'nil', 'struct', 'then',
+            'times', 'to', 'true', 'try', 'typedef', 'until', 'while',
+            'with'
         }
+        self._true = 'true'
+        self._false = 'false'
 
         # operator characters
         opers = '+-*/:.%^<>!#=?'
@@ -120,4 +122,4 @@ class UFOSyntax (Lexer):
         self.add('#word',      lower_case,  '#word',      [keep_char])
         self.add('#word',      digit,      '#word',      [keep_char])
         self.add('#word',      '_?',       '#word',      [keep_char])
-        self.add('#word',      None,       '#i',         [reuse_char, create_word])
+        self.add('#word',      None,       '#i',         [reuse_char, create_word])  # create_word checks for 'true' and 'false'

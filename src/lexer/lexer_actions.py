@@ -56,7 +56,13 @@ def create_symbol(lexer, char):
 
 def create_word(lexer, char):
     w = lexer._word
-    if w in lexer._reserved_words:
+    # check for true and false first because 'true' and 'false'
+    # are also in the list of reserved words
+    if w == lexer._true:
+        token = ('Boolean', True, lexer.get_saved_pos())
+    elif w == lexer._false:
+        token = ('Boolean', False, lexer.get_saved_pos())
+    elif w in lexer._reserved_words:
         token = ('Reserved', lexer._word, lexer.get_saved_pos())
     else:
         token = ('Identifier', lexer._word, lexer.get_saved_pos())

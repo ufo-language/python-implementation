@@ -1,8 +1,10 @@
 import alltypes.data.array
 import alltypes.data.list
 import alltypes.data.queue
+import alltypes.literal.boolean
 import alltypes.literal.float
 import alltypes.literal.integer
+import alltypes.literal.nil
 import alltypes.literal.string
 import alltypes.literal.symbol
 
@@ -14,8 +16,10 @@ def builder(type_name, *args, **kwargs):
 
 BUILDERS = {
     # literals
+    'Boolean': alltypes.literal.boolean.Boolean,
     'Float': alltypes.literal.float.Float,
     'Integer': alltypes.literal.integer.Integer,
+    'Nil': alltypes.literal.nil.Nil,
     'String': alltypes.literal.string.String,
     'Symbol': alltypes.literal.symbol.Symbol,
     # data structures

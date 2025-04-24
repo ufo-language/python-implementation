@@ -8,8 +8,10 @@ from parser.data.list import p_list
 from parser.data.queue import p_queue
 # literals
 from parser.literal._literal import p_literal
+from parser.literal.boolean import p_boolean
 from parser.literal.float import p_float
 from parser.literal.integer import p_integer
+from parser.literal.nil import p_nil
 from parser.literal.string import p_string
 from parser.literal.symbol import p_symbol
 # special
@@ -26,8 +28,10 @@ PARSER_TABLE = {
     'Queue': p_queue,
     # literals
     'Literal': p_literal,
+    'Boolean': p_boolean,
     'Float': p_float,
     'Integer': p_integer,
+    'Nil': p_nil,
     'String': p_string,
     'Symbol': p_symbol,
     # special
