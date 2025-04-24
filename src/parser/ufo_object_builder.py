@@ -1,5 +1,6 @@
 import alltypes.data.array
 import alltypes.data.list
+import alltypes.data.queue
 import alltypes.literal.float
 import alltypes.literal.integer
 import alltypes.literal.string
@@ -8,7 +9,7 @@ import alltypes.literal.symbol
 def builder(type_name, *args, **kwargs):
     fun = BUILDERS.get(type_name)
     if fun is None:
-        raise Exception(f"ufo_object_builders.builder type_name '{type_name}' not found")
+        raise Exception(f"ufo_object_builder.builder type_name '{type_name}' not found")
     return fun(*args, **kwargs)
 
 BUILDERS = {
@@ -18,7 +19,8 @@ BUILDERS = {
     'String': alltypes.literal.string.String,
     'Symbol': alltypes.literal.symbol.Symbol,
     # data structures
-    'Array': alltypes.data.list.Array,
-    'List': alltypes.data.list.List,
+    'Array': alltypes.data.array.Array,
+    'List': alltypes.data.list.List.from_python_list,
+    'Queue': alltypes.data.queue.Queue.from_python_list,
     # expressions
 }

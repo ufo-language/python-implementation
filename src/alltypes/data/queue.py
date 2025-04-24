@@ -1,4 +1,4 @@
-from data.list import List
+import alltypes.data.list
 from object.object import Object
 
 class Queue (Object):
@@ -30,13 +30,12 @@ class Queue (Object):
         self._count -= 1
 
     def enq(self, elem):
-        pair = data.list.List.Pair(elem, None)
+        pair = alltypes.data.list.List(elem)
         if self._count == 0:
             self._first = pair
-            self._last = pair
         else:
-            self._last.next = pair
-            self._last = pair
+            self._last.set_rest(pair)
+        self._last = pair
         self._count += 1
 
     def type_name(self):

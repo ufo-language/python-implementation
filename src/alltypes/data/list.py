@@ -1,37 +1,48 @@
-from alltypes.data.queue import Queue
+import alltypes.data.queue
 from object.object import Object
 
 class List (Object):
 
-    class Pair:
-        __slots__ = ('first', 'rest')
-        def __init__(self, first, rest):
-            self._first = first
-            self._rest = rest
+    __slots__ = ('_first', '_rest')
 
-    __slots__ = ('_values',)
+    EMPTY_LIST = None
 
     def __init__(self, first, rest=None):
         self._first = first
         if rest is None:
-            rest = EMPTY_LIST
+            rest = List.EMPTY_LIST
         self._rest = rest
 
     @staticmethod
     def from_python_list(python_list):
-        queue = Queue.from_python_list(python_list)
+        queue = alltypes.data.queue.Queue.from_python_list(python_list)
         return queue.as_list()
 
     def is_empty(self):
-        return self == EMPTY_LIST
+        return self is List.EMPTY_LIST
+
+    def set_first(self, first):
+        self._first = first
+
+    def set_rest(self, rest):
+        self._rest = rest
 
     def type_name(self):
         return 'List'
 
     def __repr__(self):
         s = '['
-        list = self._first
-        while 
-        return str(self._values)
+        lst = self
+        first_iter = True
+        while not lst.is_empty():
+            if first_iter:
+                first_iter = False
+            else:
+                s += ', '
+            elem = lst._first
+            s += str(elem)
+            lst = lst._rest
+        s += ']'
+        return s
 
-EMPTY_LIST = List(None, None)
+List.EMPTY_LIST = List(None, None)

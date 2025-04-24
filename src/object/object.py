@@ -1,5 +1,7 @@
 class Object:
 
+    __slots__ = ()
+
     def eval(self, etor):
         match etor.type:
             case 'RECURSIVE':
