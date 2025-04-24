@@ -10,5 +10,10 @@ class Nil (Object):
     def type_name(self):
         return 'Nil'
 
+    def __lt__(self, other):
+        if not isinstance(other, Nil):
+            return str(self) < str(other)
+        return false
+
     def __repr__(self):
         return 'nil'

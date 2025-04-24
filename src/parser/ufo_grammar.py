@@ -8,6 +8,7 @@ from parser.data.binding import p_binding
 from parser.data.hashtable import p_hash_table
 from parser.data.list import p_list
 from parser.data.queue import p_queue
+from parser.data.set import p_set
 # literals
 from parser.literal._literal import p_literal
 from parser.literal.boolean import p_boolean
@@ -30,6 +31,7 @@ PARSER_TABLE = {
     'HashTable': p_hash_table,
     'List': p_list,
     'Queue': p_queue,
+    'Set': p_set,
     # literals
     'Literal': p_literal,
     'Boolean': p_boolean,
@@ -46,6 +48,8 @@ PARSER_TABLE = {
     # '(': p_open_paren,
     # ')': p_close_paren
     ',': p_comma,
+    '=': p_single_equal,
+    '$': p_dollar,
     '#': p_hashmark,
     '~': p_tilde
 }

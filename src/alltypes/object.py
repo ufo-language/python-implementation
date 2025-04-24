@@ -22,4 +22,3 @@ class Object:
 
     def type_name(self):
         raise Exception(f"Subclass {self.__class__.__name__} must implement Object.type_name")
-
