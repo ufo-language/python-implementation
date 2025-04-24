@@ -1,5 +1,3 @@
-# These are constructors for the specific types in the language
-
 class ObjectBuilder:
 
     def __init__(self):

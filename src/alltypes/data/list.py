@@ -30,19 +30,22 @@ class List (Object):
     def type_name(self):
         return 'List'
 
-    def __repr__(self):
-        s = '['
+    def repr_using(self, open, sep, close):
+        s = open
         lst = self
         first_iter = True
         while not lst.is_empty():
             if first_iter:
                 first_iter = False
             else:
-                s += ', '
+                s += sep
             elem = lst._first
             s += str(elem)
             lst = lst._rest
-        s += ']'
+        s += close
         return s
+
+    def __repr__(self):
+        return self.repr_using('[', ', ', ']')
 
 List.EMPTY_LIST = List(None, None)

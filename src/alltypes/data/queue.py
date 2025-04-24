@@ -42,4 +42,4 @@ class Queue (Object):
         return 'Queue'
 
     def __repr__(self):
-        return str(self._values)
+        return self._first.repr_using('~[', ', ', ']')

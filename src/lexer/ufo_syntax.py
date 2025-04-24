@@ -22,7 +22,7 @@ class UFOSyntax (Lexer):
         }
 
         # operator characters
-        opers = '+*:.%^<>~!#=?'
+        opers = '+-*/:.%^<>!#=?'
 
         # special characters
         # special = '()[]{};,'
