@@ -1,4 +1,5 @@
 from alltypes.object import Object
+from etor.ufo_exception import UFOException
 
 class Identifier (Object):
 
@@ -14,7 +15,7 @@ class Identifier (Object):
     def eval_rec(self, etor):
         value = etor.lookup(self._name)
         if value is None:
-            raise Exception(f"Unbound identifier '{self._name}'")
+            raise UFOException(f"Unbound identifier '{self._name}'")
         return value
 
     def match(self, other, env):

@@ -1,3 +1,4 @@
+from etor.ufo_exception import UFOException
 import lexer.ufo_syntax
 import parser.ufo_parser
 
@@ -8,8 +9,11 @@ def rep(input_string, etor):
     if expr is None:
         print("rep.rep() Parse error")
         return
-    value = _eval(expr, etor)
-    _print(value)
+    try:
+        value = _eval(expr, etor)
+        _print(value)
+    except UFOException as exn:
+        print(exn)
 
 def _read(input_string):
     expr = parser.ufo_parser.parse_string(input_string)

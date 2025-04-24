@@ -6,12 +6,12 @@ class Environment:
         self._bindings = []
 
     def bind(self, ident, value):
-        self._bindings.append((name, value))
+        self._bindings.append((ident, value))
 
     def count(self):
         return len(self._bindings)
 
-    def drop_n(self, n):
+    def drop(self, n):
         self._bindings[-n:] = []
 
     def locate_binding(self, ident):
@@ -31,7 +31,7 @@ class Environment:
         return -1
 
     def lookup(self, ident):
-        binding = locate_binding(self, ident)
+        binding = self.locate_binding(ident)
         if binding is not None:
             return binding[1]
         return None

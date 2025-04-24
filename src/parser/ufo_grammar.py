@@ -2,6 +2,7 @@
 from parser.expr._any import p_any
 from parser.expr._expr import p_expr
 from parser.expr.assign import p_assign
+from parser.expr.identifier import p_identifier
 # data types
 from parser.data._data import p_data
 from parser.data.array import p_array
@@ -26,6 +27,7 @@ PARSER_TABLE = {
     'Any': p_any,
     'Expr': p_expr,
     'Assign': p_assign,
+    'Identifier': p_identifier,
     # data types
     'Data': p_data,
     'Array': p_array,
