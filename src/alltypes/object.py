@@ -2,6 +2,12 @@ class Object:
 
     __slots__ = ()
 
+    def bool_value(self):
+        return True
+
+    def closure(self):
+        return self
+
     def eval(self, etor):
         match etor.type:
             case 'RECURSIVE':

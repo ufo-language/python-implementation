@@ -1,4 +1,4 @@
-from parser.special._special import p_hashmark
+from parser.special.special import p_hashmark
 from parser.prim.list_of import p_list_of
 
 def p_hash_table(parse_call_record):

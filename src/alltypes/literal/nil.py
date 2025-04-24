@@ -7,8 +7,8 @@ class Nil (Object):
     def __init__(self, _=None):
         pass
 
-    def type_name(self):
-        return 'Nil'
+    def bool_value(self):
+        return False
 
     def __lt__(self, other):
         if not isinstance(other, Nil):
@@ -17,3 +17,6 @@ class Nil (Object):
 
     def __repr__(self):
         return 'nil'
+
+    def type_name(self):
+        return 'Nil'

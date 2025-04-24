@@ -7,8 +7,8 @@ class Boolean (Object):
     def __init__(self, value):
         self._value = value
 
-    def type_name(self):
-        return 'Boolean'
+    def bool_value(self):
+        return self._value
 
     def __lt__(self, other):
         if not isinstance(other, Boolean):
@@ -17,3 +17,6 @@ class Boolean (Object):
 
     def __repr__(self):
         return 'true' if self._value else 'false'
+
+    def type_name(self):
+        return 'Boolean'

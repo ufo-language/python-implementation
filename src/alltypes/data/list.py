@@ -18,6 +18,9 @@ class List (Object):
         queue = alltypes.data.queue.Queue.from_python_list(python_list)
         return queue.as_list()
 
+    def bool_value(self):
+        return not self.is_empty()
+
     def is_empty(self):
         return self is List.EMPTY_LIST
 

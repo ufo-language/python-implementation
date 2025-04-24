@@ -3,6 +3,7 @@ from parser.expr._any import p_any
 from parser.expr._expr import p_expr
 from parser.expr.assign import p_assign
 from parser.expr.identifier import p_identifier
+from parser.expr.if_then import p_if
 # data types
 from parser.data._data import p_data
 from parser.data.array import p_array
@@ -19,8 +20,9 @@ from parser.literal.integer import p_integer
 from parser.literal.nil import p_nil
 from parser.literal.string import p_string
 from parser.literal.symbol import p_symbol
-# special
-from parser.special._special import *
+# etc
+from parser.special.reserved import *
+from parser.special.special import *
 
 PARSER_TABLE = {
     # expressions
@@ -28,6 +30,7 @@ PARSER_TABLE = {
     'Expr': p_expr,
     'Assign': p_assign,
     'Identifier': p_identifier,
+    'If': p_if,
     # data types
     'Data': p_data,
     'Array': p_array,
@@ -44,6 +47,10 @@ PARSER_TABLE = {
     'Nil': p_nil,
     'String': p_string,
     'Symbol': p_symbol,
+    # reserved words
+    'else': p_reserved_else,
+    'if': p_reserved_if,
+    'then': p_reserved_then,
     # special
     '{': p_open_brace,
     '}': p_close_brace,

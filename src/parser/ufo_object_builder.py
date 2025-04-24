@@ -6,6 +6,7 @@ import alltypes.data.queue
 import alltypes.data.set
 import alltypes.expr.assign
 import alltypes.expr.identifier
+import alltypes.expr.if_then
 import alltypes.literal.boolean
 import alltypes.literal.float
 import alltypes.literal.integer
@@ -23,6 +24,7 @@ BUILDERS = {
     # expressions
     'Assign': alltypes.expr.assign.Assign.from_python_list,
     'Identifier': alltypes.expr.identifier.Identifier,
+    'If': alltypes.expr.if_then.If,
     # data structures
     'Array': Array.from_python_list,
     'Binding': alltypes.data.binding.Binding.from_python_list,

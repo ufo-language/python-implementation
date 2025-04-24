@@ -11,6 +11,9 @@ class Array (Object):
     def from_python_list(python_list):
         return Array(python_list)
 
+    def bool_value(self):
+        return len(self._elems) > 0
+
     def eval_rec(self, etor):
         new_elems = []
         for elem in self._elems:

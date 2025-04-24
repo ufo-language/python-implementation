@@ -17,6 +17,9 @@ class HashTable (Object):
             hash_table[elem.lhs()] = elem.rhs()
         return hash_table
 
+    def bool_value(self):
+        return len(self._hash) > 0
+
     def __getitem__(self, key):
         return self._hash[key]
 

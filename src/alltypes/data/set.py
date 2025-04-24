@@ -17,6 +17,12 @@ class Set (Object):
     def add(self, elem):
         return self._set.add(elem)
 
+    def bool_value(self):
+        return not self.is_empty()
+
+    def is_empty(self):
+        return len(self._set) > 0
+
     def type_name(self):
         return 'Set'
 

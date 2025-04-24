@@ -20,6 +20,9 @@ class Queue (Object):
     def as_list(self):
         return self._first
 
+    def bool_value(self):
+        return not self.is_empty()
+
     def deq(self):
         if self._count == 0:
             return None
