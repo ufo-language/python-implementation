@@ -27,3 +27,6 @@ def p_hashmark(parse_call_record):
 
 def p_tilde(parse_call_record):
     return ignore(p_spot_specific('Special', '~', parse_call_record))
+
+def p_colon_equal(parse_call_record):
+    return ignore(p_spot_specific('Operator', ':=', parse_call_record))

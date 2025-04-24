@@ -11,6 +11,18 @@ class Array (Object):
     def from_python_list(python_list):
         return Array(python_list)
 
+    def eval_rec(self, etor):
+        new_elems = []
+        for elem in self._elems:
+            new_elems.append(etor.eval(elem))
+        return Array(new_elems)
+
+    def eval_cps(self, etor):
+        assert False
+
+    def eval_compile(self, etor):
+        assert False
+
     def type_name(self):
         return 'Array'
 

@@ -1,9 +1,10 @@
-import alltypes.data.array
+from alltypes.data.array import Array
 import alltypes.data.binding
 import alltypes.data.hashtable
 import alltypes.data.list
 import alltypes.data.queue
 import alltypes.data.set
+import alltypes.expr.assign
 import alltypes.literal.boolean
 import alltypes.literal.float
 import alltypes.literal.integer
@@ -26,11 +27,12 @@ BUILDERS = {
     'String': alltypes.literal.string.String,
     'Symbol': alltypes.literal.symbol.Symbol,
     # data structures
-    'Array': alltypes.data.array.Array.from_python_list,
+    'Array': Array.from_python_list,
     'Binding': alltypes.data.binding.Binding.from_python_list,
     'HashTable': alltypes.data.hashtable.HashTable.from_python_list,
     'List': alltypes.data.list.List.from_python_list,
     'Queue': alltypes.data.queue.Queue.from_python_list,
-    'Set': alltypes.data.set.Set.from_python_list
+    'Set': alltypes.data.set.Set.from_python_list,
     # expressions
+    'Assign': alltypes.expr.assign.Assign.from_python_list
 }

@@ -1,6 +1,7 @@
 # expressions
 from parser.expr._any import p_any
 from parser.expr._expr import p_expr
+from parser.expr.assign import p_assign
 # data types
 from parser.data._data import p_data
 from parser.data.array import p_array
@@ -24,6 +25,7 @@ PARSER_TABLE = {
     # expressions
     'Any': p_any,
     'Expr': p_expr,
+    'Assign': p_assign,
     # data types
     'Data': p_data,
     'Array': p_array,
@@ -51,5 +53,6 @@ PARSER_TABLE = {
     '=': p_single_equal,
     '$': p_dollar,
     '#': p_hashmark,
-    '~': p_tilde
+    '~': p_tilde,
+    ':=': p_colon_equal
 }
