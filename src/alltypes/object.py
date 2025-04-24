@@ -21,13 +21,13 @@ class Object:
         return self.equals(other)
 
     def equals(self, other):
-        ''' Override equals_aux instead of this method. '''
+        ''' Override equals_aux() instead of this method. '''
         if type(self) != type(other):
             return False
         return self.equals_aux(other)
 
     def equals_aux(self, other):
-        ''' Override this one. '''
+        ''' Override this method instead of equals(). '''
         return self is other
 
     def eval_rec(self, etor):
@@ -38,6 +38,9 @@ class Object:
 
     def eval_compile(self, etor):
         return {'PUSH_EXPR', self}
+
+    def free_vars(self, free_var_set):
+        pass
 
     def match(self, other, env):
         if self == other:
