@@ -9,6 +9,9 @@ class EtorRecursive (Evaluator):
         self.type = 'RECURSIVE'
         self._env = etor.environment.Environment()
 
+    def bind(self, ident, value):
+        self._env.bind(ident, value)
+
     def eval(self, expr):
         return expr.eval_rec(self)
 

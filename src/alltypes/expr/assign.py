@@ -17,6 +17,7 @@ class Assign (Object):
         # prebind lhs
         free_var_set = set()
         self._lhs.free_vars(free_var_set)
+        print("Assign.eval_rec free_var_set =", free_var_set)
         for free_var in free_var_set:
             etor.bind(free_var, free_var)
         # evaluate rhs

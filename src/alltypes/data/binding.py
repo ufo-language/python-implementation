@@ -4,6 +4,8 @@ class Binding (Object):
 
     __slots__ = ('_lhs', '_rhs')
 
+    CHAR = ':'
+
     def __init__(self, lhs, rhs):
         self._rhs = rhs
         self._lhs = lhs

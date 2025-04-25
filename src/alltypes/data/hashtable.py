@@ -38,6 +38,6 @@ class HashTable (Object):
                 first_iter = False
             else:
                 s += ', '
-            s += str(key) + '=' + str(self._hash[key])
+            s += str(key) + alltypes.data.binding.Binding.CHAR + str(self._hash[key])
         s += '}'
         return s

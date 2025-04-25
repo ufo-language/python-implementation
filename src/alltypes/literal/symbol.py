@@ -2,13 +2,31 @@ from alltypes.object import Object
 
 class Symbol (Object):
 
-    __slots__ = ('_name',)
+    __slots__ = ('_name', '_hash')
+
+    ALL_SYMBOLS = {}
+
+    def __new__(cls, name):
+        if name in cls.ALL_SYMBOLS:
+            return cls.ALL_SYMBOLS[name]
+        self = super().__new__(cls)
+        cls.ALL_SYMBOLS[name] = self
+        return self
 
     def __init__(self, name):
-        self._name = name
+        # 'new' calls 'init' even for already-constructed objects
+        if not hasattr(self, 'name'):
+            self._name = name
+            self._hash = hash(name)
+
+    def __eq__(self, other):
+        return isinstance(other, Identifier) and self._name == other._name
 
     def equals_aux(self, other):
         return self._name == other._name
+
+    def __hash__(self):
+        return self._hash
 
     def __lt__(self, other):
         if not isinstance(other, Symbol):
@@ -16,7 +34,7 @@ class Symbol (Object):
         return self._name < other._name
 
     def __repr__(self):
-        return str(self._name)
+        return self._name
 
     def type_name(self):
         return 'Symbol'
