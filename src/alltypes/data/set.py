@@ -35,6 +35,6 @@ class Set (Object):
                 first_iter = False
             else:
                 s += ', '
-            s += str(elem)
+            s += repr(elem)
         s += '}'
         return s

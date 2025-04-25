@@ -7,4 +7,4 @@ class UFOException (Exception):
         self._kwargs = kwargs
 
     def __repr__(self):
-        return str(args) + ' ' + str(kwargs)
+        return repr(args) + ' ' + repr(kwargs)

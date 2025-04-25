@@ -12,7 +12,7 @@ class Nil (Object):
 
     def __lt__(self, other):
         if not isinstance(other, Nil):
-            return str(self) < str(other)
+            return repr(self) < repr(other)
         return false
 
     def __repr__(self):

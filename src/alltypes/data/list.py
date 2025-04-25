@@ -43,7 +43,7 @@ class List (Object):
             else:
                 s += sep
             elem = lst._first
-            s += str(elem)
+            s += repr(elem)
             lst = lst._rest
         s += close
         return s

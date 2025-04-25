@@ -24,4 +24,4 @@ class Binding (Object):
         return 'Binding'
 
     def __repr__(self):
-        return str(self._lhs) + ':' + str(self._rhs)
+        return repr(self._lhs) + ':' + repr(self._rhs)

@@ -12,11 +12,11 @@ class Integer (Object):
 
     def __lt__(self, other):
         if not isinstance(other, Integer):
-            return str(self) < str(other)
+            return repr(self) < repr(other)
         return self._value < other._value
 
     def __repr__(self):
-        return str(self._value)
+        return repr(self._value)
 
     def type_name(self):
         return 'Integer'

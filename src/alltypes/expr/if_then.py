@@ -24,4 +24,4 @@ class If (Object):
         return 'If'
 
     def __repr__(self):
-        return f"if {self._cond} then {self._conseq} else {self._alt}"
+        return f"if {self._cond!r} then {self._conseq!r} else {self._alt!r}"

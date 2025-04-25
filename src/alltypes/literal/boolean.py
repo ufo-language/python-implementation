@@ -12,7 +12,7 @@ class Boolean (Object):
 
     def __lt__(self, other):
         if not isinstance(other, Boolean):
-            return str(self) < str(other)
+            return repr(self) < repr(other)
         return self._value < other._value
 
     def __repr__(self):

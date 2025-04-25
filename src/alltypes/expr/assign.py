@@ -31,4 +31,4 @@ class Assign (Object):
         return 'Assignment'
 
     def __repr__(self):
-        return str(self._lhs) + ' = ' + str(self._rhs)
+        return repr(self._lhs) + ' = ' + repr(self._rhs)

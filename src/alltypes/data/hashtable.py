@@ -13,6 +13,7 @@ class HashTable (Object):
         hash_table = HashTable()
         for elem in python_list:
             if not isinstance(elem, alltypes.data.binding.Binding):
+                # I think this should never happen as long as the parser does its job.
                 raise Exception(f"HashTable expected Binding, found {elem} :: {elem.type_name()}")
             hash_table[elem.lhs()] = elem.rhs()
         return hash_table
@@ -38,6 +39,6 @@ class HashTable (Object):
                 first_iter = False
             else:
                 s += ', '
-            s += str(key) + alltypes.data.binding.Binding.CHAR + str(self._hash[key])
+            s += repr(key) + alltypes.data.binding.Binding.CHAR + repr(self._hash[key])
         s += '}'
         return s

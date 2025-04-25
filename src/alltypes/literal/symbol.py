@@ -30,7 +30,7 @@ class Symbol (Object):
 
     def __lt__(self, other):
         if not isinstance(other, Symbol):
-            return str(self) < str(other)
+            return self._name < repr(other)
         return self._name < other._name
 
     def __repr__(self):
