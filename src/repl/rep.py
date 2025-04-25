@@ -1,3 +1,4 @@
+import alltypes.literal.nil
 from etor.ufo_exception import UFOException
 import lexer.ufo_syntax
 import parser.ufo_parser
@@ -26,4 +27,5 @@ def _eval(expr, etor):
     return value
 
 def _print(value):
-    print(value, '::', value.type_name())
+    if type(value) != alltypes.literal.nil.Nil:
+        print(value, '::', value.type_name())

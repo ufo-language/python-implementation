@@ -65,5 +65,6 @@ PARSER_TABLE = {
     '$': p_dollar,
     '#': p_hashmark,
     '~': p_tilde,
-    ':=': p_colon_equal
+    ':': p_colon,
+    '==': p_double_equal
 }

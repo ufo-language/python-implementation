@@ -16,11 +16,12 @@ class Assign (Object):
     def eval_rec(self, etor):
         # prebind lhs
         free_var_set = set()
-        lhs.free_vars(free_var_set)
+        self._lhs.free_vars(free_var_set)
         for free_var in free_var_set:
             etor.bind(free_var, free_var)
         # evaluate rhs
         rhs_value = etor.eval(self._rhs)
+        print("Assign.eval_rec rhs_value =", rhs_value)
         # match to lhs
         etor.match_bind(self._lhs, rhs_value)
         return alltypes.literal.nil.Nil()
@@ -29,4 +30,4 @@ class Assign (Object):
         return 'Assignment'
 
     def __repr__(self):
-        return str(self._lhs) + " := " + str(self._rhs)
+        return str(self._lhs) + ' = ' + str(self._rhs)
