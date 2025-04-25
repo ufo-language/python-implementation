@@ -1,3 +1,4 @@
+from parser.parse_exception import parse_exception
 from parser.prim.one_of import p_one_of
 
 def p_any(parse_call_record):
@@ -6,5 +7,5 @@ def p_any(parse_call_record):
 def p_require_any(parse_call_record):
     value = p_any(parse_call_record)
     if value is None:
-        raise ParseException(f"Expected '{parser_name}'", parse_call_record)
+        raise parse_exception(f"Expected '{parser_name}'", parse_call_record)
     return value

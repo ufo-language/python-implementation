@@ -1,16 +1,17 @@
 import alltypes.literal.nil
-from etor.ufo_exception import UFOException
+from ufo_exception import UFOException
 import lexer.ufo_syntax
 import parser.ufo_parser
 
 def rep(input_string, etor):
     if len(input_string.strip()) == 0:
         return
-    expr = _read(input_string)
-    if expr is None:
-        print("rep.rep() Parse error")
-        return
     try:
+        expr = _read(input_string)
+        print(f"rep got expr '{expr}'")
+        if expr is None:
+            print("rep.rep() Parse error")
+            return
         value = _eval(expr, etor)
         _print(value)
     except UFOException as exn:

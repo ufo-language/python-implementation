@@ -1,10 +1,4 @@
-class ParseException (Exception):
+from ufo_exception import UFOException
 
-    __slots__ = ('message', 'parse_call_record')
-
-    def __init__(message, parse_call_record):
-        self.message = message
-        self.parse_call_record = parse_call_record
-
-    def __repr__(self):
-        return self.message
+def parse_exception(message, parse_call_record):
+    raise UFOException(message, tokens=parse_call_record.tokens, token_index=parse_call_record.token_index)

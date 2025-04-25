@@ -1,5 +1,5 @@
 from alltypes.object import Object
-from etor.ufo_exception import UFOException
+from ufo_exception import UFOException
 
 class Identifier (Object):
 

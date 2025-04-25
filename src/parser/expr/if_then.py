@@ -1,3 +1,4 @@
+from parser.parse_exception import parse_exception
 import parser.parser
 from parser.prim.seq import p_seq
 import parser.prim.ignore
@@ -13,5 +14,5 @@ def p_maybe_else(parse_call_record):
         return parser.prim.ignore.IGNORE_STRING
     value = parser.parser.parse('Any', parse_call_record)
     if value is None:
-        raise ParseException("Expression 'Any' expected after 'else'", parse_call_record)
+        raise parse_exception("Expression 'Any' expected after 'else'", parse_call_record)
     return value
