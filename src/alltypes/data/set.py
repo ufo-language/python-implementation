@@ -7,6 +7,10 @@ class Set (Object):
     def __init__(self):
         self._set = set()
 
+    def eval_rec(self, etor):
+        print("Set.eval is incomplete")
+        return self
+
     @staticmethod
     def from_python_list(python_list):
         s = Set()

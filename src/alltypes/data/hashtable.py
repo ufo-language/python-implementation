@@ -9,9 +9,11 @@ class HashTable (Object):
         self._hash = {}
 
     @staticmethod
-    def from_python_list(python_list):
+    def from_parser(parse_value):
+        (first, rest) = parse_value
+        elems = [first] + rest
         hash_table = HashTable()
-        for elem in python_list:
+        for elem in elems:
             if not isinstance(elem, alltypes.data.binding.Binding):
                 # I think this should never happen as long as the parser does its job.
                 raise Exception(f"HashTable expected Binding, found {elem} :: {elem.type_name()}")
@@ -20,6 +22,10 @@ class HashTable (Object):
 
     def bool_value(self):
         return len(self._hash) > 0
+
+    def eval_rec(self, etor):
+        print("HashTable.eval is incomplete")
+        return self
 
     def __getitem__(self, key):
         return self._hash[key]

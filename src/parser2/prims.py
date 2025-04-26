@@ -1,6 +1,8 @@
 import lexer.ufo_syntax
 from parser2.parser_state import ParserState
 
+IGNORE = '%IGNORE%'
+
 def proper_list_of(open, elem, sep, close):
     def _parser(parser_state):
         return False
@@ -43,7 +45,7 @@ def maybe(parser):
     def _parser(parser_state):
         success = parse(parser, parser_state)
         if not success:
-            parser_state.value = '%IGNORE%'
+            parser_state.value = IGNORE
         return True
     return _parser
 
@@ -111,7 +113,7 @@ def one_of(*parsers):
 def ignore(parser):
     def _parser(parser_state):
         if parse(parser, parser_state):
-            parser_state.value = '%IGNORE%'
+            parser_state.value = IGNORE
             return True
         return False
     return _parser
@@ -125,7 +127,7 @@ def seq(*parsers):
             # print(f"{indent()}++ seq trying", parser, "token=", parser_state.next_token())
             if parse(parser, parser_state):
                 value = parser_state.value
-                if value != '%IGNORE%':
+                if value != IGNORE:
                     results.append(parser_state.value)
             else:
                 # print(f"{indent()}++ seq", parser, "failed")
@@ -178,23 +180,13 @@ def debug(parser, message=None):
 
     return _parser
 
-# def prevent_recursion(parser):
-#     def _parser(parser_state):
-#         parser_name = parser_state.most_recent_parser_name
-#         memo_key = (parser_name, parser_state.index)
-#         # print(f"prev_rec {memo_key}")
-#         parser_state.memo_table[memo_key] = ((parser_state.index, None), False)  # prevent recursion
-#         # print(f"{indent()}prevent_recursion memo_table =", parser_state.memo_table)
-#         return parse(parser, parser_state)
-#     return _parser
-
 def recursion_barrier(parser_state):
     parser_name = parser_state.most_recent_parser_name
     memo_key = (parser_name, parser_state.index)
     # print(f"prev_rec2 {memo_key}")
     parser_state.memo_table[memo_key] = ((parser_state.index, None), False)  # prevent recursion
     # print(f"{indent()}prevent_recursion memo_table =", parser_state.memo_table)
-    parser_state.value = '%IGNORE%'
+    parser_state.value = IGNORE
     return True
 
 def show_tokens(parser_state):
@@ -202,13 +194,13 @@ def show_tokens(parser_state):
     for n in range(parser_state.index, len(parser_state.tokens)):
         token = parser_state.tokens[n]
         print(f"{n:3}. {token}")
-    parser_state.value = '%IGNORE%'
+    parser_state.value = IGNORE
     return True
 
 def log(message, parser=None):
     def _parser(parser_state):
         print(message)
-        parser_state.value = '%IGNORE%'
+        parser_state.value = IGNORE
         return True
     return _parser
 

@@ -15,16 +15,23 @@ class List (Object):
 
     @staticmethod
     def from_parser(parse_value):
-        proper_elems = [parse_value[0]] + parse_value[1]
-        queue = alltypes.data.queue.Queue.from_python_list(proper_elems)
-        lst = queue.as_list()
-        if len(parse_value) > 2:
-            last_elem = queue._last
-            last_elem.set_rest(parse_value[2])
+        if len(parse_value) > 0:
+            proper_elems = [parse_value[0]] + parse_value[1]
+            queue = alltypes.data.queue.Queue.from_python_list(proper_elems)
+            lst = queue.as_list()
+            if len(parse_value) > 2:
+                last_elem = queue._last
+                last_elem.set_rest(parse_value[2])
+        else:
+            lst = List.EMPTY_LIST
         return lst
 
     def bool_value(self):
         return not self.is_empty()
+
+    def eval_rec(self, etor):
+        print("List.eval is incomplete")
+        return self
 
     def is_empty(self):
         return self is List.EMPTY_LIST

@@ -10,6 +10,10 @@ class Binding (Object):
         self._rhs = rhs
         self._lhs = lhs
 
+    def eval_rec(self, etor):
+        print("Binding.eval is incomplete")
+        return self
+
     @staticmethod
     def from_parser(parse_value):
         return Binding(*parse_value)

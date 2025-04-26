@@ -10,6 +10,10 @@ class Queue (Object):
         self._last = None
         self._count = 0
 
+    def eval_rec(self, etor):
+        print("Queue.eval is incomplete")
+        return self
+
     @staticmethod
     def from_python_list(python_list):
         queue = Queue()

@@ -9,7 +9,11 @@ class Array (Object):
 
     @staticmethod
     def from_parser(parse_value):
-        elems = [parse_value[0]] + parse_value[1]
+        if len(parse_value) > 0:
+            (first, rest) = parse_value
+            elems = [first] + rest
+        else:
+            elems = []
         return Array(elems)
 
     def bool_value(self):

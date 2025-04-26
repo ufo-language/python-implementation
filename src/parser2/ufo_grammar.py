@@ -3,6 +3,7 @@ from parser2.prims import *
 from alltypes.expr.identifier import Identifier
 from alltypes.data.array import Array
 from alltypes.data.binding import Binding
+from alltypes.data.hashtable import HashTable
 from alltypes.data.list import List
 from alltypes.literal.boolean import Boolean
 from alltypes.literal.integer import Integer
@@ -21,7 +22,7 @@ def ufo_parsers():
         'Data'      : one_of('Array', 'Binding', 'HashTable', 'List', 'Queue', 'Set'),
         'Array'     : apply(Array.from_parser, list_of('{', 'Any', ',', '}')),
         'Binding'   : apply(Binding.from_parser, seq(recursion_barrier, 'Any', ':', 'Any')),
-        'HashTable' : fail,
+        'HashTable' : apply(HashTable.from_parser, seq('#', list_of('{', 'Binding', ',', '}'))),
         'List'      : apply(List.from_parser, list_of('[', 'Any', ',', ']', '|')),
         'Queue'     : fail,
         'Set'       : fail,
@@ -42,5 +43,6 @@ def ufo_parsers():
         ')'         : ignore(spot('Special', ')')),
         ':'         : ignore(spot('Operator', ':')),
         ','         : ignore(spot('Special', ',')),
-        '|'         : ignore(spot('Special', '|'))
+        '|'         : ignore(spot('Special', '|')),
+        '#'         : ignore(spot('Special', '#')),
     }
