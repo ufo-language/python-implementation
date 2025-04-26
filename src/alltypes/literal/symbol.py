@@ -20,7 +20,7 @@ class Symbol (Object):
             self._hash = hash(name)
 
     def __eq__(self, other):
-        return isinstance(other, Identifier) and self._name == other._name
+        return isinstance(other, Symbol) and self._name == other._name
 
     def equals_aux(self, other):
         return self._name == other._name
