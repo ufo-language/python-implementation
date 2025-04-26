@@ -83,17 +83,3 @@ def inject(char):
 
 def save_pos(lexer, char):
     lexer.save_pos()
-
-# error actions
-
-def err_unterm_backquote(lexer, char):
-    raise Exception('Unterminated back-quote')
-
-def err_unterm_bar(lexer, char):
-    raise Exception('Unterminated bar')
-
-def err_unterm_comment(lexer, char):
-    raise Exception('Unterminated comment')
-
-def err_unterm_string(lexer, char):
-    raise Exception('Unterminated string')

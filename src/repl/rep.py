@@ -1,8 +1,8 @@
 import alltypes.literal.nil
 from ufo_exception import UFOException
 import lexer.ufo_syntax
-# import parser.ufo_parser
-import parser2.parser
+import parser2.ufo_grammar
+# import parser2.parser
 
 def rep(input_string, etor):
     if len(input_string.strip()) == 0:
@@ -17,9 +17,14 @@ def rep(input_string, etor):
     except UFOException as exn:
         print(exn)
 
+import lexer.ufo_syntax
+import parser2.ufo_grammar
+
 def _read(input_string):
     # expr = parser.ufo_parser.parse_string(input_string)
-    expr = parser2.parser.parse_string(input_string)
+    syntax = lexer.ufo_syntax.tokenize
+    grammar = parser2.ufo_grammar.ufo_parsers()
+    expr = parser2.prims.parse_string(input_string, syntax, grammar)
     return expr
 
 def _eval(expr, etor):

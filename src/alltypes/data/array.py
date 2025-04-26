@@ -8,8 +8,9 @@ class Array (Object):
         self._elems = elems
 
     @staticmethod
-    def from_python_list(python_list):
-        return Array(python_list)
+    def from_parser(parse_value):
+        elems = [parse_value[0]] + parse_value[1]
+        return Array(elems)
 
     def bool_value(self):
         return len(self._elems) > 0

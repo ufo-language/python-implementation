@@ -1,51 +1,51 @@
-from alltypes.data.binding import Binding
-from alltypes.literal.boolean import Boolean
-from alltypes.literal.integer import Integer
-from alltypes.literal.float import Float
-from alltypes.literal.nil import Nil
-from alltypes.literal.string import String
-from alltypes.literal.symbol import Symbol
-
 import lexer.ufo_syntax
+from parser2.parser_state import ParserState
 
-class ParserState:
+def proper_list_of(open, elem, sep, close):
+    def _parser(parser_state):
+        return False
+    return _parser
 
-    __slots__ = (
-        'parser_table', 'object_builder', 'tokens', 'index', 'value',
-        'memo_table', 'memo_key', 'saved_ctx', 'most_recent_parser_name'
-    )
+def list_of(open, elem, sep, close, bar=None):
+    def _proper_list(parser_state):
+        elements = seq(elem,
+                       many(seq(sep, elem)),
+                      )
+        parser = seq(open, maybe(elements), close)
+        success = parse(parser, parser_state)
+        return success
+    def _improper_list(parser_state):
+        elements = seq(elem,
+                       many(seq(sep, elem)),
+                       maybe(seq(bar, elem))
+                      )
+        parser = seq(open, maybe(elements), close)
+        success = parse(parser, parser_state)
+        return success
+    return _proper_list if bar is None else _improper_list
 
-    def __init__(self, parser_table, object_builder, tokens):
-        self.parser_table = parser_table
-        self.object_builder = object_builder
-        self.tokens = tokens
-        self.index = 0
-        self.value = None
-        self.memo_table = {}
-        self.memo_key = None
-        self.saved_ctx = []
-        self.most_recent_parser_name = None
+def many(parser, min=0):
+    def _parser(parser_state):
+        elems = []
+        n = 0
+        ctx = parser_state.get_ctx()
+        while parse(parser, parser_state):
+            elems.append(parser_state.value)
+            n += 1
+        if n < min:
+            parser_state.set_ctx(ctx)
+            return False
+        parser_state.value = elems
+        return True
+    return _parser
 
-    def current_token(self):
-        return self.tokens[self.index]
-
-    def advance(self, n=1):
-        # print(f"{indent()}advance from", self.index, "to", self.index + n)
-        self.index += n
-
-    def next_token(self):
-        return self.tokens[self.index]
-
-    # def apply(self, fun):
-    #     self.value = fun(self.value)
-
-    def get_ctx(self):
-        return (self.index, self.value)
-
-    def set_ctx(self, ctx):
-        #print("set_ctx", ctx)
-        (self.index, self.value) = ctx
-
+def maybe(parser):
+    def _parser(parser_state):
+        success = parse(parser, parser_state)
+        if not success:
+            parser_state.value = '%IGNORE%'
+        return True
+    return _parser
 
 def spot(expected_type, expected_value=None):
     def _parser1(parser_state):
@@ -178,13 +178,38 @@ def debug(parser, message=None):
 
     return _parser
 
-def prevent_recursion(parser):
+# def prevent_recursion(parser):
+#     def _parser(parser_state):
+#         parser_name = parser_state.most_recent_parser_name
+#         memo_key = (parser_name, parser_state.index)
+#         # print(f"prev_rec {memo_key}")
+#         parser_state.memo_table[memo_key] = ((parser_state.index, None), False)  # prevent recursion
+#         # print(f"{indent()}prevent_recursion memo_table =", parser_state.memo_table)
+#         return parse(parser, parser_state)
+#     return _parser
+
+def recursion_barrier(parser_state):
+    parser_name = parser_state.most_recent_parser_name
+    memo_key = (parser_name, parser_state.index)
+    # print(f"prev_rec2 {memo_key}")
+    parser_state.memo_table[memo_key] = ((parser_state.index, None), False)  # prevent recursion
+    # print(f"{indent()}prevent_recursion memo_table =", parser_state.memo_table)
+    parser_state.value = '%IGNORE%'
+    return True
+
+def show_tokens(parser_state):
+    print("tokens:")
+    for n in range(parser_state.index, len(parser_state.tokens)):
+        token = parser_state.tokens[n]
+        print(f"{n:3}. {token}")
+    parser_state.value = '%IGNORE%'
+    return True
+
+def log(message, parser=None):
     def _parser(parser_state):
-        parser_name = parser_state.most_recent_parser_name
-        memo_key = (parser_name, parser_state.index)
-        parser_state.memo_table[memo_key] = ((parser_state.index, None), False)  # prevent recursion
-        # print(f"{indent()}prevent_recursion memo_table =", parser_state.memo_table)
-        return parse(parser, parser_state)
+        print(message)
+        parser_state.value = '%IGNORE%'
+        return True
     return _parser
 
 depth = 0
@@ -227,45 +252,20 @@ def parse(parser, parser_state):
         return success
     raise Exception(f"parser.parse got unknown parser type {parser} :: {type(parser)}")
 
-def ufo_parsers():
-    return {
-        'Any': one_of('Expression', 'Data', 'Literal', 'Nil'),
-        # expression
-        'Expression': fail,
-        # data
-        'Data': one_of('Array', 'Binding', 'HashTable', 'List', 'Queue', 'Set'),
-        'Array': fail,
-        'Binding': prevent_recursion(apply(Binding.from_python_list, seq('Any', ':', 'Any'))),
-        'HashTable': fail,
-        'List': fail,
-        'Queue': fail,
-        'Set': fail,
-        # literal
-        'Literal': one_of('Boolean', 'Float', 'Integer', 'String', 'Symbol'),
-        'Boolean': apply(Boolean, strip(spot('Boolean'))),
-        'Integer': apply(Integer, strip(spot('Integer'))),
-        'Float'  : apply(Float, strip(spot('Float'))),
-        'Nil'    : apply(Nil, strip(spot('Reserved', 'nil'))),
-        'String' : apply(String, strip(spot('String'))),
-        'Symbol' : apply(Symbol, strip(spot('Symbol'))),
-        # special
-        ':': ignore(spot('Operator', ':'))
-    }
-
-#============================================================================
-
-def parse_string(input_string):
-    print("parser2.parse input_string =", input_string)
-    tokens = lexer.ufo_syntax.tokenize(input_string)
-    print("parser2.parse tokens =", tokens)
+def parse_string(input_string, syntax, grammar):
+    # print("parser2.parse input_string =", input_string)
+    # tokens = lexer.ufo_syntax.tokenize(input_string)
+    tokens = syntax(input_string)
+    # print("parser2.parse tokens =", tokens)
     #  def __init__(self, parser_table, object_builder, tokens):
-    parser_state = ParserState(ufo_parsers(), None, tokens)
+    # parser_state = ParserState(ufo_parsers(), None, tokens)
+    parser_state = ParserState(grammar, None, tokens)
     success = parse('Any', parser_state)
     if success:
         value = parser_state.value
-        print(f"parser2.parse value = {value}, next token = {parser_state.next_token()}")
+        # print(f"parser2.parse value = {value}, next token = {parser_state.next_token()}")
     else:
-        print(f"parser2.parse failed")
+        # print(f"parser2.parse failed")
         value = None
     return value
 

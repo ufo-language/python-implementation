@@ -11,8 +11,8 @@ class Binding (Object):
         self._lhs = lhs
 
     @staticmethod
-    def from_python_list(python_list):
-        return Binding(*python_list)
+    def from_parser(parse_value):
+        return Binding(*parse_value)
 
     def lhs(self):
         return self._lhs

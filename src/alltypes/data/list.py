@@ -14,9 +14,14 @@ class List (Object):
         self._rest = rest
 
     @staticmethod
-    def from_python_list(python_list):
-        queue = alltypes.data.queue.Queue.from_python_list(python_list)
-        return queue.as_list()
+    def from_parser(parse_value):
+        proper_elems = [parse_value[0]] + parse_value[1]
+        queue = alltypes.data.queue.Queue.from_python_list(proper_elems)
+        lst = queue.as_list()
+        if len(parse_value) > 2:
+            last_elem = queue._last
+            last_elem.set_rest(parse_value[2])
+        return lst
 
     def bool_value(self):
         return not self.is_empty()
@@ -45,6 +50,9 @@ class List (Object):
             elem = lst._first
             s += repr(elem)
             lst = lst._rest
+            if not isinstance(lst, List):
+                s += ' | ' + repr(lst)
+                break
         s += close
         return s
 

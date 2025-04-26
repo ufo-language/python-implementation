@@ -42,7 +42,7 @@ class UFOSyntax (Lexer):
         self.add('#i', '"',        '#string',  [save_pos, ignore_char])
         self.add('#i', digit,      '#int',     [save_pos, reuse_char])
         self.add('#i', '`',        '#ident',   [save_pos, ignore_char])
-        self.add('#i', '|',        '#specSym', [save_pos, ignore_char])
+        # self.add('#i', '|',        '#specSym', [save_pos, ignore_char])
         self.add('#i', '-',        '#dash',    [save_pos, keep_char])
         self.add('#i', opers,      '#oper',    [save_pos, keep_char])
         # self.add('#i', special,    '#i',       [save_pos, keep_char, special_char])
@@ -110,9 +110,9 @@ class UFOSyntax (Lexer):
         self.eof_state('#string', [err_unterm_string])
 
         # special symbol
-        self.add('#specSym',   '|',        '#i',         [ignore_char, create_symbol])
-        self.add('#specSym',   None,       '#specSym',   [keep_char])
-        self.eof_state('#specSym', [err_unterm_bar])
+        # self.add('#specSym',   '|',        '#i',         [ignore_char, create_symbol])
+        # self.add('#specSym',   None,       '#specSym',   [keep_char])
+        # self.eof_state('#specSym', [err_unterm_bar])
 
         self.add('#sym',       upper_case,  '#sym',       [keep_char])
         self.add('#sym',       lower_case,  '#sym',       [keep_char])
@@ -125,3 +125,17 @@ class UFOSyntax (Lexer):
         self.add('#word',      digit,      '#word',      [keep_char])
         self.add('#word',      '_?',       '#word',      [keep_char])
         self.add('#word',      None,       '#i',         [reuse_char, create_word])  # create_word checks for 'true' and 'false'
+
+# error actions
+
+def err_unterm_backquote(lexer, char):
+    raise Exception('Unterminated back-quote')
+
+def err_unterm_bar(lexer, char):
+    raise Exception('Unterminated bar')
+
+def err_unterm_comment(lexer, char):
+    raise Exception('Unterminated comment')
+
+def err_unterm_string(lexer, char):
+    raise Exception('Unterminated string')
