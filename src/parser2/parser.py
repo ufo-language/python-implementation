@@ -8,7 +8,7 @@ def parse_string(input_string, syntax, grammar):
     #  def __init__(self, parser_table, object_builder, tokens):
     # parser_state = ParserState(ufo_parsers(), None, tokens)
     parser_state = ParserState(grammar, None, tokens)
-    success = parse('Any', parser_state)
+    success = parse('Program', parser_state)
     if success:
         value = parser_state.value
         # print(f"parser2.parse value = {value}, next token = {parser_state.next_token()}")

@@ -71,7 +71,7 @@ class UFOSyntax (Lexer):
 
         self.add('#commb2',    '/',        '#i',         [ignore_char])
         self.add('#commb2',    None,       '#commb1',    [ignore_char])
-        self.eof_state('#commb2', [err_unterm_comment])
+        self.eoi_state('#commb2', [err_unterm_comment])
 
         # line comment
         self.add('#comml',     '/n',       '#i',         [ignore_char, eol])
@@ -87,7 +87,7 @@ class UFOSyntax (Lexer):
 
         self.add('#ident',     '`',        '#i',         [ignore_char, create_word])
         self.add('#ident',     None,       '#ident',     [keep_char])
-        self.eof_state('#ident', [err_unterm_backquote])
+        self.eoi_state('#ident', [err_unterm_backquote])
 
         self.add('#int',       digit,      '#int',       [keep_char])
         self.add('#int',       '.',        '#float',     [keep_char])
@@ -107,12 +107,12 @@ class UFOSyntax (Lexer):
         self.add('#string',    '\n',       '#i',         [err_unterm_string])
         self.add('#string',    None,       '#string',    [keep_char])
         self.add('#string',    '"',        '#i',         [ignore_char, create_string])
-        self.eof_state('#string', [err_unterm_string])
+        self.eoi_state('#string', [err_unterm_string])
 
         # special symbol
         # self.add('#specSym',   '|',        '#i',         [ignore_char, create_symbol])
         # self.add('#specSym',   None,       '#specSym',   [keep_char])
-        # self.eof_state('#specSym', [err_unterm_bar])
+        # self.eoi_state('#specSym', [err_unterm_bar])
 
         self.add('#sym',       upper_case,  '#sym',       [keep_char])
         self.add('#sym',       lower_case,  '#sym',       [keep_char])

@@ -68,11 +68,11 @@ def spot(expected_type, expected_value=None):
         return False
     return _parser1 if expected_value is None else _parser2
 
-def require(parser):
+def require(parser, parser_name=None):
     def _parser(parser_state):
         if parse(parser, parser_state):
             return True
-        parse_exception(f"Expected {parser}", parser_state)
+        parse_exception(f"Expected {parser if parser_name is None else parser_name}", parser_state)
     return _parser
 
 def strip(parser):

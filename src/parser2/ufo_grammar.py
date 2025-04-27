@@ -19,8 +19,10 @@ from alltypes.literal.symbol import Symbol
 
 def ufo_parsers():
     return {
-        'Any': one_of('Expression', 'Data', 'Literal', 'Nil'),
-        '!Any': require('Any'),
+        'Program'   : seq('Any', '!EOI'),
+        '!EOI'      : require(ignore(spot('EOI')), 'End of input'),
+        'Any'       : one_of('Expression', 'Data', 'Literal', 'Nil'),
+        '!Any'      : require('Any'),
         # expression
         'Expression': one_of('Identifier', 'If'),
         'Identifier': apply(Identifier, strip(spot('Identifier'))),
