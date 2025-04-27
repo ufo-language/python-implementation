@@ -1,7 +1,7 @@
 from alltypes.literal.nil import Nil
 from alltypes.object import Object
 
-class If (Object):
+class IfThen (Object):
 
     __slots__ = ('_cond', '_conseq', '_alt')
 
@@ -11,8 +11,8 @@ class If (Object):
         self._alt = alt if alt is not None else Nil()
 
     @staticmethod
-    def from_python_list(python_list):
-        return If(*python_list)
+    def from_parser(parse_value):
+        return IfThen(*parse_value)
 
     def eval_rec(self, etor):
         cond_val = etor.eval(self._cond)
@@ -24,4 +24,6 @@ class If (Object):
         return 'If'
 
     def __repr__(self):
+        if self._alt is None:
+            return f"if {self._cond!r} then {self._conseq!r}"
         return f"if {self._cond!r} then {self._conseq!r} else {self._alt!r}"

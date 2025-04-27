@@ -1,4 +1,5 @@
 import lexer.ufo_syntax
+from parser2.parse_exception import parse_exception
 from parser2.parser_state import ParserState
 
 IGNORE = '%IGNORE%'
@@ -66,6 +67,13 @@ def spot(expected_type, expected_value=None):
                 return True
         return False
     return _parser1 if expected_value is None else _parser2
+
+def require(parser):
+    def _parser(parser_state):
+        if parse(parser, parser_state):
+            return True
+        parse_exception(f"Expected {parser}", parser_state)
+    return _parser
 
 def strip(parser):
     def _parser(parser_state):

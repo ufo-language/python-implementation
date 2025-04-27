@@ -5,20 +5,22 @@ class Queue (Object):
 
     __slots__ = ('_first', '_last', '_count')
 
-    def __init__(self):
+    def __init__(self, *elems):
         self._first = None
         self._last = None
         self._count = 0
+        for elem in elems:
+            self.enq(elem)
 
     def eval_rec(self, etor):
         print("Queue.eval is incomplete")
         return self
 
     @staticmethod
-    def from_python_list(python_list):
-        queue = Queue()
-        for elem in python_list:
-            queue.enq(elem)
+    def from_parser(parser_value):
+        (first, rest) = parser_value
+        elems = [first] + rest
+        queue = Queue(*elems)
         return queue
 
     def as_list(self):

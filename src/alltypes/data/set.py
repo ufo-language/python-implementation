@@ -4,18 +4,20 @@ class Set (Object):
 
     __slots__ = ('_set',)
 
-    def __init__(self):
+    def __init__(self, *elems):
         self._set = set()
+        for elem in elems:
+            self.add(elem)
 
     def eval_rec(self, etor):
         print("Set.eval is incomplete")
         return self
 
     @staticmethod
-    def from_python_list(python_list):
-        s = Set()
-        for elem in python_list:
-            s.add(elem)
+    def from_parser(parse_value):
+        (first, rest) = parse_value
+        elems = [first] + rest
+        s = Set(*elems)
         return s
 
     def add(self, elem):
