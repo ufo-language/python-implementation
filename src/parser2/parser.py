@@ -2,11 +2,8 @@ from parser2.parser_state import ParserState
 
 def parse_string(input_string, syntax, grammar):
     # print("parser2.parse input_string =", input_string)
-    # tokens = lexer.ufo_syntax.tokenize(input_string)
     tokens = syntax(input_string)
     # print("parser2.parse tokens =", tokens)
-    #  def __init__(self, parser_table, object_builder, tokens):
-    # parser_state = ParserState(ufo_parsers(), None, tokens)
     parser_state = ParserState(grammar, None, tokens)
     success = parse('Program', parser_state)
     if success:
@@ -27,7 +24,8 @@ def parse(parser, parser_state):
         depth -= 1
         return parser(parser_state)
     if isinstance(parser, str):
-        parser_state.most_recent_parser_name = parser
+        parser_state.previous_parser_name = parser_state.current_parser_name
+        parser_state.current_parser_name = parser
         # check memo table
         memo_key = (parser, parser_state.index)
         memo_value = parser_state.memo_table.get(memo_key)

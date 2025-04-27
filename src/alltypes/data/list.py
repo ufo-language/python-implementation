@@ -17,7 +17,7 @@ class List (Object):
     def from_parser(parse_value):
         if len(parse_value) > 0:
             proper_elems = [parse_value[0]] + parse_value[1]
-            queue = alltypes.data.queue.Queue.from_python_list(proper_elems)
+            queue = alltypes.data.queue.Queue(*proper_elems)
             lst = queue.as_list()
             if len(parse_value) > 2:
                 last_elem = queue._last

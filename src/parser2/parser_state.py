@@ -2,7 +2,8 @@ class ParserState:
 
     __slots__ = (
         'parser_table', 'object_builder', 'tokens', 'index', 'value',
-        'memo_table', 'memo_key', 'saved_ctx', 'most_recent_parser_name'
+        'memo_table', 'memo_key', 'saved_ctx', 'current_parser_name',
+        'previous_parser_name'
     )
 
     def __init__(self, parser_table, object_builder, tokens):
@@ -14,7 +15,8 @@ class ParserState:
         self.memo_table = {}
         self.memo_key = None
         self.saved_ctx = []
-        self.most_recent_parser_name = None
+        self.current_parser_name = None
+        self.previous_parser_name = None
 
     def current_token(self):
         return self.tokens[self.index]

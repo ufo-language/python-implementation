@@ -20,14 +20,9 @@ class UFOSyntax (Lexer):
             'times', 'to', 'true', 'try', 'typedef', 'until', 'while',
             'with'
         }
-        self._true = 'true'
-        self._false = 'false'
 
         # operator characters
         opers = '+-*/:.%^<>!=?'
-
-        # special characters
-        # special = '()[]{};,'
 
         digit = '0123456789'
         hex_digit = 'abcdefABCDEF'

@@ -21,11 +21,11 @@ def ufo_parsers():
     return {
         'Program'   : seq('Any', '!EOI'),
         '!EOI'      : require(ignore(spot('EOI')), 'End of input'),
-        'Any'       : one_of('Expression', 'Data', 'Literal', 'Nil'),
+        'Any'       : one_of('Expression', 'Data', 'Literal'),
         '!Any'      : require('Any'),
         # expression
         'Expression': one_of('Identifier', 'If'),
-        'Identifier': apply(Identifier, strip(spot('Identifier'))),
+        'Identifier': apply(Identifier, spot('Identifier')),
         'If'        : apply(IfThen.from_parser, seq('if', '!Any', '!then', '!Any', maybe(seq('else', '!Any')))),
         # data
         'Data'      : one_of('Array', 'Binding', 'HashTable', 'List', 'Queue', 'Set'),
@@ -36,17 +36,20 @@ def ufo_parsers():
         'Queue'     : apply(Queue.from_parser, seq('~', list_of('[', 'Any', ',', ']'))),
         'Set'       : apply(Set.from_parser, seq('$', list_of('{', 'Any', ',', '}'))),
         # literal
-        'Literal'   : one_of('Boolean', 'Float', 'Integer', 'String', 'Symbol'),
-        'Boolean'   : apply(Boolean, strip(spot('Boolean'))),
-        'Integer'   : apply(Integer, strip(spot('Integer'))),
-        'Float'     : apply(Float, strip(spot('Float'))),
-        'Nil'       : apply(Nil, strip(spot('Reserved', 'nil'))),
-        'String'    : apply(String, strip(spot('String'))),
-        'Symbol'    : apply(Symbol, strip(spot('Symbol'))),
+        'Literal'   : one_of('Boolean', 'Float', 'Integer', 'Nil', 'String', 'Symbol'),
+        'Boolean'   : one_of('true', 'false'),
+        'Boolean'   : apply(Boolean, one_of(returning(True, 'true'), returning(False, 'false'))),
+        'Integer'   : apply(Integer, spot('Integer')),
+        'Float'     : apply(Float, spot('Float')),
+        'Nil'       : returning(Nil(), spot('Reserved', 'nil')),
+        'String'    : apply(String, spot('String')),
+        'Symbol'    : apply(Symbol, spot('Symbol')),
         # reserved words
         'else'      : ignore(spot('Reserved', 'else')),
+        'false'     : ignore(spot('Reserved', 'false')),
         'if'        : ignore(spot('Reserved', 'if')),
         'then'      : ignore(spot('Reserved', 'then')),
+        'true'      : ignore(spot('Reserved', 'true')),
         '!then'     : require('then'),
         # special
         '['         : ignore(spot('Special', '[')),

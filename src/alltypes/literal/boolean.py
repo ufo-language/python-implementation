@@ -9,7 +9,7 @@ class Boolean (Object):
 
     def bool_value(self):
         return self._value
-
+    
     def __lt__(self, other):
         if not isinstance(other, Boolean):
             return repr(self) < repr(other)
