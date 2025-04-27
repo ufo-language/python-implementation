@@ -1,4 +1,3 @@
-import alltypes.data.queue
 from alltypes.object import Object
 
 class List (Object):
@@ -15,16 +14,21 @@ class List (Object):
 
     @staticmethod
     def from_parser(parse_value):
-        if len(parse_value) > 0:
-            proper_elems = [parse_value[0]] + parse_value[1]
-            queue = alltypes.data.queue.Queue(*proper_elems)
-            lst = queue.as_list()
-            if len(parse_value) > 2:
-                last_elem = queue._last
-                last_elem.set_rest(parse_value[2])
-        else:
-            lst = List.EMPTY_LIST
-        return lst
+        proper_elems = parse_value[0]
+        if len(proper_elems) == 0:
+            return List.EMPTY_LIST
+        improper_elem = parse_value[1]
+        first = None
+        last = None
+        for elem in proper_elems:
+            if first is None:
+                first = last = List(elem)
+            else:
+                last._rest = List(elem)
+                last = last._rest
+        if improper_elem is not None:
+            last._rest = improper_elem
+        return first
 
     def bool_value(self):
         return not self.is_empty()

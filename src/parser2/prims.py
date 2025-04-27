@@ -57,26 +57,12 @@ def indent():
     return '| ' * depth
 
 def list_of(open, elem, sep, close, bar=None):
-    # def _proper_list(parser_state):
-    #     elements = seq(elem,
-    #                    many(seq(sep, elem)),
-    #                   )
-    #     parser = seq(open, maybe(elements), require(close))
-    #     success = parse(parser, parser_state)
-    #     return success
     def _proper_list(parser_state):
-        elements = seq(elem,
-                       many(seq(sep, elem)),
-                      )
         parser = seq(open, sep_by(elem, sep), require(close))
         success = parse(parser, parser_state)
         return success
     def _improper_list(parser_state):
-        elements = seq(elem,
-                       many(seq(sep, elem)),
-                       maybe(seq(bar, elem))
-                      )
-        parser = seq(open, maybe(elements), require(close))
+        parser = seq(open, maybe(seq(sep_by(elem, sep), one_of(seq(bar, elem), succeed(None)))), close)
         success = parse(parser, parser_state)
         return success
     return _proper_list if bar is None else _improper_list
@@ -112,6 +98,10 @@ def maybe(parser):
     return _parser
 
 def one_of(*parsers):
+    '''
+    Returns the most successful parse out of a number of parsers,
+    where "most successful" = the longest parse.
+    '''
     def _parser(parser_state):
         # keep track of the longest parse
         saved_results = []
@@ -136,11 +126,6 @@ def one_of(*parsers):
         parser_state.set_ctx(ctx)
         # print(f"{indent()}== one_of returning True for parser", saved_parsers[max_index_index])
         return True
-    return _parser
-
-def proper_list_of(open, elem, sep, close):
-    def _parser(parser_state):
-        return False
     return _parser
 
 def recursion_barrier(parser_state):

@@ -1,4 +1,4 @@
-import alltypes.data.list
+from alltypes.data.list import List
 from alltypes.object import Object
 
 class Queue (Object):
@@ -21,6 +21,8 @@ class Queue (Object):
         return Queue(*parser_value)
 
     def as_list(self):
+        if self._count == 0:
+            return List.EMPTY_LIST
         return self._first
 
     def bool_value(self):
@@ -36,9 +38,9 @@ class Queue (Object):
         self._count -= 1
 
     def enq(self, elem):
-        pair = alltypes.data.list.List(elem)
-        if self._count == 0:
-            self._first = pair
+        pair = List(elem)
+        if self._first is None:
+            self._first = self._last = pair
         else:
             self._last.set_rest(pair)
         self._last = pair
