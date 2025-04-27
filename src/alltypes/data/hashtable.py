@@ -10,8 +10,7 @@ class HashTable (Object):
 
     @staticmethod
     def from_parser(parse_value):
-        (first, rest) = parse_value
-        elems = [first] + rest
+        elems = parse_value
         hash_table = HashTable()
         for elem in elems:
             if not isinstance(elem, alltypes.data.binding.Binding):

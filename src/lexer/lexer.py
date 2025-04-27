@@ -61,4 +61,4 @@ class Lexer:
         return self._tokens
 
     def on_eoi(self):
-        self._tokens.append(('EOI', None, self._cs.get_pos()))
+        self._tokens.append(('EOI', 'EOI', self._cs.get_pos()))

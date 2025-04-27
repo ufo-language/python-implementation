@@ -18,10 +18,7 @@ class Queue (Object):
 
     @staticmethod
     def from_parser(parser_value):
-        (first, rest) = parser_value
-        elems = [first] + rest
-        queue = Queue(*elems)
-        return queue
+        return Queue(*parser_value)
 
     def as_list(self):
         return self._first
@@ -32,7 +29,7 @@ class Queue (Object):
     def deq(self):
         if self._count == 0:
             return None
-        elem = self._first.first
+        # elem = self._first.first
         self._first = self._first.rest
         if self._first.rest is None:
             self._last = None
@@ -51,4 +48,6 @@ class Queue (Object):
         return 'Queue'
 
     def __repr__(self):
+        if self._count == 0:
+            return '~[]'
         return self._first.repr_using('~[', ', ', ']')

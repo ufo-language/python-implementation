@@ -15,10 +15,7 @@ class Set (Object):
 
     @staticmethod
     def from_parser(parse_value):
-        (first, rest) = parse_value
-        elems = [first] + rest
-        s = Set(*elems)
-        return s
+        return Set(*parse_value)
 
     def add(self, elem):
         return self._set.add(elem)

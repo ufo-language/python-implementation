@@ -20,7 +20,7 @@ from alltypes.literal.symbol import Symbol
 def ufo_parsers():
     return {
         'Program'   : seq('Any', '!EOI'),
-        '!EOI'      : require(ignore(spot('EOI')), 'End of input'),
+        '!EOI'      : require('EOI', 'End-of-Input'),
         'Any'       : one_of('Expression', 'Data', 'Literal'),
         '!Any'      : require('Any'),
         # expression
@@ -64,4 +64,6 @@ def ufo_parsers():
         '#'         : ignore(spot('Special', '#')),
         '~'         : ignore(spot('Special', '~')),
         '$'         : ignore(spot('Special', '$')),
+        # other
+        'EOI'       : spot('EOI', 'EOI')
     }

@@ -57,11 +57,18 @@ def indent():
     return '| ' * depth
 
 def list_of(open, elem, sep, close, bar=None):
+    # def _proper_list(parser_state):
+    #     elements = seq(elem,
+    #                    many(seq(sep, elem)),
+    #                   )
+    #     parser = seq(open, maybe(elements), require(close))
+    #     success = parse(parser, parser_state)
+    #     return success
     def _proper_list(parser_state):
         elements = seq(elem,
                        many(seq(sep, elem)),
                       )
-        parser = seq(open, maybe(elements), require(close))
+        parser = seq(open, sep_by(elem, sep), require(close))
         success = parse(parser, parser_state)
         return success
     def _improper_list(parser_state):
@@ -145,19 +152,34 @@ def recursion_barrier(parser_state):
     parser_state.value = IGNORE
     return True
 
-def require(parser, parser_name=None):
+def require(parser, parser_descriptor=None):
     def _parser(parser_state):
         if parse(parser, parser_state):
             return True
-        parse_exception(f"Expected {parser if parser_name is None else parser_name}", parser_state)
+        parse_exception(f"Expected {parser if parser_descriptor is None else parser_descriptor}", parser_state)
     return _parser
 
+# for the combinator version see 'succeed'
 def returning(value, parser):
     def _parser(parser_state):
         if parse(parser, parser_state):
             parser_state.value = value
             return True
         return False
+    return _parser
+
+def sep_by(elem, sep):
+    #return one_of(seq(elem, maybe(seq(sep, require(elem, f"{elem} after {sep}")))), succeed([]))
+    def _parser(parser_state):
+        success = parse(one_of(seq(recursion_barrier, elem, maybe(seq(sep, require(elem, f"{elem} after {sep}")))), succeed([])), parser_state)
+        # the parser returns one of:
+        # 1. the empty list []
+        # 2. a single value
+        # 3. a list of one or more values
+        # so check for a single value here
+        if not isinstance(parser_state.value, list):
+            parser_state.value = [parser_state.value]
+        return success
     return _parser
 
 def seq(*parsers):
@@ -204,7 +226,7 @@ def spot(expected_type, expected_value=None, strip=True):
         token = parser_state.current_token()
         if token[0] == expected_type:
             if token[1] == expected_value:
-                parser_state.value = token
+                parser_state.value = IGNORE
                 parser_state.advance()
                 return True
         return False
@@ -218,3 +240,10 @@ def spot(expected_type, expected_value=None, strip=True):
 #             return True
 #         return False
 #     return _parser
+
+# for the function version see 'returning'
+def succeed(value):
+    def _parser(parser_state):
+        parser_state.value = value
+        return True
+    return _parser
