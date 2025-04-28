@@ -1,8 +1,7 @@
 from parser2.parser import parse
+from parser2.parser import IGNORE
 from parser2.parse_exception import parse_exception
 from parser2.parser_state import ParserState
-
-IGNORE = '%IGNORE%'
 
 def apply(fun, parser):
     def _parser(parser_state):

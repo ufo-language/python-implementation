@@ -37,33 +37,12 @@ def ufo_parsers():
         'Set'       : apply(Set.from_parser, seq('$', list_of('{', 'Any', ',', '}'))),
         # literal
         'Literal'   : one_of('Boolean', 'Float', 'Integer', 'Nil', 'String', 'Symbol'),
-        'Boolean'   : one_of('true', 'false'),
         'Boolean'   : apply(Boolean, one_of(returning(True, 'true'), returning(False, 'false'))),
         'Integer'   : apply(Integer, spot('Integer')),
         'Float'     : apply(Float, spot('Float')),
-        'Nil'       : returning(Nil(), spot('Reserved', 'nil')),
+        'Nil'       : returning(Nil(), 'nil'),
         'String'    : apply(String, spot('String')),
         'Symbol'    : apply(Symbol, spot('Symbol')),
-        # reserved words
-        'else'      : ignore(spot('Reserved', 'else')),
-        'false'     : ignore(spot('Reserved', 'false')),
-        'if'        : ignore(spot('Reserved', 'if')),
-        'then'      : ignore(spot('Reserved', 'then')),
-        'true'      : ignore(spot('Reserved', 'true')),
+        # support parsers
         '!then'     : require('then'),
-        # special
-        '['         : ignore(spot('Special', '[')),
-        ']'         : ignore(spot('Special', ']')),
-        '{'         : ignore(spot('Special', '{')),
-        '}'         : ignore(spot('Special', '}')),
-        '('         : ignore(spot('Special', '(')),
-        ')'         : ignore(spot('Special', ')')),
-        ':'         : ignore(spot('Operator', ':')),
-        ','         : ignore(spot('Special', ',')),
-        '|'         : ignore(spot('Special', '|')),
-        '#'         : ignore(spot('Special', '#')),
-        '~'         : ignore(spot('Special', '~')),
-        '$'         : ignore(spot('Special', '$')),
-        # other
-        'EOI'       : spot('EOI', 'EOI')
     }
