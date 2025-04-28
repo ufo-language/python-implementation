@@ -7,6 +7,7 @@ from alltypes.data.list import List
 from alltypes.data.queue import Queue
 from alltypes.data.set import Set
 
+from alltypes.expr.assign import Assign
 from alltypes.expr.identifier import Identifier
 from alltypes.expr.if_then import IfThen
 
@@ -24,7 +25,8 @@ def ufo_parsers():
         'Any'       : one_of('Expression', 'Data', 'Literal'),
         '!Any'      : require('Any'),
         # expression
-        'Expression': one_of('Identifier', 'If'),
+        'Expression': one_of('Assign', 'Identifier', 'If'),
+        'Assign'    : apply(Assign.from_parser, seq(recursion_barrier, 'Any', ':=', '!Any')),
         'Identifier': apply(Identifier, spot('Identifier')),
         'If'        : apply(IfThen.from_parser, seq('if', '!Any', '!then', '!Any', maybe(seq('else', '!Any')))),
         # data
