@@ -1,0 +1,15 @@
+#/bin/sh
+
+# This is a very handy but dangerous script.
+# It will rename $OLDNAME to $NEWNAME in all source files.
+
+DIRECTORY=$1
+OLDNAME=$2
+NEWNAME=$3
+
+if [[ -z "$NEWNAME" ]]; then
+    echo "Supply <directory> <oldname> <newname>"
+    exit 1
+fi
+
+find ${DIRECTORY} -type f -name "CMakeLists.txt" -o  -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | xargs grep -rl "${OLDNAME}" | xargs sed -i "s/${OLDNAME}/${NEWNAME}/g"
