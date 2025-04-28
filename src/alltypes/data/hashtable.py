@@ -1,4 +1,5 @@
 import alltypes.data.binding
+from alltypes.data._show_elems import show_elems
 from alltypes.object import Object
 
 class HashTable (Object):
@@ -38,16 +39,18 @@ class HashTable (Object):
 
     def type_name(self):
         return 'HashTable'
-
-    def __repr__(self):
-        s = '#{'
+    
+    def show(self, stream):
+        stream.write('#{')
         keys = sorted(self._hash.keys())
         first_iter = True
         for key in keys:
             if first_iter:
                 first_iter = False
             else:
-                s += ', '
-            s += repr(key) + alltypes.data.binding.Binding.CHAR + repr(self._hash[key])
-        s += '}'
-        return s
+                stream.write(', ')
+            key.show(stream)
+            stream.write(alltypes.data.binding.Binding.CHAR)
+            value = self._hash[key]
+            value.show(stream)
+        stream.write('}')

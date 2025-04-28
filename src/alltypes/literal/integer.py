@@ -24,8 +24,8 @@ class Integer (Object):
             return repr(self) < repr(other)
         return self._value < other._value
 
-    def __repr__(self):
-        return repr(self._value)
+    def show(self, stream):
+        stream.write(str(self._value))
 
     def type_name(self):
         return 'Integer'

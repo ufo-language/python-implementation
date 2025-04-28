@@ -36,7 +36,6 @@ def debug(message, parser):
         else:
             parser_name = parser
 
-        # token = parser_state.next_token()
         tokens = [token[1] for token in parser_state.tokens[parser_state.index:]]
         if message:
             print(f"{indent()}debug {message} trying '{parser_name}' tokens={tokens}")
@@ -222,15 +221,6 @@ def spot(expected_type, expected_value=None, strip=True):
                 return True
         return False
     return _parser1 if expected_value is None else _parser2
-
-# Note that spot() now does a strip() by default
-# def strip(parser):
-#     def _parser(parser_state):
-#         if parse(parser, parser_state):
-#             parser_state.value = parser_state.value[1]
-#             return True
-#         return False
-#     return _parser
 
 # for the function version see 'returning'
 def succeed(value):

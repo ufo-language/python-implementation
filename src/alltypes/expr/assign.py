@@ -27,8 +27,10 @@ class Assign (Object):
         etor.match_bind(self._lhs, rhs_value)
         return alltypes.literal.nil.Nil()
 
+    def show(self, stream):
+        self._lhs.show(stream)
+        stream.write(' = ')
+        self._rhs.show(stream)
+
     def type_name(self):
         return 'Assignment'
-
-    def __repr__(self):
-        return repr(self._lhs) + ' = ' + repr(self._rhs)

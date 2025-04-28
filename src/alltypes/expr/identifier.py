@@ -2,6 +2,20 @@ from alltypes.object import Object
 from ufo_exception import UFOException
 
 class Identifier (Object):
+    
+    class ClosedIdentifier (Object):
+        
+        __slots__ = ('ident', 'index')
+
+        def __init__(self, ident, index):
+            self.ident = ident
+            self.index = index
+
+        def eval_rec(self, etor):
+            return etor.get_env_rel(self.index)
+        
+        def show(self, stream):
+            self.ident.show(stream)
 
     __slots__ = ('_name', '_hash')
 
@@ -20,9 +34,11 @@ class Identifier (Object):
             self._name = name
             self._hash = hash(name)
 
-    @staticmethod
-    def from_python_list(python_list):
-        return Assign(*python_list)
+    def closure(self, env):
+        index = env.lookup_index_rel(self)
+        if index is None:
+            return self
+        return Identifier.ClosedIdentifier(self, index)
 
     def __eq__(self, other):
         return isinstance(other, Identifier) and self._name == other._name
@@ -49,8 +65,8 @@ class Identifier (Object):
         env.bind(self, other)
         return True
 
+    def show(self, stream):
+        stream.write(self._name)
+
     def type_name(self):
         return 'Assignment'
-
-    def __repr__(self):
-        return self._name

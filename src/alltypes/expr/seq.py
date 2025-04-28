@@ -1,3 +1,4 @@
+from alltypes.data._show_elems import show_elems
 from alltypes.literal.nil import Nil
 from alltypes.object import Object
 
@@ -19,9 +20,9 @@ class Seq (Object):
             value = etor.eval(expr)
         etor.env_restore(saved_env)
         return value
+    
+    def show(self, stream):
+        show_elems(stream, self._exprs, '(', '; ', ')')
 
     def type_name(self):
         return 'Seq'
-
-    def __repr__(self):
-        return '(' + ', '.join(self._exprs) + ')'

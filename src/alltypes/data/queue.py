@@ -55,11 +55,12 @@ class Queue (Object):
             q.enq(elem_value)
             lst = lst.rest()
         return q
+    
+    def show(self, stream):
+        if self._count == 0:
+            stream.write('~[]')
+        else:
+            self._first.show_using(stream, '~[', ', ', ']')
 
     def type_name(self):
         return 'Queue'
-
-    def __repr__(self):
-        if self._count == 0:
-            return '~[]'
-        return self._first.repr_using('~[', ', ', ']')

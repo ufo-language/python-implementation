@@ -1,3 +1,4 @@
+from alltypes.data._show_elems import show_elems
 from alltypes.object import Object
 
 class Set (Object):
@@ -31,19 +32,9 @@ class Set (Object):
 
     def type_name(self):
         return 'Set'
-
-    def __repr__(self):
-        s = '${'
-        elems = sorted(list(self._set))
-        first_iter = True
-        for elem in elems:
-            if first_iter:
-                first_iter = False
-            else:
-                s += ', '
-            s += repr(elem)
-        s += '}'
-        return s
+    
+    def show(self, stream):
+        show_elems(stream, self._set, '${', ', ', '}')
 
     def type_name(self):
         return 'Set'

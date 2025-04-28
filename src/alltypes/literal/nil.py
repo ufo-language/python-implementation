@@ -10,6 +10,9 @@ class Nil (Object):
     def bool_value(self):
         return False
 
+    def disp(self, stream):
+        pass
+
     def __hash__(self):
         return 0
     
@@ -18,8 +21,8 @@ class Nil (Object):
             return repr(self) < repr(other)
         return False
 
-    def __repr__(self):
-        return 'nil'
+    def show(self, stream):
+        stream.write('nil')
 
     def type_name(self):
         return 'Nil'

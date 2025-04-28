@@ -1,4 +1,5 @@
-import alltypes.literal.nil
+import sys
+
 from ufo_exception import UFOException
 import lexer.ufo_syntax
 import parser.ufo_grammar
@@ -33,5 +34,7 @@ def _eval(expr, etor):
     return value
 
 def _print(value):
-    if type(value) != alltypes.literal.nil.Nil:
-        print(f"{value!r} :: {value.type_name()}")
+    value.show(sys.stdout)
+    sys.stdout.write(' :: ')
+    sys.stdout.write(value.type_name())
+    sys.stdout.write('\n')

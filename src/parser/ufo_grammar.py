@@ -26,7 +26,7 @@ def ufo_parsers():
         '!EOI'        : require('EOI', 'End-of-Input'),
         'Any'         : one_of('Expression', 'Data', 'Literal'),
         '!Any'        : require('Any'),
-        # expression
+
         'Expression'  : one_of('Assign', 'Function', 'Identifier', 'If', 'Seq'),
         'Assign'      : apply(Assign.from_parser, seq(recursion_barrier, 'Any', ':=', '!Any')),
         'Function'    : apply(Function.from_parser, seq('fun', one_of('Identifier', succeed(None)), sep_by('FunctionRule', '|'))),
@@ -36,7 +36,7 @@ def ufo_parsers():
         'If'          : apply(IfThen.from_parser, seq('if', '!Any', '!then', '!Any', maybe(seq('else', '!Any')))),
         '!then'       : require('then'),
         'Seq'         : apply(Seq.from_parser, list_of('(', 'Any', ';', ')')),
-        # data
+
         'Data'        : one_of('Array', 'Binding', 'HashTable', 'List', 'Queue', 'Set'),
         'Array'       : apply(Array.from_parser, list_of('{', 'Any', ',', '}')),
         'Binding'     : apply(Binding.from_parser, seq(recursion_barrier, 'Any', ':', 'Any')),
@@ -44,7 +44,7 @@ def ufo_parsers():
         'List'        : apply(List.from_parser, list_of('[', 'Any', ',', ']', '|')),
         'Queue'       : apply(Queue.from_parser, seq('~', list_of('[', 'Any', ',', ']'))),
         'Set'         : apply(Set.from_parser, seq('$', list_of('{', 'Any', ',', '}'))),
-        # literal
+
         'Literal'     : one_of('Boolean', 'Float', 'Integer', 'Nil', 'String', 'Symbol'),
         'Boolean'     : apply(Boolean, one_of(returning(True, 'true'), returning(False, 'false'))),
         'Integer'     : apply(Integer, spot('Integer')),

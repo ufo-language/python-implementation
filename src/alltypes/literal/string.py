@@ -10,6 +10,9 @@ class String (Object):
     def bool_value(self):
         return len(self._value) > 0
 
+    def disp(self, stream):
+        stream.write(self._value)
+
     def __eq__(self, other):
         return isinstance(other, String) and self._value == other._value
 
@@ -24,11 +27,10 @@ class String (Object):
             return self._value < repr(other)
         return self._value < other._value
 
-    def __repr__(self):
-        return '"' + self._value + '"'
-
-    def __str__(self):
-        return self._value
+    def show(self, stream):
+        stream.write('"')
+        stream.write(self._value)
+        stream.write('"')
 
     def type_name(self):
         return 'String'

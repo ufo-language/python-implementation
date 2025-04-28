@@ -71,25 +71,25 @@ class List (Object):
     def type_name(self):
         return 'List'
 
-    def repr_using(self, open, sep, close):
-        s = open
+    def show(self, stream):
+        self.show_using(self, stream, '[', ', ', ']')
+
+    def show_using(self, stream, open, sep, close):
+        stream.write(open)
         lst = self
         first_iter = True
         while not lst.is_empty():
             if first_iter:
                 first_iter = False
             else:
-                s += sep
+                stream.write(sep)
             elem = lst._first
-            s += repr(elem)
+            elem.show(stream)
             lst = lst._rest
             if not isinstance(lst, List):
-                s += ' | ' + repr(lst)
+                stream.write(' | ')
+                lst.show(stream)
                 break
-        s += close
-        return s
-
-    def __repr__(self):
-        return self.repr_using('[', ', ', ']')
+        stream.write(close)
 
 List.EMPTY_LIST = List(None, None)

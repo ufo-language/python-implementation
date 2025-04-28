@@ -23,9 +23,9 @@ class Boolean (Object):
         if not isinstance(other, Boolean):
             return repr(self) < repr(other)
         return self._value < other._value
-
-    def __repr__(self):
-        return 'true' if self._value else 'false'
+    
+    def show(self, stream):
+        stream.write('true' if self._value else 'false')
 
     def type_name(self):
         return 'Boolean'

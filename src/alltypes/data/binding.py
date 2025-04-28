@@ -22,9 +22,11 @@ class Binding (Object):
 
     def rhs(self):
         return self._rhs
+    
+    def show(self, stream):
+        self._lhs.show(stream)
+        stream.write(':')
+        self._rhs.show(stream)
 
     def type_name(self):
         return 'Binding'
-
-    def __repr__(self):
-        return repr(self._lhs) + ':' + repr(self._rhs)

@@ -12,6 +12,9 @@ class EtorRecursive (Evaluator):
     def bind(self, ident, value):
         self._env.bind(ident, value)
 
+    def env(self):
+        return self._env
+
     def env_save(self):
         return self._env.save()
     
@@ -31,3 +34,6 @@ class EtorRecursive (Evaluator):
             self._env.restore(env_save_point)
             return False
         return True
+
+    def rebind(self, ident, value):
+        self._env.rebind_rel(ident, value)

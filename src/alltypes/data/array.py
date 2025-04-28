@@ -1,4 +1,5 @@
 from alltypes.object import Object
+from alltypes.data._show_elems import show_elems
 
 class Array (Object):
 
@@ -26,17 +27,8 @@ class Array (Object):
     def eval_compile(self, etor):
         assert False
 
+    def show(self, stream):
+        show_elems(stream, self._elems, '{', ', ', '}')
+
     def type_name(self):
         return 'Array'
-
-    def __repr__(self):
-        s = '{'
-        first_iter = True
-        for elem in self._elems:
-            if first_iter:
-                first_iter = False
-            else:
-                s += ', '
-            s += repr(elem)
-        s += '}'
-        return s

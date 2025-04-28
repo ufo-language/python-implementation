@@ -1,3 +1,5 @@
+import io
+
 class Object:
 
     __slots__ = ()
@@ -7,6 +9,9 @@ class Object:
 
     def closure(self):
         return self
+
+    def disp(self, stream):
+        self.show(stream)
 
     def eval(self, etor):
         match etor.type:
@@ -46,6 +51,19 @@ class Object:
         if self == other:
             return env
         return None
+    
+    def show(self, stream):
+        print(f"OBJECT({type(self)}", file=stream, end='')
+
+    def __repr__(self):
+        stream = io.StringIO()
+        self.show(stream)
+        print(stream.getvalue())
+
+    def __str__(self):
+        stream = io.StringIO()
+        self.disp(stream)
+        print(stream.getvalue())
 
     def type_name(self):
         raise Exception(f"Subclass {self.__class__.__name__} must implement Object.type_name")

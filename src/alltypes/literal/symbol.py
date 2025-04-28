@@ -33,8 +33,8 @@ class Symbol (Object):
             return self._name < repr(other)
         return self._name < other._name
 
-    def __repr__(self):
-        return self._name
+    def show(self, stream):
+        stream.write(self._name)
 
     def type_name(self):
         return 'Symbol'

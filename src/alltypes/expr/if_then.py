@@ -19,11 +19,14 @@ class IfThen (Object):
         if cond_val.bool_value():
             return etor.eval(self._conseq)
         return etor.eval(self._alt)
+    
+    def show(self, stream):
+        stream.write('if ')
+        stream.write(self._cond)
+        stream.write(' then ')
+        stream.write(self._conseq)
+        if self._alt is not None:
+            stream.write(self._alt)
 
     def type_name(self):
         return 'If'
-
-    def __repr__(self):
-        if self._alt is None:
-            return f"if {self._cond!r} then {self._conseq!r}"
-        return f"if {self._cond!r} then {self._conseq!r} else {self._alt!r}"
