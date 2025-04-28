@@ -1,40 +1,52 @@
-class ParseCallRecord:
+from parser.parser_state import ParserState
 
-    __slots__ = ('parser_table', 'object_builder', 'tokens', 'token_index', 'memo_table', 'memo_key')
+IGNORE = '%IGNORE%'
 
-    def __init__(self, parser_table, object_builder, tokens):
-        self.parser_table = parser_table
-        self.object_builder = object_builder
-        self.tokens = tokens
-        self.token_index = 0
-        self.memo_table = {}
-        self.memo_key = None
+def parse_string(input_string, syntax, grammar):
+    tokens = syntax(input_string)
+    parser_state = ParserState(grammar, None, tokens)
+    success = parse('Program', parser_state)
+    return parser_state.value if success else None
 
-def parse_entry_point(parser_name, parser_table, object_builder, tokens):
-    parse_call_record = ParseCallRecord(parser_table, object_builder, tokens)
-    return parse(parser_name, parse_call_record)
+def _spot_lexeme(lexeme, parser_state):
+    token = parser_state.next_token()
+    if token[1] == lexeme:
+        parser_state.value = lexeme
+        parser_state.advance()
+        parser_state.value = IGNORE
+        return True
+    return False
 
-def parse(parser_name, parse_call_record):
-    # check for memoized value
-    memo_key = (parser_name, parse_call_record.token_index)
-    memo_value = parse_call_record.memo_table.get(memo_key)
-    if memo_value is not None:
-        parse_value = memo_value[0]
-        parse_call_record.token_index = memo_value[1]
-        return parse_value
-    # do the parse
-    parser = parse_call_record.parser_table.get(parser_name)
-    if parser is None:
-        raise Exception(f"parser.parse did not find parser '{parser_name}'")
-    # print(f"parser.parse trying {parser_name}/{parser}")
-    saved_token_index = parse_call_record.token_index
-    saved_memo_key = parse_call_record.memo_key
-    parse_call_record.memo_key = memo_key
-    parse_result = parser(parse_call_record)
-    parse_call_record.memo_table[memo_key] = (parse_result, parse_call_record.token_index)
-    # print(f"parser.parse {parser_name}/{parser} returning", parse_result)
-    if parse_result is None:
-        parse_call_record.token_index = saved_token_index
-    parse_call_record.memo_key = saved_memo_key
-    # save the memo
-    return parse_result
+depth = 0
+def parse(parser, parser_state):
+    global depth
+    depth += 1
+    #assert depth < 40
+    if callable(parser):
+        depth -= 1
+        return parser(parser_state)
+    if isinstance(parser, str):
+        parser_state.previous_parser_name = parser_state.current_parser_name
+        parser_state.current_parser_name = parser
+        # check memo table
+        memo_key = (parser, parser_state.index)
+        memo_value = parser_state.memo_table.get(memo_key)
+        if memo_value is not None:
+            (ctx, success) = memo_value
+            parser_state.set_ctx(ctx)
+            depth -= 1
+            return success
+        # call the parser function
+        parser_state.memo_key = memo_key
+        parser_function = parser_state.parser_table.get(parser)
+        if parser_function is None:
+            success = _spot_lexeme(parser, parser_state)
+        else:
+            success = parser_function(parser_state)
+        # store result in memo table
+        ctx = parser_state.get_ctx()
+        parser_state.memo_table[memo_key] = (ctx, success)
+        depth -= 1
+        return success
+    raise Exception(f"parser.parse got unknown parser type {parser} :: {type(parser)}")
+

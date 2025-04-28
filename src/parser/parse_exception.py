@@ -1,4 +1,5 @@
 from ufo_exception import UFOException
 
-def parse_exception(message, parse_call_record):
-    raise UFOException(message, tokens=parse_call_record.tokens, token_index=parse_call_record.token_index)
+def parse_exception(message, parser_state):
+    print("parse_exception called")
+    raise UFOException(message, tokens=parser_state.tokens[parser_state.index:], parser=parser_state.current_parser_name, prev_parser=parser_state.previous_parser_name)
