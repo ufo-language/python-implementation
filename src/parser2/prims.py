@@ -163,16 +163,14 @@ def returning(value, parser):
     return _parser
 
 def sep_by(elem, sep):
-    #return one_of(seq(elem, maybe(seq(sep, require(elem, f"{elem} after {sep}")))), succeed([]))
     def _parser(parser_state):
-        success = parse(one_of(seq(recursion_barrier, elem, maybe(seq(sep, require(elem, f"{elem} after {sep}")))), succeed([])), parser_state)
+        success = parse(one_of(seq(recursion_barrier, elem, many(seq(sep, require(elem, f"{elem} after {sep}")))), succeed([])), parser_state)
         # the parser returns one of:
-        # 1. the empty list []
-        # 2. a single value
-        # 3. a list of one or more values
-        # so check for a single value here
-        if not isinstance(parser_state.value, list):
-            parser_state.value = [parser_state.value]
+        # 1. []
+        # 2. [a, []]
+        # 3. [a, [b,...]]
+        if len(parser_state.value) > 0:
+            parser_state.value = [parser_state.value[0]] + parser_state.value[1]
         return success
     return _parser
 
