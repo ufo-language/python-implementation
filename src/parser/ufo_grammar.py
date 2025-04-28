@@ -10,6 +10,7 @@ from alltypes.data.set import Set
 from alltypes.expr.assign import Assign
 from alltypes.expr.identifier import Identifier
 from alltypes.expr.if_then import IfThen
+from alltypes.expr.seq import Seq
 
 from alltypes.literal.boolean import Boolean
 from alltypes.literal.integer import Integer
@@ -25,11 +26,12 @@ def ufo_parsers():
         'Any'       : one_of('Expression', 'Data', 'Literal'),
         '!Any'      : require('Any'),
         # expression
-        'Expression': one_of('Assign', 'Identifier', 'If'),
+        'Expression': one_of('Assign', 'Identifier', 'If', 'Seq'),
         'Assign'    : apply(Assign.from_parser, seq(recursion_barrier, 'Any', ':=', '!Any')),
         'Identifier': apply(Identifier, spot('Identifier')),
         'If'        : apply(IfThen.from_parser, seq('if', '!Any', '!then', '!Any', maybe(seq('else', '!Any')))),
         '!then'     : require('then'),
+        'Seq'       : apply(Seq.from_parser, list_of('(', 'Any', ';', ')')),
         # data
         'Data'      : one_of('Array', 'Binding', 'HashTable', 'List', 'Queue', 'Set'),
         'Array'     : apply(Array.from_parser, list_of('{', 'Any', ',', '}')),

@@ -12,6 +12,12 @@ class EtorRecursive (Evaluator):
     def bind(self, ident, value):
         self._env.bind(ident, value)
 
+    def env_save(self):
+        return self._env.save()
+    
+    def env_restore(self, ctx):
+        self._env.restore(ctx)
+
     def eval(self, expr):
         return expr.eval_rec(self)
 
