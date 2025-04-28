@@ -23,8 +23,12 @@ class HashTable (Object):
         return len(self._hash) > 0
 
     def eval_rec(self, etor):
-        print("HashTable.eval is incomplete")
-        return self
+        hash = HashTable()
+        for (key, value) in self._hash.items():
+            key_value = etor.eval(key)
+            value_value = etor.eval(value)
+            hash[key_value] = value_value
+        return hash
 
     def __getitem__(self, key):
         return self._hash[key]

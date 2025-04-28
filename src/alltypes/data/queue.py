@@ -46,6 +46,16 @@ class Queue (Object):
         self._last = pair
         self._count += 1
 
+    def eval_rec(self, etor):
+        q = Queue()
+        lst = self._first
+        while not lst.is_empty():
+            elem = lst.first()
+            elem_value = etor.eval(elem)
+            q.enq(elem_value)
+            lst = lst.rest()
+        return q
+
     def type_name(self):
         return 'Queue'
 

@@ -29,6 +29,7 @@ def ufo_parsers():
         'Assign'    : apply(Assign.from_parser, seq(recursion_barrier, 'Any', ':=', '!Any')),
         'Identifier': apply(Identifier, spot('Identifier')),
         'If'        : apply(IfThen.from_parser, seq('if', '!Any', '!then', '!Any', maybe(seq('else', '!Any')))),
+        '!then'     : require('then'),
         # data
         'Data'      : one_of('Array', 'Binding', 'HashTable', 'List', 'Queue', 'Set'),
         'Array'     : apply(Array.from_parser, list_of('{', 'Any', ',', '}')),
@@ -45,6 +46,4 @@ def ufo_parsers():
         'Nil'       : returning(Nil(), 'nil'),
         'String'    : apply(String, spot('String')),
         'Symbol'    : apply(Symbol, spot('Symbol')),
-        # support parsers
-        '!then'     : require('then'),
     }

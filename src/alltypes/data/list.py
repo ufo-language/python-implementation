@@ -34,11 +34,33 @@ class List (Object):
         return not self.is_empty()
 
     def eval_rec(self, etor):
-        print("List.eval is incomplete")
-        return self
+        lst = self
+        first = None
+        last = None
+        while not lst.is_empty():
+            elem = lst._first
+            elem_value = etor.eval(elem)
+            pair = List(elem_value)
+            if first is None:
+                first = last = pair
+            else:
+                last.set_rest(pair)
+                last = pair
+            lst = lst._rest
+            if not isinstance(lst, List):
+                elem_value = etor.eval(lst)
+                last.set_rest(elem_value)
+                break
+        return first
+    
+    def first(self):
+        return self._first
 
     def is_empty(self):
         return self is List.EMPTY_LIST
+    
+    def rest(self):
+        return self._rest
 
     def set_first(self, first):
         self._first = first

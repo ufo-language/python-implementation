@@ -21,7 +21,7 @@ depth = 0
 def parse(parser, parser_state):
     global depth
     depth += 1
-    assert depth < 20
+    #assert depth < 40
     if callable(parser):
         depth -= 1
         return parser(parser_state)

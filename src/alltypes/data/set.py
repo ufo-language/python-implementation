@@ -10,8 +10,11 @@ class Set (Object):
             self.add(elem)
 
     def eval_rec(self, etor):
-        print("Set.eval is incomplete")
-        return self
+        s = Set()
+        for elem in self._set:
+            elem_value = etor.eval(elem)
+            s._set.add(elem_value)
+        return s
 
     @staticmethod
     def from_parser(parse_value):
@@ -41,3 +44,6 @@ class Set (Object):
             s += repr(elem)
         s += '}'
         return s
+
+    def type_name(self):
+        return 'Set'
