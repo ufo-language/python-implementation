@@ -22,21 +22,36 @@ def compose(*parsers):
         return True
     return _parser
 
-def debug(parser, message=None):
+debug_depth = 0
+
+def indent():
+    return '| ' * debug_depth
+
+def debug(message, parser):
     def _parser(parser_state):
+        global debug_depth
 
-        token = parser_state.next_token()
-        if message:
-            print(f"{indent()}debug {message} trying '{parser}' token={token}")
+        if callable(parser):
+            parser_name = parser.__qualname__
+            # print(parser.__qualname__.split('.')[0])
         else:
-            print(f"{indent()}debug trying '{parser}' token={token}")
+            parser_name = parser
 
+        # token = parser_state.next_token()
+        tokens = [token[1] for token in parser_state.tokens[parser_state.index:]]
+        if message:
+            print(f"{indent()}debug {message} trying '{parser_name}' tokens={tokens}")
+        else:
+            print(f"{indent()}debug trying '{parser_name}' tokens={tokens}")
+
+        debug_depth += 1
         success = parse(parser, parser_state)
+        debug_depth -= 1
 
         if message:
-            print(f"{indent()}debug {message} '{parser}' token={token} -> {success}, value={parser_state.value}")
+            print(f"{indent()}debug {message} '{parser}' tokens={tokens} -> {success}, value={parser_state.value}")
         else:
-            print(f"{indent()}debug '{parser}' token={token} -> {success}, value={parser_state.value}")
+            print(f"{indent()}debug '{parser}' tokens={tokens} -> {success}, value={parser_state.value}")
         return success
 
     return _parser
@@ -51,10 +66,6 @@ def ignore(parser):
             return True
         return False
     return _parser
-
-depth = 0
-def indent():
-    return '| ' * depth
 
 def list_of(open, elem, sep, close, bar=None):
     def _proper_list(parser_state):
@@ -108,9 +119,8 @@ def one_of(*parsers):
         saved_parsers = []
         max_index_value = -1
         max_index_index = -1
-        # print(f"{indent()}== one_of starting", parsers)
+        saved_ctx = parser_state.get_ctx()
         for parser in parsers:
-            # print(f"{indent()}== one_of trying", parser)
             if parse(parser, parser_state):
                 # remember this parse result
                 if parser_state.index > max_index_value:
@@ -119,12 +129,11 @@ def one_of(*parsers):
                     saved_parsers.append(parser)
                     max_index_value = parser_state.index
                     max_index_index = len(saved_results) - 1
+            parser_state.set_ctx(saved_ctx)
         if max_index_value == -1:
-            # print(f"{indent()}== one_of returning False")
             return False
         ctx = saved_results[max_index_index]
         parser_state.set_ctx(ctx)
-        # print(f"{indent()}== one_of returning True for parser", saved_parsers[max_index_index])
         return True
     return _parser
 
