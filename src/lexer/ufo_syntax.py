@@ -1,6 +1,6 @@
-import lexer.char_stream
 from lexer.lexer import *
 from lexer.lexer_actions import *
+from ufo_exception import UFOException
 
 def tokenize(input_string):
     lexer = UFOSyntax()
@@ -37,17 +37,12 @@ class UFOSyntax (Lexer):
         self.add('#i', '"',        '#string',  [save_pos, ignore_char])
         self.add('#i', digit,      '#int',     [save_pos, reuse_char])
         self.add('#i', '`',        '#ident',   [save_pos, ignore_char])
-        # self.add('#i', '|',        '#specSym', [save_pos, ignore_char])
         self.add('#i', '-',        '#dash',    [save_pos, keep_char])
         self.add('#i', opers,      '#oper',    [save_pos, keep_char])
-        # self.add('#i', special,    '#i',       [save_pos, keep_char, special_char])
         self.add('#i', '/',        '#slash',   [save_pos, ignore_char])
         self.add('#i', ' \t',      '#i',       [ignore_char])
         self.add('#i', '\n',       '#i',       [ignore_char, eol])
         self.add('#i', None,       '#i',       [save_pos, keep_char, special_char])
-
-        # self.add('#number',    '0',        '#otherBase', [ignore_char])
-        # self.add('#number',    None,       '#int',       [reuse_char])
 
         self.add('#otherBase', 'bB',       '#binary',    [ignore_char])
         self.add('#otherBase', 'xX',       '#hex',       [ignore_char])
@@ -104,11 +99,6 @@ class UFOSyntax (Lexer):
         self.add('#string',    '"',        '#i',         [ignore_char, create_string])
         self.eoi_state('#string', [err_unterm_string])
 
-        # special symbol
-        # self.add('#specSym',   '|',        '#i',         [ignore_char, create_symbol])
-        # self.add('#specSym',   None,       '#specSym',   [keep_char])
-        # self.eoi_state('#specSym', [err_unterm_bar])
-
         self.add('#sym',       upper_case,  '#sym',       [keep_char])
         self.add('#sym',       lower_case,  '#sym',       [keep_char])
         self.add('#sym',       digit,      '#sym',       [keep_char])
@@ -124,13 +114,13 @@ class UFOSyntax (Lexer):
 # error actions
 
 def err_unterm_backquote(lexer, char):
-    raise Exception('Unterminated back-quote')
+    raise UFOException('Unterminated back-quote')
 
 def err_unterm_bar(lexer, char):
-    raise Exception('Unterminated bar')
+    raise UFOException('Unterminated bar')
 
 def err_unterm_comment(lexer, char):
-    raise Exception('Unterminated comment')
+    raise UFOException('Unterminated comment')
 
 def err_unterm_string(lexer, char):
-    raise Exception('Unterminated string')
+    raise UFOException('Unterminated string')
