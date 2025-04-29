@@ -7,6 +7,7 @@ from alltypes.data.list import List
 from alltypes.data.queue import Queue
 from alltypes.data.set import Set
 
+from alltypes.expr.apply import Apply
 from alltypes.expr.assign import Assign
 from alltypes.expr.function import Function
 from alltypes.expr.identifier import Identifier
@@ -27,7 +28,9 @@ def ufo_parsers():
         'Any'         : one_of('Expression', 'Data', 'Literal'),
         '!Any'        : require('Any'),
 
-        'Expression'  : one_of('Assign', 'Function', 'Identifier', 'If', 'Seq'),
+        'Expression'  : one_of('Apply', 'Assign', 'Function', 'Identifier', 'If', 'Seq'),
+        'Apply'       : apply(Apply.from_parser, seq(recursion_barrier, 'Any', 'ArgList')),
+        'ArgList'     : list_of('(', 'Any', ',', ')'),
         'Assign'      : apply(Assign.from_parser, seq(recursion_barrier, 'Any', ':=', '!Any')),
         'Function'    : apply(Function.from_parser, seq('fun', one_of('Identifier', succeed(None)), sep_by('FunctionRule', '|'))),
         'FunctionRule': seq('ParamList', '=', 'Any'),
