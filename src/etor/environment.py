@@ -6,6 +6,9 @@ class Environment:
         def __init__(self, lhs, rhs):
             self.lhs = lhs
             self.rhs = rhs
+
+        def __repr__(self):
+            return repr(self.lhs) + '=' + repr(self.rhs)
     
     __slots__ = ('_bindings',)
 
@@ -13,13 +16,18 @@ class Environment:
         self._bindings = []
 
     def bind(self, ident, value):
-        self._bindings.append(Environment.Binding(ident, value))
+        binding = Environment.Binding(ident, value)
+        self._bindings.append(binding)
+        return binding
 
     def count(self):
         return len(self._bindings)
 
     def drop(self, n):
         self._bindings[-n:] = []
+
+    def __getitem__(self, index):
+        return self._bindings[index]
 
     def locate_binding_abs(self, ident):
         n = 0
@@ -69,6 +77,16 @@ class Environment:
 
     def __repr__(self):
         return repr(self._bindings)
+    
+    def show(self):
+        print('[', end='')
+        for binding in self._bindings:
+            print('(', end='')
+            print(binding, end='')
+            print('):', end='')
+            print(id(binding), end='')
+            print(' ', end='')
+        print(']')
 
     def save(self):
         return len(self._bindings)

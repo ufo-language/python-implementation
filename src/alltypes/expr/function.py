@@ -1,5 +1,7 @@
+from alltypes.data.array import Array
 from alltypes.expr.assign import Assign
 from alltypes.object import Object
+from ufo_exception import UFOException
 
 class Function (Object):
     
@@ -11,7 +13,6 @@ class Function (Object):
             self._body = body
 
         def closure(self, env):
-            # print("Rule.closure self=", self)
             env_ctx = env.save()
             # pre-bind parameter identifiers to themselves
             for param in self._params:
@@ -20,12 +21,23 @@ class Function (Object):
             closed_body = self._body.closure(env)
             env.restore(env_ctx)
             return Function.Rule(self._params, closed_body)
+        
+        def eval_body(self, etor):
+            return self._body.eval(etor)
 
         @staticmethod
         def from_parser(parse_value):
             params = parse_value[0]
             body = parse_value[1]
             return Function.Rule(params, body)
+        
+        def matches(self, args, etor):
+            binding_pairs = []
+            if Array.pre_bind_elems(self._params, args, etor, binding_pairs):
+                for (binding, value) in binding_pairs:
+                    binding.rhs = value
+                return True
+            return False
 
         def show(self, stream):
             stream.write('(')
@@ -47,7 +59,6 @@ class Function (Object):
             self._rules = rules
 
         def eval_rec(self, etor):
-            etor.bind(self._name, self._name)
             function = Function(self._rules)
             assign = Assign(self._name, function)
             return assign.eval(etor)
@@ -61,15 +72,23 @@ class Function (Object):
 
     def __init__(self, rules):
         self._rules = rules
-        # print("Function.__init__ rules =", rules)
+
+    def apply(self, args, etor):
+        env = etor.env()
+        env_save_point = env.save()
+        for rule in self._rules:
+            if rule.matches(args, env):
+                value = rule.eval_body(etor)
+                env.restore(env_save_point)
+                return value
+        env.restore(env_save_point)
+        raise UFOException("No matching rule for arguments", arguments=args, function=self)
 
     @staticmethod
     def closure(rules, env):
-        # print("Function.closure called", len(rules), "rules =", rules)
         closed_rules = []
         for rule in rules:
             closed_rules.append(rule.closure(env))
-            # print("Function.closure rules =", rules)
         return Function(closed_rules)
 
     @staticmethod
@@ -79,7 +98,6 @@ class Function (Object):
         return Function(rules) if name is None else Function.NamedFunction(name, rules)
 
     def eval_rec(self, etor):
-        # print("Function.eval_rec called")
         return Function.closure(self._rules, etor.env())
 
     def show(self, stream):

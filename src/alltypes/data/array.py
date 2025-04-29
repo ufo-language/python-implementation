@@ -25,6 +25,20 @@ class Array (Object):
     def eval_compile(self, etor):
         assert False
 
+    def pre_bind(self, other, env, binding_pairs):
+        if type(other) is not Array:
+            return False
+        return Array.pre_bind_elems(self._elems, other._elems, env, binding_pairs)
+
+    @staticmethod
+    def pre_bind_elems(lhs_elems, rhs_elems, env, binding_pairs):
+        if len(lhs_elems) != len(rhs_elems):
+            return False
+        for (lhs, rhs) in zip(lhs_elems, rhs_elems):
+            if not lhs.pre_bind(rhs, env, binding_pairs):
+                return False
+        return True
+
     def show(self, stream):
         show_elems(stream, self._elems, '{', ', ', '}')
 

@@ -1,21 +1,23 @@
 from alltypes.object import Object
 from ufo_exception import UFOException
+from etor.environment import Environment
 
 class Identifier (Object):
     
     class ClosedIdentifier (Object):
         
-        __slots__ = ('ident', 'index')
+        __slots__ = ('_ident', '_index')
 
         def __init__(self, ident, index):
-            self.ident = ident
-            self.index = index
+            self._ident = ident
+            self._index = index
+            # TODO instead of storing the _index, store the actual Binding
 
         def eval_rec(self, etor):
-            return etor.get_env_rel(self.index)
+            return etor.env()[self._index].rhs
         
         def show(self, stream):
-            self.ident.show(stream)
+            self._ident.show(stream)
 
     __slots__ = ('_name', '_hash')
 
@@ -58,11 +60,10 @@ class Identifier (Object):
     def __hash__(self):
         return self._hash
 
-    def match(self, other, env):
-        value = env.lookup(self)
-        if value == other:
-            return True
-        env.bind(self, other)
+    def pre_bind(self, other, env, binding_pairs):
+        binding = env.bind(self, self)
+        pair = (binding, other)
+        binding_pairs.append(pair)
         return True
 
     def show(self, stream):

@@ -19,7 +19,7 @@ def run(etor):
                     input_string += line
                 break
             if input_string.startswith(':'):
-                colon_command(input_string, repl_state)
+                colon_command(input_string, repl_state, etor)
             else:
                 repl.rep.rep(input_string, etor)
     except KeyboardInterrupt:
@@ -29,9 +29,11 @@ def run(etor):
     except Exception as exn:
         print(traceback.format_exc())
 
-def colon_command(input_string, repl_state):
-    match input_string[1]:
+def colon_command(input_string, repl_state, etor):
+    match input_string[1:]:
         case 'q':
             repl_state['continue'] = False
+        case 'env':
+            print(etor.env())
         case _:
             pass

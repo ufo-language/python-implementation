@@ -21,16 +21,15 @@ import lexer.ufo_syntax
 import parser.ufo_grammar
 
 def _read(input_string):
-    # expr = parser.ufo_parser.parse_string(input_string)
     syntax = lexer.ufo_syntax.tokenize
     grammar = parser.ufo_grammar.ufo_parsers()
     expr = parser.parser.parse_string(input_string, syntax, grammar)
     return expr
 
 def _eval(expr, etor):
-    # print(f"rep._eval got expr {expr}")
+    # print(f"rep._eval got expr {expr} :: {type(expr)}")
     value = expr.eval(etor)
-    # print(f"rep._eval({expr}) -> {value}")
+    # print(f"rep._eval({expr}) -> {value} :: {type(value)}")
     return value
 
 def _print(value):

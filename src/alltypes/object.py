@@ -6,8 +6,8 @@ class Object:
 
     def bool_value(self):
         return True
-
-    def closure(self):
+    
+    def closure(self, env):
         return self
 
     def disp(self, stream):
@@ -47,11 +47,9 @@ class Object:
     def free_vars(self, free_var_set):
         pass
 
-    def match(self, other, env):
-        if self == other:
-            return env
-        return None
-    
+    def pre_bind(self, other, env, binding_pairs):
+        return self == other
+
     def show(self, stream):
         print(f"OBJECT({type(self)}", file=stream, end='')
 

@@ -58,7 +58,32 @@ class List (Object):
 
     def is_empty(self):
         return self is List.EMPTY_LIST
-    
+
+    def pre_bind(self, other, env, binding_pairs):
+        if type(other) is not List:
+            return False
+        self1 = self
+        other1 = other
+        while True:
+            self_empty = self1.is_empty()
+            other_empty = other1.is_empty()
+            if self_empty and other_empty:
+                return True
+            if self_empty or other_empty:
+                return False
+            self_first = self1._first
+            other_first = other1._first
+            if not self_first.pre_bind(other_first, env, binding_pairs):
+                return False
+            self_rest = self1._rest
+            other_rest = other1._rest
+            if type(self_rest) is not List:
+                return self_rest.pre_bind(other_rest, env, binding_pairs)
+            if type(other_rest) is not List:
+                return False
+            self1 = self_rest
+            other1 = other_rest
+
     def rest(self):
         return self._rest
 
@@ -72,7 +97,7 @@ class List (Object):
         return 'List'
 
     def show(self, stream):
-        self.show_using(self, stream, '[', ', ', ']')
+        self.show_using(stream, '[', ', ', ']')
 
     def show_using(self, stream, open, sep, close):
         stream.write(open)

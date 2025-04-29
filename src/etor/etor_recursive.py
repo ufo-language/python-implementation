@@ -23,17 +23,9 @@ class EtorRecursive (Evaluator):
 
     def eval(self, expr):
         return expr.eval_rec(self)
+    
+    def get_env_rel(self, index):
+        return self._env.locate_binding_abs
 
     def lookup(self, identifier):
         return self._env.lookup(identifier)
-
-    def match_bind(self, lhs, rhs):
-        env_save_point = self._env.save()
-        bindings = lhs.match(rhs, self._env)
-        if bindings is None:
-            self._env.restore(env_save_point)
-            return False
-        return True
-
-    def rebind(self, ident, value):
-        self._env.rebind_rel(ident, value)

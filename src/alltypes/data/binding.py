@@ -20,6 +20,12 @@ class Binding (Object):
     def lhs(self):
         return self._lhs
 
+    def pre_bind(self, other, env, binding_pairs):
+        if type(other) is not Binding:
+            return False
+        return self._lhs.pre_bind(other._lhs, env, binding_pairs) \
+           and self._rhs.pre_bind(other._rhs, env, binding_pairs)
+
     def rhs(self):
         return self._rhs
     
