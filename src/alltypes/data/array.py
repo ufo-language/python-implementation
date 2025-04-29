@@ -16,9 +16,7 @@ class Array (Object):
         return len(self._elems) > 0
 
     def eval_rec(self, etor):
-        new_elems = []
-        for elem in self._elems:
-            new_elems.append(etor.eval(elem))
+        new_elems = [etor.eval(elem) for elem in self._elems]
         return Array(new_elems)
 
     def eval_cps(self, etor):

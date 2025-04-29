@@ -1,23 +1,25 @@
+from alltypes.expr.assign import Assign
 from alltypes.object import Object
 
 class Function (Object):
     
     class Rule:
-        __slots__ = ('params', 'body')
+        __slots__ = ('_params', '_body')
 
         def __init__(self, params, body):
-            self.params = params
-            self.body = body
+            self._params = params
+            self._body = body
 
         def closure(self, env):
+            # print("Rule.closure self=", self)
             env_ctx = env.save()
             # pre-bind parameter identifiers to themselves
-            for param in self.params:
+            for param in self._params:
                 env.bind(param, param)
             # close the body
-            closed_body = self.body.closure(env)
+            closed_body = self._body.closure(env)
             env.restore(env_ctx)
-            return Function.Rule(self.params, closed_body)
+            return Function.Rule(self._params, closed_body)
 
         @staticmethod
         def from_parser(parse_value):
@@ -28,54 +30,56 @@ class Function (Object):
         def show(self, stream):
             stream.write('(')
             first_iter = True
-            for param in self.params:
+            for param in self._params:
                 if first_iter:
                     first_iter = False
                 else:
                     stream.write(', ')
                 param.show(stream)
             stream.write(') = ')
-            self.body.show(stream)
+            self._body.show(stream)
 
-    class NamedFunction:
-        __slots__ = ('name', 'function')
+    class NamedFunction (Object):
+        __slots__ = ('_name', '_rules')
 
-        def __init__(self, name, function):
-            self.name = name
-            self.function = function
+        def __init__(self, name, rules):
+            self._name = name
+            self._rules = rules
 
         def eval_rec(self, etor):
             etor.bind(self._name, self._name)
-            closure = self.function.eval(etor)
-            etor.rebind(self._name, closure)
-            return closure
+            function = Function(self._rules)
+            assign = Assign(self._name, function)
+            return assign.eval(etor)
 
         def show(self, stream):
             stream.write('fun ')
             self._name.show(stream)
-            Function.show_rules(self.rules)
+            Function.show_rules(self._function._rules)
 
     __slots__ = ('_rules')
 
     def __init__(self, rules):
         self._rules = rules
+        # print("Function.__init__ rules =", rules)
 
     @staticmethod
     def closure(rules, env):
-        rules = []
+        # print("Function.closure called", len(rules), "rules =", rules)
+        closed_rules = []
         for rule in rules:
-            rules.append(rule.closure(env))
-        return Function(rules)
+            closed_rules.append(rule.closure(env))
+            # print("Function.closure rules =", rules)
+        return Function(closed_rules)
 
     @staticmethod
     def from_parser(parse_value):
         name = parse_value[0]
-        rules = []
-        for rule in parse_value[1]:
-            rules.append(Function.Rule(rule[0], rule[1]))
+        rules = [Function.Rule(rule[0], rule[1]) for rule in parse_value[1]]
         return Function(rules) if name is None else Function.NamedFunction(name, rules)
 
     def eval_rec(self, etor):
+        # print("Function.eval_rec called")
         return Function.closure(self._rules, etor.env())
 
     def show(self, stream):

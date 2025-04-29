@@ -13,15 +13,6 @@ class Object:
     def disp(self, stream):
         self.show(stream)
 
-    def eval(self, etor):
-        match etor.type:
-            case 'RECURSIVE':
-                return self.eval_rec(etor)
-            case 'CPS':
-                return self.eval_cps(etor)
-            case 'COMPILER':
-                return self.eval_compile(etor)
-
     def __eq__(self, other):
         return self.equals(other)
 
@@ -34,6 +25,15 @@ class Object:
     def equals_aux(self, other):
         ''' Override this method instead of equals(). '''
         return self is other
+
+    def eval(self, etor):
+        match etor.type:
+            case 'RECURSIVE':
+                return self.eval_rec(etor)
+            case 'CPS':
+                return self.eval_cps(etor)
+            case 'COMPILER':
+                return self.eval_compile(etor)
 
     def eval_rec(self, etor):
         return self
@@ -58,12 +58,12 @@ class Object:
     def __repr__(self):
         stream = io.StringIO()
         self.show(stream)
-        print(stream.getvalue())
+        return stream.getvalue()
 
     def __str__(self):
         stream = io.StringIO()
         self.disp(stream)
-        print(stream.getvalue())
+        return stream.getvalue()
 
     def type_name(self):
         raise Exception(f"Subclass {self.__class__.__name__} must implement Object.type_name")

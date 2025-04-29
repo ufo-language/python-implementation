@@ -16,7 +16,10 @@ class Apply (Object):
         return app
 
     def eval_rec(self, etor):
-        application = etor.eval(self._abstr)
+        evaled_abstr = etor.eval(self._abstr)
+        evaled_args = [arg.eval(etor) for arg in self._args]
+        print("Apply.eval_rec abstr =", evaled_abstr)
+        print("Apply.eval_rec args =", evaled_args)
         return self
 
     def show(self, stream):

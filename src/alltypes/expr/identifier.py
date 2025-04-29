@@ -69,4 +69,4 @@ class Identifier (Object):
         stream.write(self._name)
 
     def type_name(self):
-        return 'Assignment'
+        return 'Identifier'

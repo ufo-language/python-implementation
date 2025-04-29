@@ -25,7 +25,7 @@ class Assign (Object):
         # print("Assign.eval_rec rhs_value =", rhs_value)
         # match to lhs
         etor.match_bind(self._lhs, rhs_value)
-        return alltypes.literal.nil.Nil()
+        return rhs_value
 
     def show(self, stream):
         self._lhs.show(stream)
