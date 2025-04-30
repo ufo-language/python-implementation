@@ -20,6 +20,7 @@ class Assign (Object):
         if self._lhs.pre_bind(self._rhs, etor.env(), binding_pairs):
             for (binding, expr) in binding_pairs:
                 value = expr.eval(etor)
+                print("assign.eval_rec binding =", binding, "expr=", expr, 'value=', value)
                 binding.rhs = value
             return Nil()
         etor.env_restore(saved_env_ctx)
