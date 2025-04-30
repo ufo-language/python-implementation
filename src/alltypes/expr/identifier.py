@@ -4,19 +4,19 @@ from etor.environment import Environment
 
 class Identifier (Object):
 
-    class ClosedIdentifier (Object):
+    # class ClosedIdentifier (Object):
         
-        __slots__ = ('_ident', '_binding')
+    #     __slots__ = ('_ident', '_binding')
 
-        def __init__(self, ident, binding):
-            self._ident = ident
-            self._binding = binding
+    #     def __init__(self, ident, binding):
+    #         self._ident = ident
+    #         self._binding = binding
 
-        def eval_rec(self, etor):
-            return self._binding.rhs
+    #     def eval_rec(self, etor):
+    #         return self._binding.rhs
         
-        def show(self, stream):
-            self._ident.show(stream)
+    #     def show(self, stream):
+    #         self._ident.show(stream)
 
     __slots__ = ('_name', '_hash')
 
@@ -35,11 +35,11 @@ class Identifier (Object):
             self._name = name
             self._hash = hash(name)
 
-    def closure(self, env):
-        binding = env.locate(self)
-        if binding is None:
-            return self
-        return Identifier.ClosedIdentifier(self, binding)
+    # def closure(self, env):
+    #     binding = env.locate_binding_rel(self)
+    #     if binding is None:
+    #         return self
+    #     return Identifier.ClosedIdentifier(self, binding)
 
     def __eq__(self, other):
         return isinstance(other, Identifier) and self._name == other._name

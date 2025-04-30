@@ -23,6 +23,7 @@ class Function (Object):
             return Function.Rule(self._params, closed_body)
         
         def eval_body(self, etor):
+            print("Rule.eval_body", self._body, "::", type(self._body))
             return self._body.eval(etor)
 
         @staticmethod
@@ -73,6 +74,7 @@ class Function (Object):
         env_save_point = env.save()
         for rule in self._rules:
             if rule.matches(args, env):
+                print("Function.apply got rule", rule)
                 value = rule.eval_body(etor)
                 env.restore(env_save_point)
                 return value
