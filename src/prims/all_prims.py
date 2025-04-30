@@ -1,4 +1,6 @@
-from prims.io import _io
+import prims.io._defprims
+import prims.operators._defprims
 
 def define_prims(env):
-    _io.define_prims(env)
+    prims.io._defprims.define_prims(env)
+    prims.operators._defprims.define_prims(env)
