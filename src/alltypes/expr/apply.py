@@ -17,7 +17,10 @@ class Apply (Object):
 
     def eval_rec(self, etor):
         evaled_callee = etor.eval(self._callee)
-        evaled_args = [arg.eval(etor) for arg in self._args]
+        if evaled_callee.is_macro():
+            evaled_args = self._args
+        else:
+            evaled_args = [arg.eval(etor) for arg in self._args]
         return evaled_callee.apply(evaled_args, etor)
 
     def show(self, stream):

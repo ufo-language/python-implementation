@@ -3,10 +3,11 @@ from alltypes.object import Object
 
 class Primitive (Object):
 
-    __slots__ = ('_name')
+    __slots__ = ('_name', '_is_macro')
 
-    def __init__(self, name):
+    def __init__(self, name, is_macro=False):
         self._name = name
+        self._is_macro = is_macro
 
     def apply(self, args, etor):
         ''' Do not override. Override apply_aux instead. '''
@@ -25,6 +26,9 @@ class Primitive (Object):
 
     def __hash__(self):
         return hash(self._function)
+    
+    def is_macro(self):
+        return self._is_macro
 
     def __lt__(self, other):
         if not isinstance(other, Primitive):

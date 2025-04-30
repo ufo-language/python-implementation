@@ -3,7 +3,7 @@ from ufo_exception import UFOException
 from etor.environment import Environment
 
 class Identifier (Object):
-    
+
     class ClosedIdentifier (Object):
         
         __slots__ = ('_ident', '_binding')

@@ -26,7 +26,8 @@ class IfThen (Object):
         stream.write(' then ')
         self._conseq.show(stream)
         if self._alt is not None:
+            stream.write(' else ')
             self._alt.show(stream)
 
     def type_name(self):
-        return 'If'
+        return 'IfThen'

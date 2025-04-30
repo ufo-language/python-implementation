@@ -12,6 +12,7 @@ from alltypes.expr.assign import Assign
 from alltypes.expr.function import Function
 from alltypes.expr.identifier import Identifier
 from alltypes.expr.if_then import IfThen
+from alltypes.expr.quote import Quote
 from alltypes.expr.seq import Seq
 
 from alltypes.literal.boolean import Boolean
@@ -27,7 +28,7 @@ def ufo_parsers():
         '!EOI'        : require('EOI', 'End-of-Input'),
         '!Any'        : require('Any'),
 
-        'Any'         : one_of('Apply', 'Assign', 'Function', 'If', 'Data'),
+        'Any'         : one_of('Apply', 'Assign', 'Function', 'If', 'Quote', 'Data'),
         'Apply'       : apply(Apply.from_parser, seq(recursion_barrier, 'Any', 'ArgList')),
         'ArgList'     : list_of('(', 'Any', ',', ')'),
         'Assign'      : apply(Assign.from_parser, seq('Data', ':=', '!Any')),
@@ -36,6 +37,7 @@ def ufo_parsers():
         'ParamList'   : list_of('(', 'Any', ',', ')'),
         'If'          : apply(IfThen.from_parser, seq('if', '!Any', '!then', '!Any', maybe(seq('else', '!Any')))),
         '!then'       : require('then'),
+        'Quote'       : apply(Quote, seq('\'', 'Any', '\'')),
 
         'Data'        : one_of('Array', 'Binding', 'HashTable', 'List', 'Queue', 'Set', 'Literal'),
         'Array'       : apply(Array.from_parser, list_of('{', 'Any', ',', '}')),

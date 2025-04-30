@@ -94,6 +94,9 @@ class Function (Object):
 
     def eval_rec(self, etor):
         return Function.closure(self._rules, etor.env())
+    
+    def is_macro(self):
+        return False
 
     def show(self, stream):
         stream.write('fun ')
