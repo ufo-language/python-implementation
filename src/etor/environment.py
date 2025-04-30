@@ -73,7 +73,7 @@ class Environment:
         ''' Restore (reduce) the environment to have only the first n bindings. '''
         diff = len(self._bindings) - n
         if diff > 0:
-            self.drop(n)
+            self.drop(diff)
 
     def __repr__(self):
         return repr(self._bindings)

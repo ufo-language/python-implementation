@@ -23,7 +23,6 @@ class Function (Object):
             return Function.Rule(self._params, closed_body)
         
         def eval_body(self, etor):
-            print("Rule.eval_body", self._body, "::", type(self._body))
             return self._body.eval(etor)
 
         @staticmethod
@@ -48,14 +47,15 @@ class Function (Object):
             self._body.show(stream)
 
     class NamedFunction (Object):
-        __slots__ = ('_name', '_rules')
+        __slots__ = ('_name', '_rules', '_is_macro')
 
-        def __init__(self, name, rules):
+        def __init__(self, name, rules, is_macro):
             self._name = name
             self._rules = rules
+            self._is_macro = is_macro
 
         def eval_rec(self, etor):
-            function = Function(self._rules)
+            function = Function(self._rules, self._is_macro)
             assign = Assign(self._name, function)
             return assign.eval(etor)
 
@@ -64,17 +64,17 @@ class Function (Object):
             self._name.show(stream)
             Function.show_rules(self._function._rules)
 
-    __slots__ = ('_rules')
+    __slots__ = ('_rules', '_is_macro')
 
-    def __init__(self, rules):
+    def __init__(self, rules, is_macro):
         self._rules = rules
+        self._is_macro = is_macro
 
     def apply(self, args, etor):
         env = etor.env()
         env_save_point = env.save()
         for rule in self._rules:
             if rule.matches(args, env):
-                print("Function.apply got rule", rule)
                 value = rule.eval_body(etor)
                 env.restore(env_save_point)
                 return value
@@ -82,23 +82,25 @@ class Function (Object):
         raise UFOException("No matching rule for arguments", arguments=args, function=self)
 
     @staticmethod
-    def closure(rules, env):
+    def closure(rules, is_macro, env):
         closed_rules = []
         for rule in rules:
             closed_rules.append(rule.closure(env))
-        return Function(closed_rules)
+        return Function(closed_rules, is_macro)
 
     @staticmethod
     def from_parser(parse_value):
-        name = parse_value[0]
-        rules = [Function.Rule(rule[0], rule[1]) for rule in parse_value[1]]
-        return Function(rules) if name is None else Function.NamedFunction(name, rules)
+        print("Function.from_parser value=", parse_value)
+        is_macro = parse_value[0]
+        name = parse_value[1]
+        rules = [Function.Rule(rule[0], rule[1]) for rule in parse_value[2]]
+        return Function(rules, is_macro) if name is None else Function.NamedFunction(name, rules, is_macro)
 
     def eval_rec(self, etor):
-        return Function.closure(self._rules, etor.env())
+        return Function.closure(self._rules, self._is_macro, etor.env())
     
     def is_macro(self):
-        return False
+        return self._is_macro
 
     def show(self, stream):
         stream.write('fun ')
