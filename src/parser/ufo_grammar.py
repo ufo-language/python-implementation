@@ -39,7 +39,7 @@ def ufo_parsers():
 
         'Data'        : one_of('Array', 'Binding', 'HashTable', 'List', 'Queue', 'Set', 'Literal'),
         'Array'       : apply(Array.from_parser, list_of('{', 'Any', ',', '}')),
-        'Binding'     : apply(Binding.from_parser, seq('Literal', ':', 'Literal')),
+        'Binding'     : apply(Binding.from_parser, seq('Literal', '=', 'Literal')),
         'HashTable'   : apply(HashTable.from_parser, seq('#', list_of('{', 'Binding', ',', '}'))),
         'List'        : apply(List.from_parser, list_of('[', 'Any', ',', ']', '|')),
         'Queue'       : apply(Queue.from_parser, seq('~', list_of('[', 'Any', ',', ']'))),
