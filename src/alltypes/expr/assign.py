@@ -15,15 +15,12 @@ class Assign (Object):
         return Assign(*parser_value)
 
     def eval_rec(self, etor):
-        saved_env_ctx = etor.env_save()
-        binding_pairs = []
-        if self._lhs.pre_bind(self._rhs, etor.env(), binding_pairs):
-            for (binding, expr) in binding_pairs:
-                value = expr.eval(etor)
-                print("assign.eval_rec binding =", binding, "expr=", expr, 'value=', value)
-                binding.rhs = value
-            return Nil()
-        etor.env_restore(saved_env_ctx)
+        env = etor.env()
+        saved_env_ctx = env.save()
+        value = etor.eval(self._rhs)
+        if self._lhs.match(value, env):
+            return value
+        env.restore(saved_env_ctx)
         raise UFOException("Structure mismatch", lhs=self._lhs, rhs=self._rhs)
 
     def show(self, stream):

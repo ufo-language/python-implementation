@@ -32,12 +32,7 @@ class Function (Object):
             return Function.Rule(params, body)
         
         def matches(self, args, etor):
-            binding_pairs = []
-            if Array.pre_bind_elems(self._params, args, etor, binding_pairs):
-                for (binding, value) in binding_pairs:
-                    binding.rhs = value
-                return True
-            return False
+            return Array.match_elems(self._params, args, etor)
 
         def show(self, stream):
             stream.write('(')

@@ -60,10 +60,8 @@ class Identifier (Object):
     def __hash__(self):
         return self._hash
 
-    def pre_bind(self, other, env, binding_pairs):
-        binding = env.bind(self, self)
-        pair = (binding, other)
-        binding_pairs.append(pair)
+    def match(self, other, env):
+        env.bind(self, other)
         return True
 
     def show(self, stream):

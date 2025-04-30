@@ -47,7 +47,7 @@ class Object:
     def free_vars(self, free_var_set):
         pass
 
-    def pre_bind(self, other, env, binding_pairs):
+    def match(self, other, env):
         return self == other
 
     def show(self, stream):
