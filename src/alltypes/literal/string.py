@@ -10,7 +10,7 @@ class String (Object):
     def bool_value(self):
         return len(self._value) > 0
 
-    def disp(self, stream):
+    def display(self, stream):
         stream.write(self._value)
 
     def __eq__(self, other):

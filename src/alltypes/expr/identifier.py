@@ -6,15 +6,14 @@ class Identifier (Object):
     
     class ClosedIdentifier (Object):
         
-        __slots__ = ('_ident', '_index')
+        __slots__ = ('_ident', '_binding')
 
-        def __init__(self, ident, index):
+        def __init__(self, ident, binding):
             self._ident = ident
-            self._index = index
-            # TODO instead of storing the _index, store the actual Binding
+            self._binding = binding
 
         def eval_rec(self, etor):
-            return etor.env()[self._index].rhs
+            return self._binding.rhs
         
         def show(self, stream):
             self._ident.show(stream)
@@ -37,10 +36,10 @@ class Identifier (Object):
             self._hash = hash(name)
 
     def closure(self, env):
-        index = env.lookup_index_rel(self)
-        if index is None:
+        binding = env.locate(self)
+        if binding is None:
             return self
-        return Identifier.ClosedIdentifier(self, index)
+        return Identifier.ClosedIdentifier(self, binding)
 
     def __eq__(self, other):
         return isinstance(other, Identifier) and self._name == other._name

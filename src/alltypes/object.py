@@ -10,7 +10,7 @@ class Object:
     def closure(self, env):
         return self
 
-    def disp(self, stream):
+    def display(self, stream):
         self.show(stream)
 
     def __eq__(self, other):
@@ -60,7 +60,7 @@ class Object:
 
     def __str__(self):
         stream = io.StringIO()
-        self.disp(stream)
+        self.display(stream)
         return stream.getvalue()
 
     def type_name(self):

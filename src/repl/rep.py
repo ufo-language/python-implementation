@@ -1,5 +1,6 @@
 import sys
 
+from alltypes.literal.nil import Nil
 from ufo_exception import UFOException
 import lexer.ufo_syntax
 import parser.ufo_grammar
@@ -33,6 +34,8 @@ def _eval(expr, etor):
     return value
 
 def _print(value):
+    if type(value) is Nil:
+        return
     value.show(sys.stdout)
     sys.stdout.write(' :: ')
     sys.stdout.write(value.type_name())

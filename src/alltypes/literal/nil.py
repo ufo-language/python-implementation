@@ -10,7 +10,7 @@ class Nil (Object):
     def bool_value(self):
         return False
 
-    def disp(self, stream):
+    def display(self, stream):
         pass
 
     def __hash__(self):

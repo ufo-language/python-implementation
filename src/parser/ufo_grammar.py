@@ -52,7 +52,7 @@ def ufo_parsers():
         'Nil'         : returning(Nil(), 'nil'),
         'String'      : apply(String, spot('String')),
         'Symbol'      : apply(Symbol, spot('Symbol')),
-        # not literals, but parsed as literals:
+        # these are not literals, but they parsed as literals:
         'Identifier'  : apply(Identifier, spot('Identifier')),
         'Seq'         : apply(Seq.from_parser, list_of('(', 'Any', ';', ')')),
     }
