@@ -22,11 +22,11 @@ class IfThen (Object):
     
     def show(self, stream):
         stream.write('if ')
-        stream.write(self._cond)
+        self._cond.show(stream)
         stream.write(' then ')
-        stream.write(self._conseq)
+        self._conseq.show(stream)
         if self._alt is not None:
-            stream.write(self._alt)
+            self._alt.show(stream)
 
     def type_name(self):
         return 'If'
