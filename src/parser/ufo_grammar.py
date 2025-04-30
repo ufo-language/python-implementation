@@ -9,6 +9,7 @@ from alltypes.data.set import Set
 
 from alltypes.expr.apply import Apply
 from alltypes.expr.assign import Assign
+from alltypes.expr.binop import BinOp
 from alltypes.expr.function import Function
 from alltypes.expr.identifier import Identifier
 from alltypes.expr.if_then import IfThen
@@ -22,16 +23,22 @@ from alltypes.literal.nil import Nil
 from alltypes.literal.string import String
 from alltypes.literal.symbol import Symbol
 
+from lexer.lexer import Lexer
+
 def ufo_parsers():
+    EOI = Lexer.EOI
+    R_EOI = '!' + EOI
     return {
-        'Program'     : seq('Any', '!EOI'),
-        '!EOI'        : require('EOI', 'End-of-Input'),
+        'Program'     : seq('Any', '!' + EOI),
+        R_EOI         : require(EOI, 'End-of-Input'),
         '!Any'        : require('Any'),
 
-        'Any'         : one_of('Apply', 'Assign', 'Function', 'If', 'Quote', 'Data'),
+        'Any'         : one_of('Apply', 'Assign', 'BinOp', 'Function', 'If', 'Quote', 'Data'),
         'Apply'       : apply(Apply.from_parser, seq(recursion_barrier, 'Any', 'ArgList')),
         'ArgList'     : list_of('(', 'Any', ',', ')'),
         'Assign'      : apply(Assign.from_parser, seq('Data', ':=', '!Any')),
+        'BinOp'       : apply(BinOp.from_parser, seq(recursion_barrier, 'Any', 'Operator', '!Any')),
+        'Operator'    : spot('Operator'),
         'Function'    : apply(Function.from_parser, seq(one_of('fun', 'macro'), one_of('Identifier', succeed(None)), sep_by('FunctionRule', '|'))),
         'fun'         : returning(False, spot('Reserved', 'fun')),
         'macro'       : returning(True, spot('Reserved', 'macro')),

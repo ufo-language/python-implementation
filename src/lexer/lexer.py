@@ -1,6 +1,8 @@
 import lexer.char_stream
 
 class Lexer:
+    
+    EOI = '#EOI#'
 
     def __init__(self):
         self._states = {}
@@ -61,4 +63,4 @@ class Lexer:
         return self._tokens
 
     def on_eoi(self):
-        self._tokens.append(('EOI', 'EOI', self._cs.get_pos()))
+        self._tokens.append((Lexer.EOI, Lexer.EOI, self._cs.get_pos()))

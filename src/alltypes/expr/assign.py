@@ -16,11 +16,9 @@ class Assign (Object):
 
     def eval_rec(self, etor):
         env = etor.env()
-        print("assign.eval_rec 1 env=", env)
         saved_env_ctx = env.save()
         value = etor.eval(self._rhs)
         if self._lhs.match(value, env):
-            print("assign.eval_rec 2 env=", env)
             return value
         env.restore(saved_env_ctx)
         raise UFOException("Structure mismatch", lhs=self._lhs, rhs=self._rhs)

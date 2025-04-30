@@ -60,7 +60,10 @@ class Function (Object):
             return assign.eval(etor)
 
         def show(self, stream):
-            stream.write('fun ')
+            if self._is_macro:
+                stream.write('macro ')
+            else:
+                stream.write('fun ')
             self._name.show(stream)
             Function.show_rules(self._function._rules)
 
@@ -90,7 +93,6 @@ class Function (Object):
 
     @staticmethod
     def from_parser(parse_value):
-        print("Function.from_parser value=", parse_value)
         is_macro = parse_value[0]
         name = parse_value[1]
         rules = [Function.Rule(rule[0], rule[1]) for rule in parse_value[2]]
@@ -103,7 +105,10 @@ class Function (Object):
         return self._is_macro
 
     def show(self, stream):
-        stream.write('fun ')
+        if self._is_macro:
+            stream.write('macro ')
+        else:
+            stream.write('fun ')
         Function.show_rules(stream, self._rules)
 
     @staticmethod

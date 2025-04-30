@@ -17,6 +17,9 @@ def _spot_lexeme(lexeme, parser_state):
         return True
     return False
 
+def unknown_parser(parser):
+    raise Exception(f"parser.parse got unknown parser type {parser} :: {type(parser)}")
+
 depth = 0
 def parse(parser, parser_state):
     global depth
@@ -40,6 +43,8 @@ def parse(parser, parser_state):
         parser_state.memo_key = memo_key
         parser_function = parser_state.parser_table.get(parser)
         if parser_function is None:
+            if parser[0].isupper():
+                unknown_parser(parser)
             success = _spot_lexeme(parser, parser_state)
         else:
             success = parser_function(parser_state)
@@ -48,5 +53,5 @@ def parse(parser, parser_state):
         parser_state.memo_table[memo_key] = (ctx, success)
         depth -= 1
         return success
-    raise Exception(f"parser.parse got unknown parser type {parser} :: {type(parser)}")
+    unknown_parser(parser)
 

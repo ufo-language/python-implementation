@@ -30,7 +30,7 @@ class Binding (Object):
     
     def show(self, stream):
         self._lhs.show(stream)
-        stream.write(':')
+        stream.write(Binding.CHAR)
         self._rhs.show(stream)
 
     def type_name(self):
