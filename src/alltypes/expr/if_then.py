@@ -15,6 +15,11 @@ class IfThen (Object):
     def from_parser(parse_value):
         return IfThen(*parse_value)
 
+    @staticmethod
+    def construct_from_term(term):
+        print("IfThen.construct_from_term", term)
+        return Nil()
+
     def eval_rec(self, etor):
         cond_val = etor.eval(self._cond)
         if cond_val.bool_value():
