@@ -10,7 +10,7 @@ class Primitive (Object):
 
     __slots__ = ('_name', '_param_rules', '_is_macro')
 
-    def __init__(self, name, param_rules=(), is_macro=False):
+    def __init__(self, name, param_rules=((),), is_macro=False):
         self._name = name
         self._param_rules = param_rules
         self._is_macro = is_macro

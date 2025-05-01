@@ -32,6 +32,9 @@ class Symbol (Object):
         if not isinstance(other, Symbol):
             return self._name < repr(other)
         return self._name < other._name
+    
+    def name(self):
+        return self._name
 
     def show(self, stream):
         stream.write(self._name)

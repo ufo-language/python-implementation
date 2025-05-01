@@ -1,11 +1,12 @@
 from parser.prims import *
 
 from alltypes.data.array import Array
-from alltypes.data.binding import Binding
+# from alltypes.data.binding import Binding
 from alltypes.data.hashtable import HashTable
 from alltypes.data.list import List
 from alltypes.data.queue import Queue
 from alltypes.data.set import Set
+from alltypes.data.term import Term
 
 from alltypes.expr.apply import Apply
 from alltypes.expr.assign import Assign
@@ -50,13 +51,14 @@ def ufo_parsers():
         'ScopeRes'    : apply(ScopeResolution.from_parser, sep_by('Identifier', ':', 2)),
         'Subscript'   : apply(Subscript.from_parser, seq(recursion_barrier, 'Any', '[', 'Any', ']')),
 
-        'Data'        : one_of('Array', 'HashTable', 'List', 'Queue', 'Set', 'Literal'),
+        'Data'        : one_of('Array', 'HashTable', 'List', 'Queue', 'Set', 'Term', 'Literal'),
         'Array'       : apply(Array.from_parser, list_of('{', 'Any', ',', '}')),
         # 'Binding'     : apply(Binding.from_parser, seq(recursion_barrier, 'Any', '=', 'Any')),
         'HashTable'   : apply(HashTable.ProtoHash.from_parser, seq('#', list_of('{', 'Any', ',', '}'))),
         'List'        : apply(List.from_parser, list_of('[', 'Any', ',', ']', '|')),
         'Queue'       : apply(Queue.from_parser, seq('~', list_of('[', 'Any', ',', ']'))),
         'Set'         : apply(Set.from_parser, seq('$', list_of('{', 'Any', ',', '}'))),
+        'Term'        : apply(Term.from_parser, seq(recursion_barrier, 'Any', 'Array')),
 
         'Literal'     : one_of('Boolean', 'Float', 'Identifier', 'Integer', 'Nil', 'Seq', 'String', 'Symbol'),
         'Boolean'     : apply(Boolean, one_of(returning(True, 'true'), returning(False, 'false'))),

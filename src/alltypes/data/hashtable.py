@@ -86,16 +86,19 @@ class HashTable (Object):
         return 'HashTable'
 
     def show(self, stream):
-        stream.write('#{')
+        self.show_with(stream, '#{', ', ', '}')
+
+    def show_with(self, stream, open, sep, close):
+        stream.write(open)
         keys = sorted(self._hash.keys())
         first_iter = True
         for key in keys:
             if first_iter:
                 first_iter = False
             else:
-                stream.write(', ')
+                stream.write(sep)
             key.show(stream)
             stream.write(Binding.CHAR)
             value = self._hash[key]
             value.show(stream)
-        stream.write('}')
+        stream.write(close)

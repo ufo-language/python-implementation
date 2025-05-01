@@ -18,21 +18,27 @@ class Array (Object):
         return len(self._elems) > 0
 
     def eval_rec(self, etor):
-        new_elems = [etor.eval(elem) for elem in self._elems]
-        return Array(new_elems)
-
-    def eval_cps(self, etor):
-        assert False
-
-    def eval_compile(self, etor):
-        assert False
+        elem_values = [etor.eval(elem) for elem in self._elems]
+        return Array(elem_values)
 
     def get(self, index):
+        # if type(index) == Integer:
+        #     if index._value < 0 or index._value >= len(self._elems):
+        #         raise UFOException("Index out of bounds", object=self, object_type=self.type_name(), domain=Array((Integer(0), Integer(len(self._elems)-1))), index=index, index_type=index.type_name())
+        #     return self._elems[index._value]
+        # raise UFOException("Invalid index type for object", object=self, object_type=self.type_name(), index=index, index_type=index.type_name())
+        return Array.get_with_elems(self, self._elems, index)
+
+    @staticmethod
+    def get_with_elems(obj, elems, index):
         if type(index) == Integer:
-            if index._value < 0 or index._value >= len(self._elems):
-                raise UFOException("Index out of bounds", object=self, object_type=self.type_name(), domain=Array((Integer(0), Integer(len(self._elems)-1))), index=index, index_type=index.type_name())
-            return self._elems[index._value]
-        raise UFOException("Invalid index type for object", object=self, object_type=self.type_name(), index=index, index_type=index.type_name())
+            if index._value < 0 or index._value >= len(elems):
+                raise UFOException("Index out of bounds", object=obj, object_type=obj.type_name(), domain=Array((Integer(0), Integer(len(elems)-1))), index=index, index_type=index.type_name())
+            return elems[index._value]
+        raise UFOException("Invalid index type for object", object=obj, object_type=obj.type_name(), index=index, index_type=index.type_name())
+    
+    def __iter__(self):
+        return iter(self._elems)
 
     def match(self, other, env):
         if type(other) is not Array:
@@ -49,7 +55,10 @@ class Array (Object):
         return True
 
     def show(self, stream):
-        show_elems(stream, self._elems, '{', ', ', '}')
+        self.show_with(stream, '{', ', ', '}')
+
+    def show_with(self, stream, open, sep, close):
+        show_elems(stream, self._elems, open, sep, close)
 
     def type_name(self):
         return 'Array'

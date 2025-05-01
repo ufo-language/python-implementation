@@ -15,6 +15,10 @@ class Object:
     def closure(self, env):
         return self
 
+    def construct(self, term):
+        print("Object.construct is not implemented")
+        return None
+
     def display(self, stream):
         self.show(stream)
 
@@ -44,10 +48,10 @@ class Object:
         return self
 
     def eval_cps(self, etor):
-        return etor.push_expr(self)
+        assert False
 
     def eval_compile(self, etor):
-        return {'PUSH_EXPR', self}
+        assert False
 
     def free_vars(self, free_var_set):
         pass
@@ -60,6 +64,9 @@ class Object:
 
     def match(self, other, env):
         return self == other
+    
+    def parts(self):
+        raise SystemError(f"parts is not implemented for type {type(self)}")
 
     def show(self, stream):
         print(f"OBJECT({type(self)}", file=stream, end='')

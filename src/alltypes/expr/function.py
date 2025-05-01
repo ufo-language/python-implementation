@@ -122,4 +122,6 @@ class Function (Object):
             rule.show(stream)
 
     def type_name(self):
+        if self.is_macro():
+            return 'Macro'
         return 'Function'
