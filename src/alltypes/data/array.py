@@ -1,5 +1,7 @@
+from alltypes.literal.integer import Integer
 from alltypes.object import Object
 from alltypes.data._show_elems import show_elems
+from ufo_exception import UFOException
 
 class Array (Object):
 
@@ -24,6 +26,13 @@ class Array (Object):
 
     def eval_compile(self, etor):
         assert False
+
+    def get(self, index):
+        if type(index) == Integer:
+            if index._value < 0 or index._value >= len(self._elems):
+                raise UFOException("Index out of bounds", object=self, object_type=self.type_name(), domain=Array((Integer(0), Integer(len(self._elems)-1))), index=index, index_type=index.type_name())
+            return self._elems[index._value]
+        raise UFOException("Invalid index type for object", object=self, object_type=self.type_name(), index=index, index_type=index.type_name())
 
     def match(self, other, env):
         if type(other) is not Array:

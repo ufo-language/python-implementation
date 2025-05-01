@@ -16,6 +16,7 @@ from alltypes.expr.if_then import IfThen
 from alltypes.expr.quote import Quote
 from alltypes.expr.scope_resolution import ScopeResolution
 from alltypes.expr.seq import Seq
+from alltypes.expr.subscript import Subscript
 
 from alltypes.literal.boolean import Boolean
 from alltypes.literal.integer import Integer
@@ -32,7 +33,7 @@ def ufo_parsers():
         '!EOI'        : require(Lexer.EOI, 'End-of-Input'),
         '!Any'        : require('Any'),
 
-        'Any'         : one_of('Apply', 'Assign', 'BinOp', 'Function', 'If', 'Quote', 'ScopeRes', 'Data'),
+        'Any'         : one_of('Apply', 'Assign', 'BinOp', 'Function', 'If', 'Quote', 'ScopeRes', 'Subscript', 'Data'),
         'Apply'       : apply(Apply.from_parser, seq(recursion_barrier, 'Any', 'ArgList')),
         'ArgList'     : list_of('(', 'Any', ',', ')'),
         'Assign'      : apply(Assign.from_parser, seq('Data', ':=', '!Any')),
@@ -47,6 +48,7 @@ def ufo_parsers():
         '!then'       : require('then'),
         'Quote'       : apply(Quote, seq('\'', 'Any', '\'')),
         'ScopeRes'    : apply(ScopeResolution.from_parser, sep_by('Identifier', ':', 2)),
+        'Subscript'   : apply(Subscript.from_parser, seq(recursion_barrier, 'Any', '[', 'Any', ']')),
 
         'Data'        : one_of('Array', 'HashTable', 'List', 'Queue', 'Set', 'Literal'),
         'Array'       : apply(Array.from_parser, list_of('{', 'Any', ',', '}')),
