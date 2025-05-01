@@ -15,7 +15,7 @@ class Symbol (Object):
 
     def __init__(self, name):
         # 'new' calls 'init' even for already-constructed objects
-        if not hasattr(self, 'name'):
+        if not hasattr(self, '_name'):
             self._name = name
             self._hash = hash(name)
 
