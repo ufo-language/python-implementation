@@ -1,8 +1,13 @@
 import io
 
+from ufo_exception import UFOException
+
 class Object:
 
     __slots__ = ()
+
+    def apply(self, args, etor):
+        raise UFOException("Object is not applyable", object=self, type=self.type_name())
 
     def bool_value(self):
         return True
@@ -46,6 +51,9 @@ class Object:
 
     def free_vars(self, free_var_set):
         pass
+    
+    def is_macro(self):
+        return False
 
     def match(self, other, env):
         return self == other

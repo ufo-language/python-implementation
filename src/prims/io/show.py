@@ -6,7 +6,7 @@ from alltypes.literal.primitive import Primitive
 class Show (Primitive):
     
     def __init__(self):
-        super().__init__('io_show')
+        super().__init__('show')
         
     def check_arg_types(self, args):
         return 0

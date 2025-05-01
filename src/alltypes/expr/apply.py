@@ -1,5 +1,6 @@
 from alltypes.data._show_elems import show_elems
 from alltypes.expr.identifier import Identifier
+from alltypes.literal.symbol import Symbol
 from alltypes.object import Object
 
 class Apply (Object):

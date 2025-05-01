@@ -59,6 +59,11 @@ class Identifier (Object):
     def __hash__(self):
         return self._hash
 
+    def __lt__(self, other):
+        if not isinstance(other, Identifier):
+            return repr(self) < repr(other)
+        return self._name < other._name
+
     def match(self, other, env):
         env.bind(self, other)
         return True

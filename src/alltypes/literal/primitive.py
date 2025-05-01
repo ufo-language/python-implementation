@@ -1,8 +1,12 @@
+from alltypes.data.hashtable import HashTable
 from alltypes.expr.identifier import Identifier
 from alltypes.object import Object
+from etor.environment import Environment
 from ufo_exception import UFOException
 
 class Primitive (Object):
+    
+    ALL_PRIMS = {}
 
     __slots__ = ('_name', '_param_rules', '_is_macro')
 
@@ -44,9 +48,15 @@ class Primitive (Object):
             if self.check_rule(args, param_rule):
                 return rule_num
         raise UFOException("Argument type mismatch", args=args, param_types=self._param_rules)
-    
-    def define_prim(self, env):
-        env.bind(Identifier(self._name), self)
+
+    def define_prim(self, ns, ns_name=''):
+        if type(ns) is HashTable:
+            full_name = ns_name + '_' + self._name
+            Primitive.ALL_PRIMS[full_name] = self
+            ns[Identifier(self._name)] = self
+        elif type(ns) is Environment:
+            Primitive.ALL_PRIMS[self._name] = self
+            ns.bind(Identifier(self._name), self)
 
     def __hash__(self):
         return hash(self._function)
