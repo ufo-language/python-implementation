@@ -38,5 +38,16 @@ class BinOp (Object):
         else:
             self._rhs.show(stream)
 
+    # def show(self, stream):
+    #     stream.write('(')
+    #     self._lhs.show(stream)
+    #     stream.write(')')
+    #     stream.write(' ')
+    #     self._oper.show(stream)
+    #     stream.write(' ')
+    #     stream.write('(')
+    #     self._rhs.show(stream)
+    #     stream.write(')')
+
     def type_name(self):
         return 'BinOp'

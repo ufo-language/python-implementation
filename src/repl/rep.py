@@ -28,9 +28,9 @@ def _read(input_string):
     return expr
 
 def _eval(expr, etor):
-    # print(f"rep._eval got expr {expr} :: {type(expr)}")
+    #print(f"rep._eval got expr {expr} :: {type(expr)}")
     value = expr.eval(etor)
-    # print(f"rep._eval({expr}) -> {value} :: {type(value)}")
+    #print(f"rep._eval({expr}) -> {value} :: {type(value)}")
     return value
 
 def _print(value):

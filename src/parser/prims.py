@@ -160,16 +160,20 @@ def returning(value, parser):
         return False
     return _parser
 
-def sep_by(elem, sep):
+def sep_by(elem, sep, min=0):
     def _parser(parser_state):
         success = parse(one_of(seq(recursion_barrier, elem, many(seq(sep, require(elem, f"{elem} after {sep}")))), succeed([])), parser_state)
+        if not success:
+            return False
         # the parser returns one of:
         # 1. []
         # 2. [a, []]
         # 3. [a, [b,...]]
         if len(parser_state.value) > 0:
             parser_state.value = [parser_state.value[0]] + parser_state.value[1]
-        return success
+        if len(parser_state.value) < min:
+            return False
+        return True
     return _parser
 
 def seq(*parsers):
