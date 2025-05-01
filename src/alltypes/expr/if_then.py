@@ -1,3 +1,4 @@
+from alltypes.data.term import Term
 from alltypes.literal.nil import Nil
 from alltypes.object import Object
 
@@ -20,6 +21,12 @@ class IfThen (Object):
             return etor.eval(self._conseq)
         return etor.eval(self._alt)
     
+    def parts(self):
+        return Term.create(self.type_name(),
+                           condition=self._cond,
+                           consequent=self._conseq,
+                           alternate=self._alt)
+
     def show(self, stream):
         stream.write('if ')
         self._cond.show(stream)

@@ -57,7 +57,10 @@ class Term (Object):
         return self._name
 
     def parts(self):
-        return Term.create(self.type_name(), name=self._name, args=self._args, attrib=self._attrib)
+        return Term.create(self.type_name(),
+                           name=self._name,
+                           args=self._args,
+                           attrib=self._attrib)
 
     def show(self, stream):
         self._name.show(stream)
