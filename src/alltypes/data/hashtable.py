@@ -72,6 +72,9 @@ class HashTable (Object):
             #print("HashTable.eval_rec value_value =", value_value)
             hash[key_value] = value_value
         return hash
+    
+    def get(self, key):
+        return self._hash.get(key)
 
     def __getitem__(self, key):
         return self._hash[key]

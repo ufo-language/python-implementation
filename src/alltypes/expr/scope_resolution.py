@@ -1,4 +1,5 @@
 from alltypes.object import Object
+from ufo_exception import UFOException
 
 class ScopeResolution (Object):
 
@@ -12,14 +13,18 @@ class ScopeResolution (Object):
         return ScopeResolution(parse_value)
 
     def eval_rec(self, etor):
-        print("ScopeResolution.eval_rec", self)
-        collection = {}
+        collection = None
         first_iter = True
         for segment in self._segments:
             if first_iter:
-                collection = etor.lookup(segment)
+                collection = segment.eval(etor)
+                first_iter = False
             else:
-                collection = collection.get(segment)
+                collection1 = collection.get(segment)
+                if collection1 is None:
+                    raise UFOException("Scope resolution operator could not find key in map",
+                                       key=segment, map=collection)
+                collection = collection1
         return collection
     
     def show(self, stream):
