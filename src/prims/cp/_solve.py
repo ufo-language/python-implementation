@@ -1,10 +1,10 @@
 from functools import cmp_to_key
+from itertools import product
 
 from alltypes.literal.nil import Nil
 from prims.cp._system import CP_System
 from prims.cp._variable import CP_Variable
 # from prims.cp._identifiers import CP_Ident
-from prims.operators._inf import MINUS_INF, PLUS_INF
 
 class CP_Solve:
     
@@ -15,11 +15,16 @@ class CP_Solve:
         sorted_variables = CP_Solve.sorted_variables(variables)
         print("solve ordered_variables =", sorted_variables)
         combinations = CP_Solve.domain_combinations(sorted_variables)
+        for combination in combinations:
+            print("combination =", combination)
         return Nil()
  
     @staticmethod
     def domain_combinations(sorted_variables):
-        pass
+        names = [CP_Variable.name(var) for _, var in sorted_variables]
+        domains = [list(CP_Variable.domain(var)) for _, var in sorted_variables]
+        for values in product(*domains):
+            yield dict(zip(names, values))
 
     @staticmethod
     def sorted_variables(variables):
@@ -31,18 +36,6 @@ class CP_Solve:
         def custom_cmp(a, b):
             a_count = a[0]
             b_count = b[0]
-            if a_count is MINUS_INF:
-                if b_count is MINUS_INF:
-                    return 0
-                return -1
-            if a_count is PLUS_INF:
-                if b_count is PLUS_INF:
-                    return 0
-                return 1
-            if b_count is MINUS_INF:
-                return 1
-            if b_count is PLUS_INF:
-                return -1
             return a_count - b_count
         sorted_lst = sorted(var_sizes, key=cmp_to_key(custom_cmp))
         return sorted_lst

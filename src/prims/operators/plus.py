@@ -5,7 +5,6 @@ from alltypes.literal.real import Real
 from alltypes.literal.string import String
 from alltypes.literal.symbol import Symbol
 from alltypes.literal.primitive import Primitive
-from prims.operators._inf import *
 from ufo_exception import UFOException
 
 class Plus (Primitive):
@@ -14,9 +13,9 @@ class Plus (Primitive):
 
     def __init__(self):
         param_rules = (
-            ((Integer, Real, Symbol), (Integer, Real, Symbol)),
+            ((Integer, Real), (Integer, Real)),
             (String, object),
-            ((Integer, Real, Symbol),)
+            ((Integer, Real),)
         )
         super().__init__('+', param_rules)
 
@@ -36,28 +35,5 @@ class Plus (Primitive):
                 return String(s)
             case 2:
                 rhs = args[0]
-                if rhs is INF:
-                    return PLUS_INF
-                if rhs is PLUS_INF or rhs is MINUS_INF:
-                    return rhs  
-                if type(rhs) == Integer:
-                    return rhs
-                if type(rhs) == Real:
-                    return rhs
-                raise UFOException("Prefix operator does not handle argument", prefix_op=self, argument=rhs)
+                return rhs
         raise SystemError(f"Unhandled case {param_rule_num}")
-
-    def handle_infinity(self, lhs, rhs):
-        if lhs is PLUS_INF:
-            if rhs is PLUS_INF:
-                return PLUS_INF
-            if rhs is MINUS_INF:
-                return UNDEFINED
-            return PLUS_INF
-        if lhs is MINUS_INF:
-            if rhs is MINUS_INF:
-                return MINUS_INF
-            if rhs is PLUS_INF:
-                return UNDEFINED
-            return lhs
-        return rhs
