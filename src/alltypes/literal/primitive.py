@@ -93,7 +93,7 @@ class Primitive (Object):
         param_types = Primitive.param_rules_demangle(self._param_rules)
         oper = Identifier('::')
         arg_array = Array.create([BinOp(arg, oper, Symbol(arg.type_name())) for arg in args])
-        raise UFOException("Argument type mismatch", prim=self, args=arg_array, param_types=param_types)
+        raise UFOException("Argument type mismatch", prim=self, param_types=param_types, args=arg_array)
 
     def define_prim(self, ns, ns_name=''):
         if type(ns) is HashTable:

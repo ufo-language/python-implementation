@@ -18,6 +18,9 @@ class Object:
     def construct(self, term):
         print("Object.construct is not implemented")
         return None
+    
+    def count(self):
+        raise UFOException("Object is uncountable", object=self, type=self.type_name())
 
     def display(self, stream):
         self.show(stream)
