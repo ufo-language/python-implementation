@@ -31,8 +31,8 @@ class CP_System:
         return system_term
 
     @staticmethod
-    def add_constraint(variable, constraint):
-        constraints = variable[CP_Ident.CONSTRAINTS]
+    def add_constraint(system, constraint):
+        constraints = system[CP_Ident.CONSTRAINTS]
         constraints.enq(constraint)
 
     @staticmethod
@@ -43,3 +43,15 @@ class CP_System:
         system[CP_Ident.VARIABLES].add(variable_name)
         variables = system.get_attrib()
         variables[variable_name] = variable
+
+    @staticmethod
+    def constraints(system):
+        return system[CP_Ident.CONSTRAINTS]
+
+    @staticmethod
+    def variable_names(system):
+        return system[CP_Ident.VARIABLES]
+    
+    @staticmethod
+    def variables(system):
+        return system.get_attrib().values()

@@ -29,6 +29,9 @@ class Set (Object):
 
     def is_empty(self):
         return len(self._set) > 0
+    
+    def __iter__(self):
+        return iter(self._set)
 
     def type_name(self):
         return 'Set'

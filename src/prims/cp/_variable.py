@@ -28,8 +28,8 @@ class CP_Variable:
     
     @staticmethod
     def domain(variable):
-        return variable[CP_Ident.DOMAIN]
+        return variable.get_attrib()[CP_Ident.DOMAIN]
 
     @staticmethod
     def set_domain(variable, domain):
-        variable[CP_Ident.DOMAIN] = domain
+        variable.get_attrib()[CP_Ident.DOMAIN] = domain

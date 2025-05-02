@@ -88,6 +88,9 @@ class HashTable (Object):
     def __getitem__(self, key):
         return self._hash[key]
 
+    def keys(self):
+        return self._hash.keys()
+
     def __setitem__(self, key, value):
         self._hash[key] = value
 
@@ -111,3 +114,6 @@ class HashTable (Object):
             value = self._hash[key]
             value.show(stream)
         stream.write(close)
+
+    def values(self):
+        return self._hash.values()
