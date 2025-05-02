@@ -2,6 +2,8 @@ from alltypes.literal.primitive import Primitive
 
 class Eval (Primitive):
     
+    """ Evaluates an expression. """
+    
     def __init__(self):
         param_rules = (
             (object,),

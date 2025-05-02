@@ -2,20 +2,15 @@ from alltypes.data.term import Term
 from alltypes.expr.identifier import Identifier
 from alltypes.literal.primitive import Primitive
 from alltypes.literal.symbol import Symbol
-from prims.cp._cp_variable import CP_Variable
-
-def term_type(name):
-    symbol = Symbol(name)
-    def fun(term):
-        return type(term) == Term and term.name() is symbol
-    fun.term_name = symbol
-    return fun
+from prims.cp._variable import CP_Variable
 
 class Variable (Primitive):
     
+    """ Creates a variable in a constraint system. """
+    
     def __init__(self):
         param_rules = (
-            (term_type('CP_System'), Identifier),
+            (Primitive.term_type('CP_System'), Identifier),
         )
         super().__init__('variable', param_rules)
 

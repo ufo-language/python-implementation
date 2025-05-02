@@ -4,6 +4,8 @@ from alltypes.object_construct import object_construct
 
 class Construct (Primitive):
     
+    """ Constructs a UFO expression from a Tuple. """
+    
     def __init__(self):
         param_rules = (
             (Term,),

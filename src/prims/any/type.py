@@ -3,6 +3,8 @@ from alltypes.literal.symbol import Symbol
 
 class Type (Primitive):
     
+    """ Returns the type of an object expressed as a Symbol. """
+    
     def __init__(self):
         param_rules = (
             (object,),

@@ -5,6 +5,8 @@ from alltypes.literal.primitive import Primitive
 
 class Equals (Primitive):
     
+    """ Creates a binding from two values. """
+    
     def __init__(self):
         param_rules = (
             (object, object),

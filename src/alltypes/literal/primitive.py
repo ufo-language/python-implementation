@@ -1,6 +1,7 @@
 from alltypes.data.array import Array
 from alltypes.data.hashtable import HashTable
 from alltypes.data.list import List
+from alltypes.data.term import Term
 from alltypes.expr.binop import BinOp
 from alltypes.expr.identifier import Identifier
 from alltypes.literal.symbol import Symbol
@@ -61,12 +62,12 @@ class Primitive (Object):
     
     @staticmethod
     def param_type_demangle(param_type):
+        if param_type is object:
+            return Symbol('Any')
         if hasattr(param_type, 'term_name'):
             return param_type.term_name
         if hasattr(param_type, '__name__'):
             return Symbol(param_type.__name__)
-        if param_type is object:
-            return Symbol('Object')
         if type(param_type) is tuple:
             return List.create([Primitive.param_type_demangle(elem) for elem in param_type])
         raise SystemError(f"Unhandled param_type {param_type} :: {type(param_type)}")
@@ -117,6 +118,14 @@ class Primitive (Object):
         stream.write('Primitive{')
         stream.write(self._name)
         stream.write('}')
+
+    @staticmethod
+    def term_type(name):
+        symbol = Symbol(name)
+        def fun(term):
+            return type(term) == Term and term.name() is symbol
+        fun.term_name = symbol
+        return fun
 
     def type_name(self):
         return 'Primitive'

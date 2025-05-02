@@ -2,13 +2,13 @@ from alltypes.data.hashtable import HashTable
 from alltypes.data.queue import Queue
 from alltypes.data.term import Term
 from alltypes.literal.symbol import Symbol
-from prims.cp._cp_ident import CP_Ident
+from prims.cp._identifiers import CP_Ident
 
 class CP_Variable:
     
     @staticmethod
     def create(args):
-        from prims.cp._cp_system import CP_System
+        from prims.cp._system import CP_System
         system = args[0]
         var_name = args[1]
         constraints = Queue()

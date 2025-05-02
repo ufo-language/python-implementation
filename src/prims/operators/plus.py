@@ -7,6 +7,8 @@ from alltypes.literal.primitive import Primitive
 
 class Plus (Primitive):
     
+    """ Returns the arithmetic sum of two numeric values, or joins a value to a String. """
+    
     def __init__(self):
         param_rules = (
             ((Integer, Real), (Integer, Real)),

@@ -4,11 +4,14 @@ from alltypes.literal.primitive import Primitive
 from prims.cp.variable import CP_Variable
 
 class Domain (Primitive):
-    
+
+    """ Gets or sets a variable's domain. """
+
     def __init__(self):
+        is_variable = Primitive.term_type('CP_Variable')
         param_rules = (
-            (Term,),
-            (Term, object),
+            (is_variable,),
+            (is_variable, object),
         )
         super().__init__('domain', param_rules)
 

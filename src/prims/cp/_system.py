@@ -29,8 +29,8 @@ class CP_System:
 
     @staticmethod
     def add_variable(system, variable):
-        from prims.cp._cp_ident import CP_Ident
-        from prims.cp._cp_variable import CP_Variable
+        from prims.cp._identifiers import CP_Ident
+        from prims.cp._variable import CP_Variable
         variable_name = CP_Variable.name(variable)
         system[CP_Ident.VARIABLES].add(variable_name)
         variables = system.get_attrib()

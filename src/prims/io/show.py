@@ -4,7 +4,9 @@ from alltypes.literal.nil import Nil
 from alltypes.literal.primitive import Primitive
 
 class Show (Primitive):
-    
+
+    """ Shows one or more values. """
+
     def __init__(self):
         super().__init__('show')
         

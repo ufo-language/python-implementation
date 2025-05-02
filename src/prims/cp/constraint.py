@@ -4,9 +4,11 @@ from alltypes.literal.primitive import Primitive
 
 class Constraint (Primitive):
     
+    """ Adds a constraint to a variable. """
+    
     def __init__(self):
         param_rules = (
-            (Term, BinOp),
+            (Primitive.term_type('CP_Variable'), BinOp),
         )
         super().__init__('constraint', param_rules)
 

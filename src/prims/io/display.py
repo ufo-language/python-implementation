@@ -4,6 +4,8 @@ from alltypes.literal.nil import Nil
 from alltypes.literal.primitive import Primitive
 
 class Display (Primitive):
+
+    """ Displays one or more values. """
     
     def __init__(self):
         super().__init__('disp')

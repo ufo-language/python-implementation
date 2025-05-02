@@ -4,6 +4,8 @@ from alltypes.literal.primitive import Primitive
 
 class Solve (Primitive):
     
+    """ Solves a constraint system. """
+    
     def __init__(self):
         param_rules = (
             (Term,),

@@ -1,8 +1,10 @@
 from alltypes.literal.primitive import Primitive
 from alltypes.literal.string import String
-from prims.cp._cp_system import CP_System
+from prims.cp._system import CP_System
 
 class System (Primitive):
+    
+    """ Creates a new constraint system. """
 
     def __init__(self):
         param_rules = (

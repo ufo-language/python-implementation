@@ -2,6 +2,8 @@ from alltypes.literal.primitive import Primitive
 
 class Parts (Primitive):
     
+    """ Deconstructs a UFO expression into a Tuple. """
+    
     def __init__(self):
         param_rules = (
             (object,),
