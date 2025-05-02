@@ -1,0 +1,7 @@
+class CP_Constraint:
+    
+    @staticmethod
+    def add_to_var(constraint, variable):
+        from prims.cp._cp_variable import CP_Variable
+        CP_Variable.add_constraint(variable, constraint)
+        return variable

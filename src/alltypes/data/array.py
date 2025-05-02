@@ -11,6 +11,10 @@ class Array (Object):
         self._elems = elems
 
     @staticmethod
+    def create(elems):
+        return Array(elems)
+
+    @staticmethod
     def from_parser(parse_value):
         return Array(parse_value)
 

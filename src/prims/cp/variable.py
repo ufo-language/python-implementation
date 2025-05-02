@@ -1,13 +1,21 @@
 from alltypes.data.term import Term
 from alltypes.expr.identifier import Identifier
 from alltypes.literal.primitive import Primitive
-from prims.cp._support import CP_Variable
+from alltypes.literal.symbol import Symbol
+from prims.cp._cp_variable import CP_Variable
+
+def term_type(name):
+    symbol = Symbol(name)
+    def fun(term):
+        return type(term) == Term and term.name() is symbol
+    fun.term_name = symbol
+    return fun
 
 class Variable (Primitive):
     
     def __init__(self):
         param_rules = (
-            (Term, Identifier),
+            (term_type('CP_System'), Identifier),
         )
         super().__init__('variable', param_rules)
 

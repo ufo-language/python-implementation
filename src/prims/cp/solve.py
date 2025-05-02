@@ -6,7 +6,7 @@ class Solve (Primitive):
     
     def __init__(self):
         param_rules = (
-            (Term,)
+            (Term,),
         )
         super().__init__('solve', param_rules)
 

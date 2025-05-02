@@ -8,7 +8,9 @@ class UFOException (Exception):
         self.kwargs = kwargs
 
     def __repr__(self):
-        return self.message + '\n' + repr(self.args) + ' ' + repr(self.kwargs)
+        if self.kwargs:
+            return self.message + '\n' + '\n'.join((f"  {key}={value}" for (key, value) in self.kwargs.items()))
+        return self.message
 
     def __str__(self):
         return self.__repr__()

@@ -13,14 +13,12 @@ class List (Object):
         self._rest = rest
 
     @staticmethod
-    def from_parser(parse_value):
-        proper_elems = parse_value[0]
-        if len(proper_elems) == 0:
+    def create(elems, improper_elem=None):
+        if len(elems) == 0:
             return List.EMPTY_LIST
-        improper_elem = parse_value[1]
         first = None
         last = None
-        for elem in proper_elems:
+        for elem in elems:
             if first is None:
                 first = last = List(elem)
             else:
@@ -29,6 +27,12 @@ class List (Object):
         if improper_elem is not None:
             last._rest = improper_elem
         return first
+
+    @staticmethod
+    def from_parser(parse_value):
+        proper_elems = parse_value[0]
+        improper_elem = parse_value[1]
+        return List.create(proper_elems, improper_elem)
 
     def bool_value(self):
         return not self.is_empty()

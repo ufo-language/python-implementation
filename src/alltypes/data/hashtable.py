@@ -1,5 +1,6 @@
 from alltypes.data.binding import Binding
 from alltypes.data._show_elems import show_elems
+from alltypes.expr.identifier import Identifier
 from alltypes.object import Object
 from ufo_exception import UFOException
 
@@ -24,7 +25,7 @@ class HashTable (Object):
             for binding_expr in self._bindings:
                 binding_value = binding_expr.eval(etor)
                 if type(binding_value) is not Binding:
-                    raise UFOException("HashTable elements must be bindings", elem=binding_value)
+                    raise UFOException("HashTable elements must be bindings", elem=binding_value, type=type(binding_value))
                 lhs = binding_value.lhs()
                 rhs = binding_value.rhs()
                 hash_table[lhs] = rhs
@@ -59,6 +60,14 @@ class HashTable (Object):
     #             raise Exception(f"HashTable expected Binding, found {elem} :: {elem.type_name()}")
     #         hash_table[elem.lhs()] = elem.rhs()
     #     return hash_table
+
+    @staticmethod
+    def create(**kwargs):
+        hash = HashTable()
+        for (key, value) in kwargs.items():
+            key_ident = Identifier(key)
+            hash[key_ident] = value
+        return hash
 
     def bool_value(self):
         return len(self._hash) > 0

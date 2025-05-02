@@ -1,5 +1,9 @@
+from alltypes.data.array import Array
 from alltypes.data.hashtable import HashTable
+from alltypes.data.list import List
+from alltypes.expr.binop import BinOp
 from alltypes.expr.identifier import Identifier
+from alltypes.literal.symbol import Symbol
 from alltypes.object import Object
 from etor.environment import Environment
 from ufo_exception import UFOException
@@ -15,6 +19,11 @@ class Primitive (Object):
         self._param_rules = param_rules
         self._is_macro = is_macro
 
+    def about(self):
+        if self.__doc__ is not None:
+            return self.__doc__.strip()
+        return "No information available."
+
     def apply(self, args, etor):
         ''' Do not override. Override apply_aux instead. '''
         param_rule_num = self.check_arg_types(args)
@@ -28,10 +37,15 @@ class Primitive (Object):
         arg_type = type(arg)
         if type(param_type) is tuple:
             for type_elem in param_type:
-                if type_elem is arg_type:
+                # if type_elem is arg_type:
+                if self.check_param_type(arg, type_elem):
                     return True
             return False
-        return param_type is object or type(arg) is param_type
+        if callable(param_type):
+            return param_type(arg)
+        if param_type is object:
+            return True
+        return arg_type is param_type
 
     def check_rule(self, args, rule):
         n_args = len(args)
@@ -41,13 +55,42 @@ class Primitive (Object):
             if not self.check_param_type(arg, param_type):
                 return False
         return True
+    
+    def param_rules(self):
+        return self._param_rules
+    
+    @staticmethod
+    def param_type_demangle(param_type):
+        if hasattr(param_type, 'term_name'):
+            return param_type.term_name
+        if hasattr(param_type, '__name__'):
+            return Symbol(param_type.__name__)
+        if param_type is object:
+            return Symbol('Object')
+        if type(param_type) is tuple:
+            return List.create([Primitive.param_type_demangle(elem) for elem in param_type])
+        raise SystemError(f"Unhandled param_type {param_type} :: {type(param_type)}")
+
+    @staticmethod
+    def param_rule_demangle(param_rule):
+        return Array.create([Primitive.param_type_demangle(elem) for elem in param_rule])
+
+    @staticmethod
+    def param_rules_demangle(param_rules):
+        demangled_rules = [Primitive.param_rule_demangle(rule) for rule in param_rules]
+        if len(demangled_rules) == 1:
+            return demangled_rules[0]
+        return List.create([Primitive.param_rule_demangle(rule) for rule in param_rules])
 
     def check_arg_types(self, args):
         n_args = len(args)
         for (rule_num, param_rule) in enumerate(self._param_rules):
             if self.check_rule(args, param_rule):
                 return rule_num
-        raise UFOException("Argument type mismatch", args=args, param_types=self._param_rules)
+        param_types = Primitive.param_rules_demangle(self._param_rules)
+        oper = Identifier('::')
+        arg_array = Array.create([BinOp(arg, oper, Symbol(arg.type_name())) for arg in args])
+        raise UFOException("Argument type mismatch", prim=self, args=arg_array, param_types=param_types)
 
     def define_prim(self, ns, ns_name=''):
         if type(ns) is HashTable:
