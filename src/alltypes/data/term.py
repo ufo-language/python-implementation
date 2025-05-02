@@ -46,9 +46,19 @@ class Term (Object):
         attrib_value = etor.eval(self._attrib)
         return Term(name_value, args_value, attrib_value)
     
-    def get(self, index):
-        # return Array.get_with_elems(self, self._array._elems, index)
+    def __getitem__(self, index):
         return self._args.get(index)
+    
+    def __setitem__(self, index, value):
+        self._args[index] = value
+    
+    # use __getitem__ instead
+    # def get(self, index):
+    #     # return Array.get_with_elems(self, self._array._elems, index)
+    #     return self._args.get(index)
+    
+    def get_attrib(self):
+        return self._attrib
 
     def match(self, other, env):
         assert False
@@ -61,6 +71,9 @@ class Term (Object):
                            name=self._name,
                            args=self._args,
                            attrib=self._attrib)
+    
+    def set_attrib(self, attrib):
+        self._attrib = attrib
 
     def show(self, stream):
         self._name.show(stream)

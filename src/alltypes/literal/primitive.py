@@ -54,6 +54,7 @@ class Primitive (Object):
             full_name = ns_name + '_' + self._name
             Primitive.ALL_PRIMS[full_name] = self
             ns[Identifier(self._name)] = self
+            self._name = full_name
         elif type(ns) is Environment:
             Primitive.ALL_PRIMS[self._name] = self
             ns.bind(Identifier(self._name), self)

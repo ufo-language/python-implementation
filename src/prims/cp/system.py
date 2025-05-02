@@ -1,13 +1,15 @@
-from alltypes.data.array import Array
-from alltypes.data.term import Term
-from alltypes.literal.nil import Nil
 from alltypes.literal.primitive import Primitive
-from alltypes.literal.symbol import Symbol
+from alltypes.literal.string import String
+from prims.cp._support import CP_System
 
 class System (Primitive):
-    
+
     def __init__(self):
-        super().__init__('system')
+        param_rules = (
+            (),
+            (String,)
+        )
+        super().__init__('system', param_rules)
 
     def apply_aux(self, args, param_rule_num, etor):
-        return Term(Symbol('CP_System'), Array([]))
+        return CP_System.create(args)

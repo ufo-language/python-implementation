@@ -17,7 +17,7 @@ class IfThen (Object):
 
     @staticmethod
     def construct_from_term(term):
-        print("IfThen.construct_from_term", term)
+        print("IfThen.construct_from_term got term", term)
         return Nil()
 
     def eval_rec(self, etor):

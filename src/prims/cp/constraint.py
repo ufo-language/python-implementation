@@ -1,13 +1,17 @@
-from alltypes.literal.nil import Nil
+from alltypes.data.term import Term
+from alltypes.expr.binop import BinOp
 from alltypes.literal.primitive import Primitive
+from prims.cp._support import CP_Constraint
 
 class Constraint (Primitive):
     
     def __init__(self):
-        super().__init__('constraint')
-
-    def check_arg_types(self, args):
-        return 0
+        param_rules = (
+            (Term, BinOp),
+        )
+        super().__init__('constraint', param_rules)
 
     def apply_aux(self, args, param_rule_num, etor):
-        return Nil()
+        variable = args[0]
+        constraint = args[1]
+        return CP_Constraint.add_to_var(constraint, variable)
