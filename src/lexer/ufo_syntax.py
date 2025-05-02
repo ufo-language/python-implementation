@@ -72,15 +72,15 @@ class UFOSyntax (Lexer):
         self.add('#dash',      '-',        '#dash',      [keep_char])
         self.add('#dash',      None,       '#i',         [reuse_char, create_oper])
 
-        self.add('#float',     digit,      '#float',     [keep_char])
-        self.add('#float',     None,       '#i',         [reuse_char, create_float])
+        self.add('#real',      digit,      '#real',      [keep_char])
+        self.add('#real',      None,       '#i',         [reuse_char, create_real])
 
         self.add('#ident',     '`',        '#i',         [ignore_char, create_word])
         self.add('#ident',     None,       '#ident',     [keep_char])
         self.eoi_state('#ident', [err_unterm_backquote])
 
         self.add('#int',       digit,      '#int',       [keep_char])
-        self.add('#int',       '.',        '#float',     [keep_char])
+        self.add('#int',       '.',        '#real',      [keep_char])
         self.add('#int',       'bB',       '#binary',    [ignore_char])
         self.add('#int',       'xX',       '#hex',       [ignore_char])
         self.add('#int',       None,       '#i',         [reuse_char, create_int])
@@ -99,14 +99,14 @@ class UFOSyntax (Lexer):
         self.add('#string',    '"',        '#i',         [ignore_char, create_string])
         self.eoi_state('#string', [err_unterm_string])
 
-        self.add('#sym',       upper_case,  '#sym',       [keep_char])
-        self.add('#sym',       lower_case,  '#sym',       [keep_char])
+        self.add('#sym',       upper_case,  '#sym',      [keep_char])
+        self.add('#sym',       lower_case,  '#sym',      [keep_char])
         self.add('#sym',       digit,      '#sym',       [keep_char])
         self.add('#sym',       '_?',       '#sym',       [keep_char])
         self.add('#sym',       None,       '#i',         [reuse_char, create_symbol])
 
-        self.add('#word',      upper_case,  '#word',      [keep_char])
-        self.add('#word',      lower_case,  '#word',      [keep_char])
+        self.add('#word',      upper_case,  '#word',     [keep_char])
+        self.add('#word',      lower_case,  '#word',     [keep_char])
         self.add('#word',      digit,      '#word',      [keep_char])
         self.add('#word',      '_?',       '#word',      [keep_char])
         self.add('#word',      None,       '#i',         [reuse_char, create_word])  # create_word checks for 'true' and 'false'

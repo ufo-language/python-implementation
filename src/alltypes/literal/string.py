@@ -34,3 +34,6 @@ class String (Object):
 
     def type_name(self):
         return 'String'
+
+    def value(self):
+        return self._value

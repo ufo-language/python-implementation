@@ -2,8 +2,9 @@ from parser.parser_state import ParserState
 
 IGNORE = '%IGNORE%'
 
-def parse_string(input_string, syntax, grammar):
+def parse_string(input_string, syntax, grammar, tokens_out):
     tokens = syntax(input_string)
+    tokens_out.append(tokens)
     parser_state = ParserState(grammar, None, tokens)
     success = parse('Program', parser_state)
     return parser_state.value if success else None

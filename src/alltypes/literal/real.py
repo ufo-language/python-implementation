@@ -8,7 +8,7 @@ class Real (Object):
         self._value = value
 
     def bool_value(self):
-        return self._value != 0
+        return self._value != 0.0
 
     def __eq__(self, other):
         return isinstance(other, Real) and self._value == other._value

@@ -24,8 +24,8 @@ def create_binary_int(lexer, char):
     lexer._tokens.append(token)
     lexer._word = ''
 
-def create_float(lexer, char):
-    token = ('Float', float(lexer._word), lexer.get_saved_pos())
+def create_real(lexer, char):
+    token = ('Real', float(lexer._word), lexer.get_saved_pos())
     lexer._tokens.append(token)
     lexer._word = ''
 

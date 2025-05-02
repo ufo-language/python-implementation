@@ -1,3 +1,5 @@
+import inspect
+
 from alltypes.data.array import Array
 from alltypes.data.hashtable import HashTable
 from alltypes.data.list import List
@@ -35,18 +37,18 @@ class Primitive (Object):
         pass
     
     def check_param_type(self, arg, param_type):
-        arg_type = type(arg)
+        if inspect.isclass(param_type) and issubclass(param_type, Object):
+            return isinstance(arg, param_type)
         if type(param_type) is tuple:
             for type_elem in param_type:
-                # if type_elem is arg_type:
                 if self.check_param_type(arg, type_elem):
                     return True
             return False
-        if callable(param_type):
+        if hasattr(param_type, 'term_name') and callable(param_type):
             return param_type(arg)
         if param_type is object:
             return True
-        return arg_type is param_type
+        return False
 
     def check_rule(self, args, rule):
         n_args = len(args)

@@ -29,7 +29,7 @@ class CP_Variable:
         return variable[CP_Ident.NAME]
     
     @staticmethod
-    def get_domain(variable, domain):
+    def domain(variable):
         return variable[CP_Ident.DOMAIN]
 
     @staticmethod

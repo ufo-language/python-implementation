@@ -8,17 +8,16 @@ from alltypes.literal.primitive import Primitive
 from prims.operators._inf import *
 from ufo_exception import UFOException
 
-class Plus (Primitive):
+class Minus (Primitive):
     
     """ Returns the arithmetic sum of two numeric values, or joins a value to a String. """
 
     def __init__(self):
         param_rules = (
             ((Integer, Real, Symbol), (Integer, Real, Symbol)),
-            (String, object),
             ((Integer, Real, Symbol),)
         )
-        super().__init__('+', param_rules)
+        super().__init__('-', param_rules)
 
     def apply_aux(self, args, param_rule_num, etor):
         match (param_rule_num):
@@ -31,33 +30,34 @@ class Plus (Primitive):
                 rhs = rhs._value
                 return Integer(lhs + rhs)
             case 1:
-                lhs = args[0]._value
-                s = lhs + str(args[1])
-                return String(s)
-            case 2:
                 rhs = args[0]
                 if rhs is INF:
+                    return MINUS_INF
+                if rhs is PLUS_INF:
+                    return MINUS_INF
+                if rhs is MINUS_INF:
                     return PLUS_INF
-                if rhs is PLUS_INF or rhs is MINUS_INF:
-                    return rhs  
                 if type(rhs) == Integer:
-                    return rhs
+                    return Integer(-rhs.value())
                 if type(rhs) == Real:
-                    return rhs
+                    return Real(-rhs.value())
                 raise UFOException("Prefix operator does not handle argument", prefix_op=self, argument=rhs)
         raise SystemError(f"Unhandled case {param_rule_num}")
 
     def handle_infinity(self, lhs, rhs):
         if lhs is PLUS_INF:
-            if rhs is PLUS_INF:
+            if rhs is MINUS_INF:
                 return PLUS_INF
-            if rhs is MINUS_INF:
-                return UNDEFINED
-            return PLUS_INF
-        if lhs is MINUS_INF:
-            if rhs is MINUS_INF:
-                return MINUS_INF
             if rhs is PLUS_INF:
                 return UNDEFINED
             return lhs
-        return rhs
+        if lhs is MINUS_INF:
+            if rhs is PLUS_INF:
+                return MINUS_INF
+            if rhs is MINUS_INF:
+                return UNDEFINED
+            return MINUS_INF
+        if rhs is PLUS_INF:
+            return MINUS_INF
+        if rhs is MINUS_INF:
+            return PLUS_INF

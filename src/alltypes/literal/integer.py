@@ -29,3 +29,6 @@ class Integer (Object):
 
     def type_name(self):
         return 'Integer'
+
+    def value(self):
+        return self._value

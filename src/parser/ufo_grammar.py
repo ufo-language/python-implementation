@@ -14,6 +14,7 @@ from alltypes.expr.binop import BinOp
 from alltypes.expr.function import Function
 from alltypes.expr.identifier import Identifier
 from alltypes.expr.if_then import IfThen
+from alltypes.expr.prefixop import PrefixOp
 from alltypes.expr.quote import Quote
 from alltypes.expr.scope_resolution import ScopeResolution
 from alltypes.expr.seq import Seq
@@ -21,8 +22,8 @@ from alltypes.expr.subscript import Subscript
 
 from alltypes.literal.boolean import Boolean
 from alltypes.literal.integer import Integer
-from alltypes.literal.float import Float
 from alltypes.literal.nil import Nil
+from alltypes.literal.real import Real
 from alltypes.literal.string import String
 from alltypes.literal.symbol import Symbol
 
@@ -34,7 +35,7 @@ def ufo_parsers():
         '!EOI'        : require(Lexer.EOI, 'End-of-Input'),
         '!Any'        : require('Any'),
 
-        'Any'         : one_of('Apply', 'Assign', 'BinOp', 'Function', 'If', 'Quote', 'ScopeRes', 'Subscript', 'Data'),
+        'Any'         : one_of('Apply', 'Assign', 'BinOp', 'Function', 'If', 'PrefixOp', 'Quote', 'ScopeRes', 'Subscript', 'Data'),
         'Apply'       : apply(Apply.from_parser, seq(recursion_barrier, 'Any', 'ArgList')),
         'ArgList'     : list_of('(', 'Any', ',', ')'),
         'Assign'      : apply(Assign.from_parser, seq('Data', ':=', '!Any')),
@@ -47,6 +48,7 @@ def ufo_parsers():
         'ParamList'   : list_of('(', 'Any', ',', ')'),
         'If'          : apply(IfThen.from_parser, seq('if', '!Any', '!then', '!Any', maybe(seq('else', '!Any')))),
         '!then'       : require('then'),
+        'PrefixOp'    : apply(PrefixOp.from_parser, seq('Operator', 'Any')),
         'Quote'       : apply(Quote, seq('\'', 'Any', '\'')),
         'ScopeRes'    : apply(ScopeResolution.from_parser, sep_by('Identifier', ':', 2)),
         'Subscript'   : apply(Subscript.from_parser, seq(recursion_barrier, 'Any', '[', 'Any', ']')),
@@ -60,10 +62,10 @@ def ufo_parsers():
         'Set'         : apply(Set.from_parser, seq('$', list_of('{', 'Any', ',', '}'))),
         'Term'        : apply(Term.from_parser, seq(recursion_barrier, 'Any', 'Array')),
 
-        'Literal'     : one_of('Boolean', 'Float', 'Identifier', 'Integer', 'Nil', 'Seq', 'String', 'Symbol'),
+        'Literal'     : one_of('Boolean', 'Real', 'Identifier', 'Integer', 'Nil', 'Seq', 'String', 'Symbol'),
         'Boolean'     : apply(Boolean, one_of(returning(True, 'true'), returning(False, 'false'))),
         'Integer'     : apply(Integer, spot('Integer')),
-        'Float'       : apply(Float, spot('Float')),
+        'Real'        : apply(Real, spot('Real')),
         'Nil'         : returning(Nil(), 'nil'),
         'String'      : apply(String, spot('String')),
         'Symbol'      : apply(Symbol, spot('Symbol')),
