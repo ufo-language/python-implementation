@@ -60,7 +60,7 @@ class Object:
         pass
     
     def get(self, index):
-        raise UFOException("Object is not indexable", object=self, type=self.type_name(), index=index, index_type=index.type_name())
+        raise UFOException("Object is not indexable", object=self, object_type=self.type_name(), index=index, index_type=index.type_name())
 
     def is_macro(self):
         return False

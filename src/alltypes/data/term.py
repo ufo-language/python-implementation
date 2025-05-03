@@ -5,7 +5,7 @@ from alltypes.expr.identifier import Identifier
 from alltypes.literal.nil import Nil
 from alltypes.literal.symbol import Symbol
 from alltypes.object import Object
-from alltypes.data._show_elems import show_elems
+from ufo_exception import UFOException
 
 class Term (Object):
 
@@ -29,6 +29,12 @@ class Term (Object):
     @staticmethod
     def from_parser(parse_value):
         return Term(*parse_value)
+    
+    def args(self):
+        return self._args
+
+    def attrib(self):
+        return self._attrib
 
     def eval_rec(self, etor):
         name_value = etor.eval(self._name)
@@ -45,6 +51,12 @@ class Term (Object):
             args_value = hash
         attrib_value = etor.eval(self._attrib)
         return Term(name_value, args_value, attrib_value)
+    
+    def get(self, index):
+        value = self._args.get(index)
+        if value is None:
+            raise UFOException("Index value not found in Term", term=self, index=index, index_type=index.type_name())
+        return value
     
     def __getitem__(self, index):
         return self._args.get(index)
@@ -74,6 +86,9 @@ class Term (Object):
     
     def set_attrib(self, attrib):
         self._attrib = attrib
+
+    def set_args(self, args):
+        self._args = args
 
     def show(self, stream):
         self._name.show(stream)

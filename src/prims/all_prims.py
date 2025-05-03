@@ -5,6 +5,7 @@ import prims.io._defprims
 import prims.lexer._defprims
 import prims.operators._defprims
 import prims.prim._defprims
+import prims.term._defprims
 
 def define_prims(env):
     prims.any._defprims.define_prims(env)
@@ -14,3 +15,4 @@ def define_prims(env):
     prims.lexer._defprims.define_prims(env)
     prims.operators._defprims.define_prims(env)
     prims.prim._defprims.define_prims(env)
+    prims.term._defprims.define_prims(env)
