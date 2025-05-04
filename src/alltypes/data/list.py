@@ -62,6 +62,17 @@ class List (Object):
 
     def is_empty(self):
         return self is List.EMPTY_LIST
+    
+    def length(self):
+        n_elems = 0
+        lst = self
+        while not lst.is_empty():
+            n_elems += 1
+            lst = lst._rest
+            if type(lst) is not List:
+                n_elems += 1
+                break
+        return n_elems
 
     def match(self, other, env):
         if type(other) is not List:
